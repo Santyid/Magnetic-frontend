@@ -23,7 +23,7 @@ interface TopBannerProps {
   onHelpClick?: () => void;
 }
 
-export default function TopBanner({ products, activeTab, onTabChange, onProductClick, onAIClick, onHelpClick }: TopBannerProps) {
+export default function TopBanner({ activeTab, onTabChange, onProductClick, onAIClick, onHelpClick }: TopBannerProps) {
   const t = useTranslation();
   const { user, logout } = useAuthStore();
   const { language, setLanguage } = useLanguage();

@@ -6,19 +6,7 @@ import type { Language } from '../../i18n/translations';
 import { useState, useRef, useEffect } from 'react';
 import type { UserProduct } from '../../types';
 
-// Logos
 import magneticIsologo from '../../assets/images/Isologo-Black.png';
-import socialgestLogo from '../../assets/images/SocialGest-Isotipo-Blue.png';
-import tikketLogo from '../../assets/images/Tikket-Isotipo-Blue.png';
-import advocatesLogo from '../../assets/images/Advocates-Isotipo-Blue.png';
-import quanticoLogo from '../../assets/images/Quantico-Isotipo-Blue.png';
-
-const productLogos: Record<string, string> = {
-  SocialGest: socialgestLogo,
-  Tikket: tikketLogo,
-  Advocates: advocatesLogo,
-  Quantico: quanticoLogo,
-};
 
 const languages: { code: Language; label: string }[] = [
   { code: 'es', label: 'ES' },
@@ -65,11 +53,8 @@ export default function TopBanner({ products, activeTab, onTabChange, onProductC
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard' },
-    ...products.map((p) => ({
-      id: p.product.slug,
-      label: p.product.name,
-      logo: productLogos[p.product.name],
-    })),
+    { id: 'reports', label: 'Reportes', comingSoon: true },
+    { id: 'release-notes', label: 'Release Notes', comingSoon: true },
   ];
 
   return (
@@ -87,24 +72,29 @@ export default function TopBanner({ products, activeTab, onTabChange, onProductC
               <button
                 key={tab.id}
                 onClick={() => {
-                  if (tab.id === 'dashboard') {
-                    onTabChange('dashboard');
-                  } else {
-                    onProductClick(tab.id);
+                  if (!tab.comingSoon) {
+                    if (tab.id === 'dashboard') {
+                      onTabChange('dashboard');
+                    } else {
+                      onProductClick(tab.id);
+                    }
                   }
                 }}
                 className={`relative flex items-center gap-2 px-4 h-14 text-sm font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? 'text-primary-600'
-                    : 'text-grey-300 hover:text-grey-500'
+                  tab.comingSoon
+                    ? 'text-grey-100 cursor-default'
+                    : activeTab === tab.id
+                      ? 'text-primary-600'
+                      : 'text-grey-300 hover:text-grey-500'
                 }`}
               >
-                {'logo' in tab && tab.logo && (
-                  <img src={tab.logo} alt="" className="h-5 w-5 rounded" />
-                )}
                 {tab.label}
-                {/* Active indicator - bottom border */}
-                {activeTab === tab.id && (
+                {tab.comingSoon && (
+                  <span className="text-[10px] font-medium text-grey-100 bg-white-700 px-1.5 py-0.5 rounded-full">
+                    Próximamente
+                  </span>
+                )}
+                {activeTab === tab.id && !tab.comingSoon && (
                   <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary-600 rounded-t" />
                 )}
               </button>
@@ -219,22 +209,28 @@ export default function TopBanner({ products, activeTab, onTabChange, onProductC
             <button
               key={tab.id}
               onClick={() => {
-                if (tab.id === 'dashboard') {
-                  onTabChange('dashboard');
-                } else {
-                  onProductClick(tab.id);
+                if (!tab.comingSoon) {
+                  if (tab.id === 'dashboard') {
+                    onTabChange('dashboard');
+                  } else {
+                    onProductClick(tab.id);
+                  }
                 }
               }}
               className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
-                activeTab === tab.id
-                  ? 'bg-primary-50 text-primary-600'
-                  : 'text-grey-300 hover:text-grey-500'
+                tab.comingSoon
+                  ? 'text-grey-100 cursor-default'
+                  : activeTab === tab.id
+                    ? 'bg-primary-50 text-primary-600'
+                    : 'text-grey-300 hover:text-grey-500'
               }`}
             >
-              {'logo' in tab && tab.logo && (
-                <img src={tab.logo} alt="" className="h-4 w-4 rounded" />
-              )}
               {tab.label}
+              {tab.comingSoon && (
+                <span className="text-[9px] font-medium text-grey-100 bg-white-700 px-1 py-0.5 rounded-full">
+                  Próximamente
+                </span>
+              )}
             </button>
           ))}
         </div>

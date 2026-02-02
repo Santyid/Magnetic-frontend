@@ -16,6 +16,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import Users from './pages/admin/Users';
 import AssignProducts from './pages/admin/AssignProducts';
 import ProductMetrics from './pages/ProductMetrics';
+import Health from './pages/Health';
 
 function App() {
   const { checkAuth } = useAuthStore();
@@ -62,6 +63,7 @@ function App() {
       />
       <BrowserRouter>
         <Routes>
+          <Route path="/health" element={<Health />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -292,6 +292,20 @@ export interface Translations {
     ambassadorsCreating: string;
   };
 
+  // Health
+  health: {
+    title: string;
+    frontend: string;
+    backend: string;
+    operational: string;
+    down: string;
+    checking: string;
+    service: string;
+    uptime: string;
+    timestamp: string;
+    refresh: string;
+  };
+
   // Language Selector
   language: {
     select: string;
@@ -583,6 +597,18 @@ export const translations: Record<Language, Translations> = {
       totalAmbassadors: 'Total embajadores',
       ambassadorsCreating: 'Embajadores generando contenido',
     },
+    health: {
+      title: 'Estado del Sistema',
+      frontend: 'Frontend',
+      backend: 'Backend',
+      operational: 'Operativo',
+      down: 'Caído',
+      checking: 'Verificando...',
+      service: 'Servicio',
+      uptime: 'Tiempo activo',
+      timestamp: 'Última verificación',
+      refresh: 'Actualizar',
+    },
     language: {
       select: 'Idioma',
       spanish: 'Español',
@@ -872,6 +898,18 @@ export const translations: Record<Language, Translations> = {
       totalAmbassadors: 'Total ambassadors',
       ambassadorsCreating: 'Ambassadors creating content',
     },
+    health: {
+      title: 'System Status',
+      frontend: 'Frontend',
+      backend: 'Backend',
+      operational: 'Operational',
+      down: 'Down',
+      checking: 'Checking...',
+      service: 'Service',
+      uptime: 'Uptime',
+      timestamp: 'Last check',
+      refresh: 'Refresh',
+    },
     language: {
       select: 'Language',
       spanish: 'Spanish',
@@ -1160,6 +1198,18 @@ export const translations: Record<Language, Translations> = {
       totalGroups: 'Total grupos',
       totalAmbassadors: 'Total embaixadores',
       ambassadorsCreating: 'Embaixadores gerando conteúdo',
+    },
+    health: {
+      title: 'Status do Sistema',
+      frontend: 'Frontend',
+      backend: 'Backend',
+      operational: 'Operacional',
+      down: 'Fora do ar',
+      checking: 'Verificando...',
+      service: 'Serviço',
+      uptime: 'Tempo ativo',
+      timestamp: 'Última verificação',
+      refresh: 'Atualizar',
     },
     language: {
       select: 'Idioma',

@@ -199,4 +199,12 @@ export const aiAPI = {
   },
 };
 
+// Health endpoint
+export const healthAPI = {
+  check: async (): Promise<{ status: string; timestamp: string; service: string; uptime: number }> => {
+    const { data } = await api.get('/health');
+    return data;
+  },
+};
+
 export default api;

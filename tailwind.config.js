@@ -1,0 +1,78 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#e6efff',
+          100: '#b3d1ff',
+          200: '#80b3ff',
+          300: '#4d94ff',
+          400: '#1a76ff',
+          500: '#0061fe',
+          600: '#0058E7',
+          700: '#0045B4',
+          800: '#002766',
+          900: '#00296b',
+        },
+        danger: {
+          500: '#EE4A79',
+          600: '#D9436E',
+        },
+        secondary: {
+          50: '#fdedf2',
+          100: '#f9c7d6',
+          200: '#f4a1ba',
+          300: '#d06a94',
+          400: '#c05a85',
+          500: '#ae4a79',
+          600: '#8c3b61',
+          700: '#6a2c49',
+          800: '#481e31',
+          900: '#641f33',
+        },
+        grey: {
+          50: '#ececec',
+          100: '#c3c3c3',
+          200: '#a8a8a8',
+          300: '#7d7d7d',
+          400: '#5d5d5d',
+          500: '#3d3d3d',
+          600: '#2e2e2e',
+          700: '#242424',
+          800: '#1e1e1e',
+          900: '#1a1a1a',
+        },
+        success: '#3ACE76',
+        error: '#FC3E3E',
+        warning: '#FF962C',
+        'success-bg': '#F8FCFE',
+        'white-600': '#FAFAFA',
+        'white-700': '#F1F1F1',
+        selectable: {
+          red: '#F61A4A',
+          orange: '#FF7D4A',
+          yellow: '#F9CE16',
+          green: '#3ECC80',
+          blue: '#528BFE',
+          purple: '#9ABABF',
+          pink: '#F572C5',
+          grey: '#9EA1A6',
+          turquoise: '#BCFFFF',
+        },
+      },
+      borderRadius: {
+        'ds': '12px',
+        'lg': '12px',
+      },
+      fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
+    },
+  },
+  plugins: [],
+}

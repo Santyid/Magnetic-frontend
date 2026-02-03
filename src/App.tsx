@@ -4,8 +4,10 @@ import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from './store/authStore';
 import { LanguageProvider } from './i18n/LanguageContext';
 import Login from './pages/Login';
+import LoginNew from './pages/LoginNew';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
@@ -63,8 +65,11 @@ function App() {
       />
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Landing />} />
           <Route path="/health" element={<Health />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login-new" element={<LoginNew />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
@@ -114,8 +119,7 @@ function App() {
             <Route path="products" element={<AssignProducts />} />
           </Route>
 
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </LanguageProvider>

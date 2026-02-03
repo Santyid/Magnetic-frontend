@@ -4,11 +4,11 @@ import { landingTranslations } from '../../i18n/landingTranslations';
 type LandingLanguage = 'es' | 'en' | 'pt';
 const useLandingTranslation = (lang: LandingLanguage) => landingTranslations[lang];
 
-// Import product logos
-import socialgestLogo from '../../assets/images/SocialGest-Imagotipo-Blue.png';
-import tikketLogo from '../../assets/images/Tikket-Imagotipo-Blue.png';
-import advocatesLogo from '../../assets/images/Advocates-Imagotipo-Blue.png';
-import quanticoLogo from '../../assets/images/Quantico-Imagotipo-Blue.png';
+// Import product logos (isotipos only)
+import socialgestLogo from '../../assets/images/SocialGest-Isotipo-Blue.png';
+import tikketLogo from '../../assets/images/Tikket-Isotipo-Blue.png';
+import advocatesLogo from '../../assets/images/Advocates-Isotipo-Blue.png';
+import quanticoLogo from '../../assets/images/Quantico-Isotipo-Blue.png';
 
 interface ProductsShowcaseProps {
   language: LandingLanguage;
@@ -121,13 +121,14 @@ export default function ProductsShowcase({ language }: ProductsShowcaseProps) {
 
               {/* Content */}
               <div className="relative z-10">
-                {/* Logo */}
-                <div className="h-12 mb-6 flex items-center">
+                {/* Logo + Name */}
+                <div className="flex items-center gap-3 mb-6">
                   <img
                     src={product.logo}
                     alt={product.name}
-                    className="h-full w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                    className="h-12 w-12 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                   />
+                  <span className="text-white font-bold text-xl">{product.name}</span>
                 </div>
 
                 {/* Description */}

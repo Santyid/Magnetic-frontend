@@ -51,11 +51,8 @@ export default function Navbar({ language, onLanguageChange }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center">
             <img src={magneticLogo} alt="Magnetic" className="h-8 md:h-10" />
-            <span className="text-white font-semibold text-lg hidden sm:block">
-              Magnetic Suite
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

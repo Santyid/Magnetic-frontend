@@ -104,6 +104,17 @@ export default function LoginNew() {
         }}
       />
 
+      {/* Back to Landing - Fixed top left */}
+      <Link
+        to="/"
+        className="fixed top-4 left-4 z-50 flex items-center gap-2 px-3 py-2 bg-white/5 backdrop-blur-md rounded-lg border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-all"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span className="text-sm font-medium">{language === 'es' ? 'Volver' : language === 'en' ? 'Back' : 'Voltar'}</span>
+      </Link>
+
       {/* Language Selector - Fixed top right */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-1 bg-white/5 backdrop-blur-md rounded-lg p-1 border border-white/10">
         {languages.map((lang) => (
@@ -127,9 +138,8 @@ export default function LoginNew() {
         <div className="glass-light rounded-3xl p-8 md:p-10 shadow-2xl">
           {/* Logo */}
           <div className="form-element text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-3">
+            <Link to="/" className="inline-block">
               <img src={magneticLogo} alt="Magnetic" className="h-10 filter brightness-0" />
-              <span className="text-2xl font-bold text-grey-500">Magnetic</span>
             </Link>
           </div>
 

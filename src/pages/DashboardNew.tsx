@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { productsAPI } from '../services/api';
 import { useAuthStore } from '../store/authStore';
@@ -22,6 +22,43 @@ import quanticoImagotipo from '../assets/images/Quantico-Imagotipo-Blue.png';
 
 type LandingLanguage = 'es' | 'en' | 'pt';
 
+// Hook for animated counter
+function useCountUp(end: number, duration: number = 1500, start: boolean = true): number {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number | null = null;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(easeOutQuart * end));
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration, start]);
+
+  return count;
+}
+
+// Activity feed item type
+interface ActivityItem {
+  id: string;
+  type: 'post' | 'ticket' | 'campaign' | 'metric' | 'user';
+  product: string;
+  message: string;
+  time: string;
+  icon: string;
+  color: string;
+}
+
 export default function DashboardNew() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
@@ -36,6 +73,10 @@ export default function DashboardNew() {
   const [connectProduct, setConnectProduct] = useState<UserProduct | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLangMenu, setShowLangMenu] = useState(false);
+
+  // Activity feed state
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
+  const [showInsight, setShowInsight] = useState(false);
 
   // Sync language with localStorage
   useEffect(() => {
@@ -79,6 +120,102 @@ export default function DashboardNew() {
     navigate('/');
   };
 
+  // Time-based greeting
+  const getGreeting = useCallback(() => {
+    const hour = new Date().getHours();
+    if (language === 'es') {
+      if (hour < 12) return 'Buenos días';
+      if (hour < 19) return 'Buenas tardes';
+      return 'Buenas noches';
+    } else if (language === 'en') {
+      if (hour < 12) return 'Good morning';
+      if (hour < 19) return 'Good afternoon';
+      return 'Good evening';
+    } else {
+      if (hour < 12) return 'Bom dia';
+      if (hour < 19) return 'Boa tarde';
+      return 'Boa noite';
+    }
+  }, [language]);
+
+  // Simulated activity generator
+  const generateActivity = useCallback((): ActivityItem => {
+    const activities_es = [
+      { type: 'post' as const, product: 'SocialGest', message: 'Nueva publicación programada para Instagram', icon: '📱', color: 'from-[#0058E7]' },
+      { type: 'ticket' as const, product: 'Tikket', message: 'Ticket #1847 resuelto exitosamente', icon: '✅', color: 'from-[#3ACE76]' },
+      { type: 'campaign' as const, product: 'AdvocatesPro', message: 'Campaña "Q1 Launch" alcanzó 10K impresiones', icon: '🚀', color: 'from-[#ae4a79]' },
+      { type: 'metric' as const, product: 'Quantico', message: 'Nuevo récord: +23% en conversiones', icon: '📈', color: 'from-[#FF962C]' },
+      { type: 'user' as const, product: 'SocialGest', message: '3 nuevos seguidores en LinkedIn', icon: '👥', color: 'from-[#0058E7]' },
+      { type: 'ticket' as const, product: 'Tikket', message: 'Cliente satisfecho: ⭐⭐⭐⭐⭐', icon: '⭐', color: 'from-[#3ACE76]' },
+      { type: 'post' as const, product: 'SocialGest', message: 'Post viral: 500+ interacciones', icon: '🔥', color: 'from-[#0058E7]' },
+      { type: 'campaign' as const, product: 'AdvocatesPro', message: 'Nuevo embajador registrado', icon: '🎉', color: 'from-[#ae4a79]' },
+    ];
+    const activities_en = [
+      { type: 'post' as const, product: 'SocialGest', message: 'New post scheduled for Instagram', icon: '📱', color: 'from-[#0058E7]' },
+      { type: 'ticket' as const, product: 'Tikket', message: 'Ticket #1847 resolved successfully', icon: '✅', color: 'from-[#3ACE76]' },
+      { type: 'campaign' as const, product: 'AdvocatesPro', message: 'Campaign "Q1 Launch" reached 10K impressions', icon: '🚀', color: 'from-[#ae4a79]' },
+      { type: 'metric' as const, product: 'Quantico', message: 'New record: +23% in conversions', icon: '📈', color: 'from-[#FF962C]' },
+      { type: 'user' as const, product: 'SocialGest', message: '3 new followers on LinkedIn', icon: '👥', color: 'from-[#0058E7]' },
+      { type: 'ticket' as const, product: 'Tikket', message: 'Satisfied customer: ⭐⭐⭐⭐⭐', icon: '⭐', color: 'from-[#3ACE76]' },
+      { type: 'post' as const, product: 'SocialGest', message: 'Viral post: 500+ interactions', icon: '🔥', color: 'from-[#0058E7]' },
+      { type: 'campaign' as const, product: 'AdvocatesPro', message: 'New ambassador registered', icon: '🎉', color: 'from-[#ae4a79]' },
+    ];
+    const activities_pt = [
+      { type: 'post' as const, product: 'SocialGest', message: 'Nova publicação agendada para Instagram', icon: '📱', color: 'from-[#0058E7]' },
+      { type: 'ticket' as const, product: 'Tikket', message: 'Ticket #1847 resolvido com sucesso', icon: '✅', color: 'from-[#3ACE76]' },
+      { type: 'campaign' as const, product: 'AdvocatesPro', message: 'Campanha "Q1 Launch" atingiu 10K impressões', icon: '🚀', color: 'from-[#ae4a79]' },
+      { type: 'metric' as const, product: 'Quantico', message: 'Novo recorde: +23% em conversões', icon: '📈', color: 'from-[#FF962C]' },
+      { type: 'user' as const, product: 'SocialGest', message: '3 novos seguidores no LinkedIn', icon: '👥', color: 'from-[#0058E7]' },
+      { type: 'ticket' as const, product: 'Tikket', message: 'Cliente satisfeito: ⭐⭐⭐⭐⭐', icon: '⭐', color: 'from-[#3ACE76]' },
+      { type: 'post' as const, product: 'SocialGest', message: 'Post viral: 500+ interações', icon: '🔥', color: 'from-[#0058E7]' },
+      { type: 'campaign' as const, product: 'AdvocatesPro', message: 'Novo embaixador registrado', icon: '🎉', color: 'from-[#ae4a79]' },
+    ];
+
+    const activityList = language === 'es' ? activities_es : language === 'en' ? activities_en : activities_pt;
+    const activity = activityList[Math.floor(Math.random() * activityList.length)];
+    const now = language === 'es' ? 'ahora' : language === 'en' ? 'now' : 'agora';
+
+    return {
+      id: Date.now().toString() + Math.random(),
+      ...activity,
+      time: now,
+    };
+  }, [language]);
+
+  // Generate initial activities and add new ones periodically
+  useEffect(() => {
+    // Initial activities
+    const initial: ActivityItem[] = [];
+    for (let i = 0; i < 4; i++) {
+      const activity = generateActivity();
+      activity.id = `initial-${i}`;
+      const times = language === 'es'
+        ? ['hace 2m', 'hace 5m', 'hace 12m', 'hace 28m']
+        : language === 'en'
+          ? ['2m ago', '5m ago', '12m ago', '28m ago']
+          : ['há 2m', 'há 5m', 'há 12m', 'há 28m'];
+      activity.time = times[i];
+      initial.push(activity);
+    }
+    setActivities(initial);
+
+    // Add new activity every 8 seconds
+    const interval = setInterval(() => {
+      setActivities(prev => {
+        const newActivity = generateActivity();
+        return [newActivity, ...prev.slice(0, 4)];
+      });
+    }, 8000);
+
+    // Show AI insight after 3 seconds
+    const insightTimer = setTimeout(() => setShowInsight(true), 3000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(insightTimer);
+    };
+  }, [generateActivity, language]);
+
   const allProducts = [
     {
       name: 'SocialGest',
@@ -120,7 +257,6 @@ export default function DashboardNew() {
 
   const userProductNames = products.map((p) => p.product.name);
   const missingProducts = allProducts.filter((p) => !userProductNames.includes(p.backendName));
-  const connectedProducts = products.filter((p) => p.productEmail && p.enableMetrics);
 
   const languages: { code: LandingLanguage; flag: string; name: string }[] = [
     { code: 'es', flag: '🇪🇸', name: 'ES' },
@@ -130,15 +266,13 @@ export default function DashboardNew() {
 
   // Translations
   const t = {
-    welcome: language === 'es' ? 'Bienvenido' : language === 'en' ? 'Welcome' : 'Bem-vindo',
-    subtitle: language === 'es' ? 'Gestiona todos tus productos desde un solo lugar' : language === 'en' ? 'Manage all your products from one place' : 'Gerencie todos os seus produtos em um só lugar',
     myProducts: language === 'es' ? 'Mis Productos' : language === 'en' ? 'My Products' : 'Meus Produtos',
-    explore: language === 'es' ? 'Explorar Más Productos' : language === 'en' ? 'Explore More Products' : 'Explorar Mais Produtos',
+    explore: language === 'es' ? 'Explorar Más' : language === 'en' ? 'Explore More' : 'Explorar Mais',
     access: language === 'es' ? 'Acceder' : language === 'en' ? 'Access' : 'Acessar',
     connect: language === 'es' ? 'Conectar' : language === 'en' ? 'Connect' : 'Conectar',
     connected: language === 'es' ? 'Conectado' : language === 'en' ? 'Connected' : 'Conectado',
     notConnected: language === 'es' ? 'No conectado' : language === 'en' ? 'Not connected' : 'Não conectado',
-    visitSite: language === 'es' ? 'Visitar sitio' : language === 'en' ? 'Visit site' : 'Visitar site',
+    visitSite: language === 'es' ? 'Visitar' : language === 'en' ? 'Visit' : 'Visitar',
     loading: language === 'es' ? 'Cargando...' : language === 'en' ? 'Loading...' : 'Carregando...',
     profile: language === 'es' ? 'Mi Perfil' : language === 'en' ? 'My Profile' : 'Meu Perfil',
     security: language === 'es' ? 'Seguridad' : language === 'en' ? 'Security' : 'Segurança',
@@ -147,22 +281,22 @@ export default function DashboardNew() {
     reports: language === 'es' ? 'Reportes' : language === 'en' ? 'Reports' : 'Relatórios',
     releaseNotes: 'Release Notes',
     comingSoon: language === 'es' ? 'Próximamente' : language === 'en' ? 'Coming Soon' : 'Em breve',
-    totalProducts: language === 'es' ? 'Total Productos' : language === 'en' ? 'Total Products' : 'Total Produtos',
-    connectedProducts: language === 'es' ? 'Conectados' : language === 'en' ? 'Connected' : 'Conectados',
-    pendingConnect: language === 'es' ? 'Por conectar' : language === 'en' ? 'Pending' : 'Pendentes',
-    quickActions: language === 'es' ? 'Acciones Rápidas' : language === 'en' ? 'Quick Actions' : 'Ações Rápidas',
-    askAI: language === 'es' ? 'Preguntar a la IA' : language === 'en' ? 'Ask AI' : 'Perguntar à IA',
-    viewFAQ: language === 'es' ? 'Ver FAQ' : language === 'en' ? 'View FAQ' : 'Ver FAQ',
-    changePassword: language === 'es' ? 'Cambiar contraseña' : language === 'en' ? 'Change password' : 'Alterar senha',
-    recentActivity: language === 'es' ? 'Actividad Reciente' : language === 'en' ? 'Recent Activity' : 'Atividade Recente',
-    noActivity: language === 'es' ? 'No hay actividad reciente' : language === 'en' ? 'No recent activity' : 'Sem atividade recente',
-    lastAccess: language === 'es' ? 'Último acceso' : language === 'en' ? 'Last access' : 'Último acesso',
-    tipConnect: language === 'es'
-      ? 'Conecta tus productos para ver métricas y acceder más rápido.'
+    // Metrics
+    totalReach: language === 'es' ? 'Alcance Total' : language === 'en' ? 'Total Reach' : 'Alcance Total',
+    interactions: language === 'es' ? 'Interacciones' : language === 'en' ? 'Interactions' : 'Interações',
+    ticketsResolved: language === 'es' ? 'Tickets Resueltos' : language === 'en' ? 'Tickets Resolved' : 'Tickets Resolvidos',
+    conversionRate: language === 'es' ? 'Tasa de Conversión' : language === 'en' ? 'Conversion Rate' : 'Taxa de Conversão',
+    vsLastMonth: language === 'es' ? 'vs mes anterior' : language === 'en' ? 'vs last month' : 'vs mês anterior',
+    // Activity
+    liveActivity: language === 'es' ? 'Actividad en Vivo' : language === 'en' ? 'Live Activity' : 'Atividade ao Vivo',
+    // AI Insight
+    aiInsight: language === 'es' ? 'Insight IA' : language === 'en' ? 'AI Insight' : 'Insight IA',
+    insightMessage: language === 'es'
+      ? 'Basado en tus métricas, el mejor momento para publicar es entre 10:00 y 12:00. Tu engagement podría aumentar un 34%.'
       : language === 'en'
-        ? 'Connect your products to see metrics and access faster.'
-        : 'Conecte seus produtos para ver métricas e acessar mais rápido.',
-    needHelp: language === 'es' ? '¿Necesitas ayuda?' : language === 'en' ? 'Need help?' : 'Precisa de ajuda?',
+        ? 'Based on your metrics, the best time to post is between 10:00 and 12:00. Your engagement could increase by 34%.'
+        : 'Com base nas suas métricas, o melhor horário para postar é entre 10:00 e 12:00. Seu engajamento pode aumentar 34%.',
+    askMore: language === 'es' ? 'Preguntar más' : language === 'en' ? 'Ask more' : 'Perguntar mais',
   };
 
   // Navigation tabs
@@ -171,6 +305,21 @@ export default function DashboardNew() {
     { id: 'reports', label: t.reports, comingSoon: true },
     { id: 'release-notes', label: t.releaseNotes, comingSoon: true },
   ];
+
+  // Simulated metrics
+  const metricsData = [
+    { label: t.totalReach, value: 127843, prefix: '', suffix: '', trend: 12.5, color: 'from-[#0058E7] to-[#4d94ff]' },
+    { label: t.interactions, value: 8492, prefix: '', suffix: '', trend: 8.3, color: 'from-[#3ACE76] to-[#6ee7a0]' },
+    { label: t.ticketsResolved, value: 156, prefix: '', suffix: '', trend: -2.1, color: 'from-[#ae4a79] to-[#d06a94]' },
+    { label: t.conversionRate, value: 4.8, prefix: '', suffix: '%', trend: 23.7, color: 'from-[#FF962C] to-[#ffb366]' },
+  ];
+
+  // Animated metric values
+  const metricValue1 = useCountUp(metricsData[0].value, 2000, !loading);
+  const metricValue2 = useCountUp(metricsData[1].value, 2000, !loading);
+  const metricValue3 = useCountUp(metricsData[2].value, 2000, !loading);
+  const metricValue4 = useCountUp(Math.floor(metricsData[3].value * 10), 2000, !loading);
+  const metricValues = [metricValue1, metricValue2, metricValue3, metricValue4 / 10];
 
   if (loading) {
     return (
@@ -246,7 +395,7 @@ export default function DashboardNew() {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              {/* AI Button - More Prominent */}
+              {/* AI Button */}
               <button
                 onClick={() => setShowChat(true)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-[#0058E7] to-[#ae4a79] hover:opacity-90 text-white transition-all"
@@ -276,7 +425,6 @@ export default function DashboardNew() {
                   className="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-sm text-white/70 hover:text-white transition-all border border-white/10"
                 >
                   <span>{languages.find(l => l.code === language)?.flag}</span>
-                  <span className="hidden sm:inline">{language.toUpperCase()}</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -365,39 +513,122 @@ export default function DashboardNew() {
 
       {/* Main Content */}
       <main className="relative z-10 pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Welcome Section */}
-        <div className="mb-6 animate-hero-fade-in">
-          <h1 className="text-3xl md:text-4xl font-bold text-white">
-            {t.welcome}, <span className="gradient-text">{user?.firstName}</span>
+        {/* Welcome Section with Time-based Greeting */}
+        <div className="mb-8 animate-hero-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-1">
+            {getGreeting()}, <span className="gradient-text">{user?.firstName}</span>
           </h1>
+          <p className="text-white/40 text-lg">
+            {language === 'es' ? 'Aquí está el resumen de tu actividad' : language === 'en' ? "Here's your activity summary" : 'Aqui está o resumo da sua atividade'}
+          </p>
         </div>
 
-        {/* Tip Banner - Only show if there are products to connect */}
-        {products.length > connectedProducts.length && (
-          <div className="mb-6 p-4 bg-gradient-to-r from-[#0058E7]/10 to-[#ae4a79]/10 border border-[#0058E7]/20 rounded-xl animate-reveal-up visible">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#0058E7]/20 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-[#0058E7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <p className="text-white/80 text-sm">
-                  {t.tipConnect}
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {metricsData.map((metric, index) => (
+            <div
+              key={metric.label}
+              className="relative overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible group hover:border-white/20 transition-all"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              {/* Gradient accent */}
+              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${metric.color}`} />
+
+              <p className="text-white/50 text-sm mb-1">{metric.label}</p>
+              <div className="flex items-end justify-between">
+                <p className="text-3xl font-bold text-white">
+                  {metric.prefix}
+                  {index === 3 ? metricValues[index].toFixed(1) : metricValues[index].toLocaleString()}
+                  {metric.suffix}
                 </p>
+                <div className={`flex items-center gap-1 text-sm font-medium ${metric.trend >= 0 ? 'text-[#3ACE76]' : 'text-[#EE4A79]'}`}>
+                  <svg className={`w-4 h-4 ${metric.trend < 0 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                  </svg>
+                  {Math.abs(metric.trend)}%
+                </div>
               </div>
-              <button
-                onClick={() => setShowChat(true)}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm text-[#0058E7] hover:bg-[#0058E7]/10 rounded-lg transition-colors"
-              >
-                {t.needHelp}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9 5l7 7-7 7" />
+              <p className="text-white/30 text-xs mt-2">{t.vsLastMonth}</p>
+
+              {/* Mini sparkline effect */}
+              <div className="absolute bottom-0 left-0 right-0 h-12 opacity-20">
+                <svg viewBox="0 0 100 30" className="w-full h-full" preserveAspectRatio="none">
+                  <path
+                    d={`M0,${25 - Math.random() * 10} Q25,${15 - Math.random() * 10} 50,${20 - Math.random() * 10} T100,${10 - Math.random() * 5}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className={`${metric.trend >= 0 ? 'text-[#3ACE76]' : 'text-[#EE4A79]'}`}
+                  />
                 </svg>
-              </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Two Column Layout: Activity Feed + AI Insight */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+          {/* Activity Feed */}
+          <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-reveal-up visible" style={{ animationDelay: '0.4s' }}>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3ACE76] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#3ACE76]"></span>
+                </span>
+                {t.liveActivity}
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {activities.map((activity, index) => (
+                <div
+                  key={activity.id}
+                  className={`flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-all ${
+                    index === 0 ? 'animate-slide-in-right' : ''
+                  }`}
+                >
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${activity.color} to-transparent flex items-center justify-center text-lg`}>
+                    {activity.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white/80 text-sm truncate">{activity.message}</p>
+                    <p className="text-white/30 text-xs">{activity.product}</p>
+                  </div>
+                  <span className="text-white/30 text-xs whitespace-nowrap">{activity.time}</span>
+                </div>
+              ))}
             </div>
           </div>
-        )}
+
+          {/* AI Insight Card */}
+          <div className={`bg-gradient-to-br from-[#0058E7]/20 to-[#ae4a79]/20 backdrop-blur-sm border border-[#0058E7]/30 rounded-2xl p-6 transition-all duration-500 ${
+            showInsight ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#ae4a79] flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-white">{t.aiInsight}</h3>
+            </div>
+
+            <p className="text-white/70 text-sm leading-relaxed mb-5">
+              {t.insightMessage}
+            </p>
+
+            <button
+              onClick={() => setShowChat(true)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white rounded-xl transition-all border border-white/10"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {t.askMore}
+            </button>
+          </div>
+        </div>
 
         {/* My Products Section */}
         {products.length > 0 && (
@@ -411,9 +642,6 @@ export default function DashboardNew() {
                 </div>
                 {t.myProducts}
               </h2>
-              <span className="px-3 py-1 bg-white/5 text-white/70 rounded-full text-sm font-medium border border-white/10">
-                {products.length} {products.length === 1 ? 'producto' : 'productos'}
-              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -424,7 +652,7 @@ export default function DashboardNew() {
                 return (
                   <div
                     key={userProduct.id}
-                    className={`group relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 animate-reveal-up visible`}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 animate-reveal-up visible"
                     style={{ animationDelay: `${(index + 5) * 0.1}s` }}
                   >
                     {/* Background Image */}
@@ -533,7 +761,7 @@ export default function DashboardNew() {
                   href={product.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/20 p-4 transition-all duration-300 animate-reveal-scale visible`}
+                  className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/20 p-4 transition-all duration-300 animate-reveal-scale visible"
                   style={{ animationDelay: `${(products.length + index + 5) * 0.1}s` }}
                 >
                   {/* Gradient overlay on hover */}

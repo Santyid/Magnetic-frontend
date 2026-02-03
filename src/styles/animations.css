@@ -112,6 +112,18 @@
 /* Slide in from right (for drawers) */
 @keyframes slide-in-right {
   from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right for drawers (full width) */
+@keyframes slide-in-right-full {
+  from {
     transform: translateX(100%);
   }
   to {
@@ -226,6 +238,11 @@
 /* Pulse glow */
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Slide in from right */
+.animate-slide-in-right {
+  animation: slide-in-right 0.4s ease-out forwards;
 }
 
 /* Form stagger animation */

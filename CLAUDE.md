@@ -1998,6 +1998,14 @@ magnetic-frontend/
 │   │   │   └── ConnectProductModal.tsx        # ✅ Modal conexión producto
 │   │   ├── help/
 │   │   │   └── FAQDrawer.tsx                  # ✅ Drawer FAQ con búsqueda y acordeón
+│   │   ├── landing/                           # 🆕 Componentes Landing Page
+│   │   │   ├── Navbar.tsx                     # ✅ Navbar con glass effect al scroll
+│   │   │   ├── Hero.tsx                       # ✅ Hero con orbs animados + gradient text
+│   │   │   ├── ProductsShowcase.tsx           # ✅ Cards productos con glass-morphism
+│   │   │   ├── Features.tsx                   # ✅ Grid features con reveal animation
+│   │   │   ├── Stats.tsx                      # ✅ Contadores animados (count-up)
+│   │   │   ├── CTASection.tsx                 # ✅ CTA con gradiente
+│   │   │   └── Footer.tsx                     # ✅ Footer dark con links
 │   │   ├── layout/
 │   │   │   ├── TopBanner.tsx                  # ✅ Banner superior + AI + Help
 │   │   │   └── AdminLayout.tsx                # ✅ Layout admin con sidebar + AI + FAQ
@@ -2006,9 +2014,12 @@ magnetic-frontend/
 │   │       └── Skeleton.tsx                   # ✅ Skeleton loaders
 │   ├── i18n/
 │   │   ├── translations.ts                    # ✅ Traducciones ES/EN/PT (todas las páginas)
+│   │   ├── landingTranslations.ts             # 🆕 Traducciones Landing Page (ES/EN/PT)
 │   │   └── LanguageContext.tsx                # ✅ Contexto de idioma
 │   ├── pages/
+│   │   ├── Landing.tsx                        # 🆕 Landing page profesional (dark theme)
 │   │   ├── Login.tsx                          # ✅ Login + i18n + background
+│   │   ├── LoginNew.tsx                       # 🆕 Login mejorado con glass-morphism
 │   │   ├── Register.tsx                       # ✅ Registro + validaciones + i18n
 │   │   ├── ForgotPassword.tsx                 # ✅ Recuperar contraseña + i18n
 │   │   ├── Dashboard.tsx                      # ✅ Dashboard + cards con estados de conexión
@@ -2025,6 +2036,8 @@ magnetic-frontend/
 │   │   └── authStore.ts                       # ✅ Estado global (Zustand)
 │   ├── types/
 │   │   └── index.ts                           # ✅ TypeScript interfaces
+│   ├── styles/
+│   │   └── animations.css                     # 🆕 Keyframes y clases de animación landing
 │   ├── App.tsx                                # ✅ Rutas + LanguageProvider
 │   ├── main.tsx                               # ✅ Punto de entrada
 │   └── index.css                              # ✅ Tailwind CSS
@@ -2054,6 +2067,156 @@ El login tiene un background temporal (gradiente). Para cambiarlo por una imagen
 ```
 
 Colocar la imagen en: `magnetic-frontend/public/background.jpg`
+
+---
+
+## 🌐 Landing Page Profesional (Dark Theme)
+
+### Descripción
+Landing page moderna con dark theme, inspirada en flora.ai, usepylon.com y jelou.ai. Incluye animaciones completas (parallax, reveal al scroll, hover effects, orbs flotantes) y stats animados.
+
+### Rutas
+| Ruta | Página | Descripción |
+|------|--------|-------------|
+| `/` | Landing.tsx | Landing page pública |
+| `/login` | Login.tsx | Login original |
+| `/login-new` | LoginNew.tsx | Login mejorado con glass-morphism |
+
+### Estructura de Componentes
+
+```
+src/components/landing/
+├── Navbar.tsx           # Navbar fijo con glass effect al scroll
+├── Hero.tsx             # Hero full-screen con orbs animados
+├── ProductsShowcase.tsx # Cards de productos con glass-morphism
+├── Features.tsx         # Grid 3x2 de características
+├── Stats.tsx            # Contadores animados (4, 3, 24/7)
+├── CTASection.tsx       # Call-to-action con gradiente
+└── Footer.tsx           # Footer dark con selector de idioma
+```
+
+### Paleta de Colores (Dark Theme)
+
+| Elemento | Color | Uso |
+|----------|-------|-----|
+| Background | `#0a0a0f` | Fondo principal (casi negro) |
+| Glass | `rgba(255,255,255,0.05)` | Fondo de cards con backdrop-blur |
+| Borders | `rgba(255,255,255,0.1)` | Bordes sutiles |
+| Text Primary | `#ffffff` | Títulos |
+| Text Secondary | `#a1a1aa` | Subtítulos, descripciones |
+| Accent Primary | `#0058E7` | Botones, links, CTAs |
+| Accent Secondary | `#ae4a79` | Acentos alternos |
+
+### Animaciones CSS (`src/styles/animations.css`)
+
+| Animación | Descripción | Duración |
+|-----------|-------------|----------|
+| `float` | Orbs flotantes suaves | 8s infinite |
+| `float-slow` | Orbs flotantes lentos | 12s infinite |
+| `hero-fade-in` | Fade-in del hero | 1s ease-out |
+| `reveal-up` | Reveal al scroll (de abajo hacia arriba) | 0.8s ease-out |
+| `reveal-scale` | Reveal con scale (stats) | 0.8s ease-out |
+| `gradient-shift` | Gradiente animado en texto | 3s ease infinite |
+| `pulse-glow` | Pulse sutil para números | 2s ease-in-out infinite |
+
+### Clases Utilitarias
+
+```css
+.glass          /* Glass-morphism estándar */
+.glass-dark     /* Glass oscuro */
+.glass-light    /* Glass claro (login) */
+.gradient-text  /* Texto con gradiente animado */
+.orb            /* Base para orbs */
+.orb-primary    /* Orb azul */
+.orb-secondary  /* Orb rosa/púrpura */
+.hover-lift     /* Elevación en hover */
+.hover-glow     /* Glow en hover */
+```
+
+### i18n Landing (`src/i18n/landingTranslations.ts`)
+
+Archivo separado de traducciones para no modificar `translations.ts`:
+
+```typescript
+import { landingTranslations } from '../i18n/landingTranslations';
+
+type LandingLanguage = 'es' | 'en' | 'pt';
+const t = landingTranslations[language];
+
+// Secciones disponibles:
+t.nav        // Navegación
+t.hero       // Hero section
+t.products   // Productos showcase
+t.features   // Características
+t.stats      // Estadísticas
+t.cta        // Call-to-action
+t.footer     // Footer
+t.loginNew   // Login mejorado
+```
+
+### Características por Sección
+
+#### Navbar
+- Fijo en top con `position: fixed`
+- Transparente → glass effect al hacer scroll (>50px)
+- Selector de idioma integrado
+- Menú hamburguesa en mobile
+- Smooth scroll a secciones
+
+#### Hero
+- Full-screen (`min-h-screen`)
+- 4 orbs animados flotantes (2 azul, 2 rosa)
+- Grid pattern overlay sutil
+- Título con gradient-text animado
+- Badge "Magnetic Suite v2.0" con pulse verde
+- 2 CTAs: "Iniciar sesión" + "Conocer más"
+- Preview de productos al final
+
+#### ProductsShowcase
+- Grid 4 columnas (responsive a 2 y 1)
+- Cards con glass-morphism
+- Logos de productos (imagotipos azules)
+- Reveal animation staggered
+- Hover: lift + glow + border color
+
+#### Features
+- Grid 3x2 (responsive)
+- 6 features: SSO, Dashboard, Seguridad, Multiidioma, AI, Soporte
+- Iconos con gradiente de colores
+- Reveal animation staggered
+
+#### Stats
+- 3 estadísticas con count-up animation
+- "4 productos", "3 idiomas", "24/7 soporte"
+- Custom hook `useCountUp(end, duration, start)`
+- Activado por Intersection Observer
+
+#### CTA Section
+- Fondo con gradiente radial
+- Título + subtítulo + botón
+- Link secundario a login
+
+#### Footer
+- 4 columnas: Brand, Productos, Legal, Contacto
+- Selector de idioma (3 botones)
+- Links a redes sociales
+- Copyright + status badge
+
+### Login Mejorado (LoginNew.tsx)
+
+- Background con 4 orbs animados
+- Formulario con glass-light effect
+- Staggered entry animation para inputs
+- Toggle mostrar/ocultar contraseña
+- Mismo flujo funcional que Login.tsx original
+- i18n completo
+
+### Accesibilidad
+
+- `prefers-reduced-motion`: Desactiva animaciones si el usuario lo prefiere
+- Contraste adecuado (WCAG AA)
+- Links con focus visible
+- Alt text en imágenes
 
 ---
 
@@ -2180,6 +2343,16 @@ VITE_API_URL=http://localhost:3000/api
 | Deploy Railway - PostgreSQL | ✅ Completo | 100% |
 | Health Check (enhanced, per-service) | ✅ Completo | 100% |
 | Dockerfile + start.sh (auto-seed) | ✅ Completo | 100% |
+| Landing Page (dark theme + animaciones) | ✅ Completo | 100% |
+| Landing - Navbar glass effect | ✅ Completo | 100% |
+| Landing - Hero con orbs animados | ✅ Completo | 100% |
+| Landing - Products showcase | ✅ Completo | 100% |
+| Landing - Features grid | ✅ Completo | 100% |
+| Landing - Stats con count-up | ✅ Completo | 100% |
+| Landing - CTA + Footer | ✅ Completo | 100% |
+| Login mejorado (glass-morphism) | ✅ Completo | 100% |
+| Landing i18n (ES/EN/PT) | ✅ Completo | 100% |
+| CSS Animations (float, reveal, gradient) | ✅ Completo | 100% |
 
 **MVP Funcional:** ✅ **LISTO PARA USAR Y DEPLOYADO EN RAILWAY**
 
@@ -2845,7 +3018,7 @@ npm run test:e2e         # Ejecuta tests E2E
 
 ### Estado Actualizado
 **Última actualización:** Febrero 2026
-**Versión Frontend:** v1.4.0 (MVP + AI + Métricas + FAQ + Design System + E2E Testing)
+**Versión Frontend:** v1.5.0 (MVP + AI + Métricas + FAQ + Design System + E2E Testing + Landing Page + LoginNew)
 **Versión Backend:** v1.2.0 (Completo con AI + Auth + Conexión Productos + Deploy Railway + Health Check Enhanced)
 
 ---

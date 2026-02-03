@@ -14,11 +14,11 @@ import '../styles/animations.css';
 // Import logo
 import magneticLogo from '../assets/images/Isologo-White.png';
 
-// Product imagotipos
-import socialgestImagotipo from '../assets/images/SocialGest-Imagotipo-Blue.png';
-import tikketImagotipo from '../assets/images/Tikket-Imagotipo-Blue.png';
-import advocatesImagotipo from '../assets/images/Advocates-Imagotipo-Blue.png';
-import quanticoImagotipo from '../assets/images/Quantico-Imagotipo-Blue.png';
+// Product isotipos (icons only - cleaner for cards)
+import socialgestIsotipo from '../assets/images/SocialGest-Isotipo-Blue.png';
+import tikketIsotipo from '../assets/images/Tikket-Isotipo-Blue.png';
+import advocatesIsotipo from '../assets/images/Advocates-Isotipo-Blue.png';
+import quanticoIsotipo from '../assets/images/Quantico-Isotipo-Blue.png';
 
 type LandingLanguage = 'es' | 'en' | 'pt';
 
@@ -220,7 +220,7 @@ export default function DashboardNew() {
     {
       name: 'SocialGest',
       backendName: 'SocialGest',
-      imagotipo: socialgestImagotipo,
+      isotipo: socialgestIsotipo,
       url: 'https://socialgest.net/es',
       description: language === 'es' ? 'Gestión integral de redes sociales' : language === 'en' ? 'Comprehensive social media management' : 'Gestão integral de redes sociais',
       preview: 'https://files-landing.socialgest.net/images/sgheadernew.webp',
@@ -229,7 +229,7 @@ export default function DashboardNew() {
     {
       name: 'Tikket',
       backendName: 'Tikket',
-      imagotipo: tikketImagotipo,
+      isotipo: tikketIsotipo,
       url: 'https://www.tikket.net/es',
       description: language === 'es' ? 'Sistema de tickets y soporte' : language === 'en' ? 'Ticket and support system' : 'Sistema de tickets e suporte',
       preview: 'https://files-landing.tikket.net/images/hometikket/tikketimageinbox.png',
@@ -238,7 +238,7 @@ export default function DashboardNew() {
     {
       name: 'AdvocatesPro',
       backendName: 'Advocates',
-      imagotipo: advocatesImagotipo,
+      isotipo: advocatesIsotipo,
       url: 'https://magneticsuite.com/advocatespro',
       description: language === 'es' ? 'Plataforma de employee advocacy' : language === 'en' ? 'Employee advocacy platform' : 'Plataforma de employee advocacy',
       preview: 'https://magneticsuite.com/hubfs/Comp%201-1.gif',
@@ -247,7 +247,7 @@ export default function DashboardNew() {
     {
       name: 'Quantico',
       backendName: 'Quantico',
-      imagotipo: quanticoImagotipo,
+      isotipo: quanticoIsotipo,
       url: 'https://quantico.ai/',
       description: language === 'es' ? 'Analytics y métricas avanzadas' : language === 'en' ? 'Advanced analytics and metrics' : 'Análises e métricas avançadas',
       preview: 'https://quantico.ai/wp-content/uploads/2020/09/RRSS.gif',
@@ -674,7 +674,7 @@ export default function DashboardNew() {
                     <div className="flex justify-center mb-4">
                       <div className="w-20 h-20 rounded-2xl bg-white p-3 flex items-center justify-center shadow-lg">
                         <img
-                          src={productInfo?.imagotipo}
+                          src={productInfo?.isotipo}
                           alt={userProduct.product.name}
                           className="h-full w-full object-contain"
                         />
@@ -769,7 +769,7 @@ export default function DashboardNew() {
                   <div className="flex justify-center mb-4 pt-2">
                     <div className="w-20 h-20 rounded-2xl bg-white p-3 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
                       <img
-                        src={product.imagotipo}
+                        src={product.isotipo}
                         alt={product.name}
                         className="h-full w-full object-contain"
                       />

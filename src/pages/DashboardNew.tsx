@@ -35,6 +35,7 @@ export default function DashboardNew() {
   const [showFAQ, setShowFAQ] = useState(false);
   const [connectProduct, setConnectProduct] = useState<UserProduct | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showLangMenu, setShowLangMenu] = useState(false);
 
   // Sync language with localStorage
   useEffect(() => {
@@ -156,6 +157,12 @@ export default function DashboardNew() {
     recentActivity: language === 'es' ? 'Actividad Reciente' : language === 'en' ? 'Recent Activity' : 'Atividade Recente',
     noActivity: language === 'es' ? 'No hay actividad reciente' : language === 'en' ? 'No recent activity' : 'Sem atividade recente',
     lastAccess: language === 'es' ? 'Último acceso' : language === 'en' ? 'Last access' : 'Último acesso',
+    tipConnect: language === 'es'
+      ? 'Conecta tus productos para ver métricas y acceder más rápido.'
+      : language === 'en'
+        ? 'Connect your products to see metrics and access faster.'
+        : 'Conecte seus produtos para ver métricas e acessar mais rápido.',
+    needHelp: language === 'es' ? '¿Necesitas ayuda?' : language === 'en' ? 'Need help?' : 'Precisa de ajuda?',
   };
 
   // Navigation tabs
@@ -211,9 +218,6 @@ export default function DashboardNew() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <img src={magneticLogo} alt="Magnetic" className="h-8 md:h-10" />
-              <span className="text-white font-semibold text-lg hidden sm:block">
-                Magnetic Suite
-              </span>
             </Link>
 
             {/* Center: Navigation Tabs */}
@@ -265,21 +269,36 @@ export default function DashboardNew() {
                 </svg>
               </button>
 
-              {/* Language Selector */}
-              <div className="hidden sm:flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => handleLanguageChange(lang.code)}
-                    className={`px-2 py-1 rounded text-xs font-medium transition-all ${
-                      language === lang.code
-                        ? 'bg-white/10 text-white'
-                        : 'text-white/50 hover:text-white'
-                    }`}
-                  >
-                    {lang.flag} {lang.name}
-                  </button>
-                ))}
+              {/* Language Selector Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowLangMenu(!showLangMenu)}
+                  className="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-sm text-white/70 hover:text-white transition-all border border-white/10"
+                >
+                  <span>{languages.find(l => l.code === language)?.flag}</span>
+                  <span className="hidden sm:inline">{language.toUpperCase()}</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {showLangMenu && (
+                  <div className="absolute right-0 mt-2 w-32 bg-[#1a1a1f] rounded-xl border border-white/10 shadow-xl overflow-hidden z-50">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => { handleLanguageChange(lang.code); setShowLangMenu(false); }}
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm transition-colors ${
+                          language === lang.code
+                            ? 'bg-white/10 text-white'
+                            : 'text-white/60 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        <span>{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* User Menu */}
@@ -347,96 +366,38 @@ export default function DashboardNew() {
       {/* Main Content */}
       <main className="relative z-10 pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Welcome Section */}
-        <div className="mb-8 animate-hero-fade-in">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+        <div className="mb-6 animate-hero-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold text-white">
             {t.welcome}, <span className="gradient-text">{user?.firstName}</span>
           </h1>
-          <p className="text-white/50 text-lg">
-            {t.subtitle}
-          </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          {/* Total Products */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#4d94ff] flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        {/* Tip Banner - Only show if there are products to connect */}
+        {products.length > connectedProducts.length && (
+          <div className="mb-6 p-4 bg-gradient-to-r from-[#0058E7]/10 to-[#ae4a79]/10 border border-[#0058E7]/20 rounded-xl animate-reveal-up visible">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#0058E7]/20 flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-[#0058E7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div>
-                <p className="text-white/50 text-sm">{t.totalProducts}</p>
-                <p className="text-3xl font-bold text-white">{products.length}</p>
+              <div className="flex-1">
+                <p className="text-white/80 text-sm">
+                  {t.tipConnect}
+                </p>
               </div>
-            </div>
-          </div>
-
-          {/* Connected Products */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible" style={{ animationDelay: '0.2s' }}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#3ACE76] to-[#6ee7a0] flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              <button
+                onClick={() => setShowChat(true)}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm text-[#0058E7] hover:bg-[#0058E7]/10 rounded-lg transition-colors"
+              >
+                {t.needHelp}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9 5l7 7-7 7" />
                 </svg>
-              </div>
-              <div>
-                <p className="text-white/50 text-sm">{t.connectedProducts}</p>
-                <p className="text-3xl font-bold text-white">{connectedProducts.length}</p>
-              </div>
+              </button>
             </div>
           </div>
-
-          {/* Pending Connection */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible" style={{ animationDelay: '0.3s' }}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF962C] to-[#ffb366] flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-white/50 text-sm">{t.pendingConnect}</p>
-                <p className="text-3xl font-bold text-white">{products.length - connectedProducts.length}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mb-8 animate-reveal-up visible" style={{ animationDelay: '0.4s' }}>
-          <h3 className="text-lg font-semibold text-white mb-4">{t.quickActions}</h3>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => setShowChat(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0058E7] to-[#ae4a79] hover:opacity-90 text-white rounded-xl transition-all"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-              {t.askAI}
-            </button>
-            <button
-              onClick={() => setShowFAQ(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl transition-all"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {t.viewFAQ}
-            </button>
-            <button
-              onClick={() => navigate('/change-password')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl transition-all"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-              </svg>
-              {t.changePassword}
-            </button>
-          </div>
-        </div>
+        )}
 
         {/* My Products Section */}
         {products.length > 0 && (
@@ -612,11 +573,11 @@ export default function DashboardNew() {
         />
       )}
 
-      {/* Click outside to close user menu */}
-      {showUserMenu && (
+      {/* Click outside to close menus */}
+      {(showUserMenu || showLangMenu) && (
         <div
           className="fixed inset-0 z-40"
-          onClick={() => setShowUserMenu(false)}
+          onClick={() => { setShowUserMenu(false); setShowLangMenu(false); }}
         />
       )}
     </div>

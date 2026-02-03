@@ -644,7 +644,7 @@ export default function DashboardNew() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {products.map((userProduct, index) => {
                 const productInfo = allProducts.find((p) => p.backendName === userProduct.product.name);
                 const isConnected = userProduct.productEmail && userProduct.enableMetrics;
@@ -652,87 +652,85 @@ export default function DashboardNew() {
                 return (
                   <div
                     key={userProduct.id}
-                    className="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 animate-reveal-up visible"
+                    className={`group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 p-5 transition-all duration-300 animate-reveal-up visible hover:bg-white/[0.07]`}
                     style={{ animationDelay: `${(index + 5) * 0.1}s` }}
                   >
-                    {/* Background Image */}
-                    <div className="absolute inset-0">
-                      <img
-                        src={productInfo?.preview}
-                        alt={userProduct.product.name}
-                        className="w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/80 to-transparent" />
-                    </div>
+                    {/* Gradient accent on top */}
+                    <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${productInfo?.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
 
-                    {/* Content */}
-                    <div className="relative p-5">
-                      {/* Connection Status */}
-                      <div className={`absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                    {/* Header: Status Badge */}
+                    <div className="flex items-center justify-end mb-3">
+                      <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] font-medium ${
                         isConnected
                           ? 'bg-[#3ACE76]/20 text-[#3ACE76]'
-                          : 'bg-white/10 text-white/50'
+                          : 'bg-white/10 text-white/40'
                       }`}>
                         <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-[#3ACE76] animate-pulse' : 'bg-white/30'}`} />
                         {isConnected ? t.connected : t.notConnected}
                       </div>
+                    </div>
 
-                      {/* Product Info */}
-                      <div className="pt-12">
+                    {/* Logo Container */}
+                    <div className="flex justify-center mb-4">
+                      <div className="w-20 h-20 rounded-2xl bg-white p-3 flex items-center justify-center shadow-lg">
                         <img
                           src={productInfo?.imagotipo}
                           alt={userProduct.product.name}
-                          className="h-7 mb-3 filter brightness-0 invert"
+                          className="h-full w-full object-contain"
                         />
-                        <p className="text-white/60 text-sm mb-5 line-clamp-2">
-                          {productInfo?.description}
-                        </p>
-
-                        {userProduct.customDomain && (
-                          <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#ae4a79]/20 text-[#ae4a79] text-xs font-medium rounded-full mb-4">
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                            </svg>
-                            {userProduct.customDomain}
-                          </div>
-                        )}
-
-                        {/* Actions */}
-                        {isConnected ? (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => navigate(`/dashboard/metrics/${userProduct.product.slug}`)}
-                              className="flex-1 flex items-center justify-center gap-2 bg-[#0058E7] hover:bg-[#0045B4] text-white font-medium py-2.5 rounded-xl transition-all hover:shadow-[0_0_20px_rgba(0,88,231,0.3)]"
-                            >
-                              {t.access}
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
-                            </button>
-                            <button
-                              onClick={() => handleProductClick(userProduct.product.slug)}
-                              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all border border-white/10"
-                              title={language === 'es' ? 'Abrir producto' : language === 'en' ? 'Open product' : 'Abrir produto'}
-                            >
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                              </svg>
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => setConnectProduct(userProduct)}
-                            className="w-full flex items-center justify-center gap-2 border-2 border-[#0058E7] text-[#0058E7] hover:bg-[#0058E7] hover:text-white font-medium py-2.5 rounded-xl transition-all"
-                          >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                            {t.connect}
-                          </button>
-                        )}
                       </div>
                     </div>
+
+                    {/* Product Name */}
+                    <h3 className="text-white font-semibold text-center mb-1">{productInfo?.name}</h3>
+                    <p className="text-white/40 text-sm text-center mb-4 line-clamp-2">
+                      {productInfo?.description}
+                    </p>
+
+                    {/* Custom Domain Badge */}
+                    {userProduct.customDomain && (
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[#ae4a79]/20 text-[#ae4a79] text-[10px] font-medium rounded-full mb-4">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                          <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                        </svg>
+                        {userProduct.customDomain}
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    {isConnected ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => navigate(`/dashboard/metrics/${userProduct.product.slug}`)}
+                          className="flex-1 flex items-center justify-center gap-1.5 bg-[#0058E7] hover:bg-[#0045B4] text-white text-sm font-medium py-2 rounded-lg transition-all"
+                        >
+                          {t.access}
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => handleProductClick(userProduct.product.slug)}
+                          className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all border border-white/10"
+                          title={language === 'es' ? 'Abrir producto' : language === 'en' ? 'Open product' : 'Abrir produto'}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setConnectProduct(userProduct)}
+                        className="w-full flex items-center justify-center gap-1.5 border border-[#0058E7] text-[#0058E7] hover:bg-[#0058E7] hover:text-white text-sm font-medium py-2 rounded-lg transition-all"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        {t.connect}
+                      </button>
+                    )}
                   </div>
                 );
               })}
@@ -761,22 +759,32 @@ export default function DashboardNew() {
                   href={product.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/20 p-4 transition-all duration-300 animate-reveal-scale visible"
+                  className="group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 p-5 transition-all duration-300 animate-reveal-scale visible hover:bg-white/[0.07]"
                   style={{ animationDelay: `${(products.length + index + 5) * 0.1}s` }}
                 >
-                  {/* Gradient overlay on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                  {/* Gradient accent on top */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${product.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
 
-                  <div className="relative">
-                    <img
-                      src={product.imagotipo}
-                      alt={product.name}
-                      className="h-5 mb-3 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
-                    />
-                    <p className="text-white/40 text-sm mb-3 line-clamp-2 group-hover:text-white/60 transition-colors">
-                      {product.description}
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-[#0058E7] text-sm font-medium group-hover:gap-2 transition-all">
+                  {/* Logo Container */}
+                  <div className="flex justify-center mb-4 pt-2">
+                    <div className="w-20 h-20 rounded-2xl bg-white p-3 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+                      <img
+                        src={product.imagotipo}
+                        alt={product.name}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Product Name */}
+                  <h3 className="text-white font-semibold text-center mb-1">{product.name}</h3>
+                  <p className="text-white/40 text-sm text-center mb-4 line-clamp-2 group-hover:text-white/60 transition-colors">
+                    {product.description}
+                  </p>
+
+                  {/* Visit Button */}
+                  <div className="flex justify-center">
+                    <span className="inline-flex items-center gap-1.5 text-[#0058E7] text-sm font-medium group-hover:gap-2 transition-all">
                       {t.visitSite}
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

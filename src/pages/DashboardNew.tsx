@@ -289,14 +289,25 @@ export default function DashboardNew() {
     vsLastMonth: language === 'es' ? 'vs mes anterior' : language === 'en' ? 'vs last month' : 'vs mês anterior',
     // Activity
     liveActivity: language === 'es' ? 'Actividad en Vivo' : language === 'en' ? 'Live Activity' : 'Atividade ao Vivo',
-    // AI Insight
-    aiInsight: language === 'es' ? 'Insight IA' : language === 'en' ? 'AI Insight' : 'Insight IA',
-    insightMessage: language === 'es'
-      ? 'Basado en tus métricas, el mejor momento para publicar es entre 10:00 y 12:00. Tu engagement podría aumentar un 34%.'
-      : language === 'en'
-        ? 'Based on your metrics, the best time to post is between 10:00 and 12:00. Your engagement could increase by 34%.'
-        : 'Com base nas suas métricas, o melhor horário para postar é entre 10:00 e 12:00. Seu engajamento pode aumentar 34%.',
-    askMore: language === 'es' ? 'Preguntar más' : language === 'en' ? 'Ask more' : 'Perguntar mais',
+    // AI Insights
+    aiInsight: language === 'es' ? 'Insights IA' : language === 'en' ? 'AI Insights' : 'Insights IA',
+    aiInsights: language === 'es' ? [
+      { icon: '📈', text: 'Tu engagement aumentó 34% esta semana. El mejor horario para publicar es 10:00-12:00.', type: 'success' },
+      { icon: '🎯', text: 'Tikket: 3 tickets llevan más de 24h sin respuesta. Prioriza resolverlos.', type: 'warning' },
+      { icon: '💡', text: 'Advocates: Tus embajadores más activos generan 5x más alcance. Considera premiarlos.', type: 'tip' },
+      { icon: '🔥', text: 'Quantico detectó un pico inusual de tráfico ayer a las 15:00.', type: 'info' },
+    ] : language === 'en' ? [
+      { icon: '📈', text: 'Your engagement increased 34% this week. Best posting time is 10:00-12:00.', type: 'success' },
+      { icon: '🎯', text: 'Tikket: 3 tickets have been open for over 24h. Prioritize resolving them.', type: 'warning' },
+      { icon: '💡', text: 'Advocates: Your most active ambassadors generate 5x more reach. Consider rewarding them.', type: 'tip' },
+      { icon: '🔥', text: 'Quantico detected an unusual traffic spike yesterday at 15:00.', type: 'info' },
+    ] : [
+      { icon: '📈', text: 'Seu engajamento aumentou 34% esta semana. Melhor horário para postar: 10:00-12:00.', type: 'success' },
+      { icon: '🎯', text: 'Tikket: 3 tickets estão abertos há mais de 24h. Priorize resolvê-los.', type: 'warning' },
+      { icon: '💡', text: 'Advocates: Seus embaixadores mais ativos geram 5x mais alcance. Considere premiá-los.', type: 'tip' },
+      { icon: '🔥', text: 'Quantico detectou um pico incomum de tráfego ontem às 15:00.', type: 'info' },
+    ],
+    poweredBy: language === 'es' ? 'Powered by Magnetic AI' : language === 'en' ? 'Powered by Magnetic AI' : 'Powered by Magnetic AI',
   };
 
   // Navigation tabs
@@ -601,12 +612,12 @@ export default function DashboardNew() {
             </div>
           </div>
 
-          {/* AI Insight Card */}
-          <div className={`bg-gradient-to-br from-[#0058E7]/20 to-[#ae4a79]/20 backdrop-blur-sm border border-[#0058E7]/30 rounded-2xl p-6 transition-all duration-500 ${
+          {/* AI Insights Card */}
+          <div className={`bg-gradient-to-br from-[#0058E7]/10 to-[#ae4a79]/10 backdrop-blur-sm border border-[#0058E7]/20 rounded-2xl p-5 transition-all duration-500 ${
             showInsight ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#ae4a79] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#ae4a79] flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
@@ -614,19 +625,28 @@ export default function DashboardNew() {
               <h3 className="text-lg font-semibold text-white">{t.aiInsight}</h3>
             </div>
 
-            <p className="text-white/70 text-sm leading-relaxed mb-5">
-              {t.insightMessage}
-            </p>
+            <div className="space-y-3">
+              {t.aiInsights.map((insight, index) => (
+                <div
+                  key={index}
+                  className={`flex items-start gap-3 p-3 rounded-xl transition-all ${
+                    insight.type === 'success' ? 'bg-[#3ACE76]/10 border border-[#3ACE76]/20' :
+                    insight.type === 'warning' ? 'bg-[#FF962C]/10 border border-[#FF962C]/20' :
+                    insight.type === 'tip' ? 'bg-[#0058E7]/10 border border-[#0058E7]/20' :
+                    'bg-white/5 border border-white/10'
+                  }`}
+                  style={{ animationDelay: `${(index + 1) * 0.15}s` }}
+                >
+                  <span className="text-lg flex-shrink-0">{insight.icon}</span>
+                  <p className="text-white/70 text-sm leading-relaxed">{insight.text}</p>
+                </div>
+              ))}
+            </div>
 
-            <button
-              onClick={() => setShowChat(true)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white rounded-xl transition-all border border-white/10"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {t.askMore}
-            </button>
+            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#0058E7] animate-pulse" />
+              <span className="text-white/30 text-xs">{t.poweredBy}</span>
+            </div>
           </div>
         </div>
 

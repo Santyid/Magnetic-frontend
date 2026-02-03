@@ -308,12 +308,33 @@ export default function DashboardNew() {
       { icon: '🔥', text: 'Quantico detectou um pico incomum de tráfego ontem às 15:00.', type: 'info' },
     ],
     poweredBy: language === 'es' ? 'Powered by Magnetic AI' : language === 'en' ? 'Powered by Magnetic AI' : 'Powered by Magnetic AI',
+    // Reports Section
+    reportsTitle: language === 'es' ? 'Reportes Unificados' : language === 'en' ? 'Unified Reports' : 'Relatórios Unificados',
+    reportsSubtitle: language === 'es' ? 'Análisis consolidado de todos tus productos' : language === 'en' ? 'Consolidated analysis of all your products' : 'Análise consolidada de todos os seus produtos',
+    executiveSummary: language === 'es' ? 'Resumen Ejecutivo' : language === 'en' ? 'Executive Summary' : 'Resumo Executivo',
+    period: language === 'es' ? 'Últimos 30 días' : language === 'en' ? 'Last 30 days' : 'Últimos 30 dias',
+    totalValue: language === 'es' ? 'Valor Total Generado' : language === 'en' ? 'Total Value Generated' : 'Valor Total Gerado',
+    performanceByProduct: language === 'es' ? 'Rendimiento por Producto' : language === 'en' ? 'Performance by Product' : 'Desempenho por Produto',
+    weeklyTrend: language === 'es' ? 'Tendencia Semanal' : language === 'en' ? 'Weekly Trend' : 'Tendência Semanal',
+    topPerformers: language === 'es' ? 'Top Performers' : language === 'en' ? 'Top Performers' : 'Top Performers',
+    exportPDF: language === 'es' ? 'Exportar PDF' : language === 'en' ? 'Export PDF' : 'Exportar PDF',
+    exportExcel: language === 'es' ? 'Exportar Excel' : language === 'en' ? 'Export Excel' : 'Exportar Excel',
+    scheduleReport: language === 'es' ? 'Programar Reporte' : language === 'en' ? 'Schedule Report' : 'Programar Relatório',
+    socialReach: language === 'es' ? 'Alcance Social' : language === 'en' ? 'Social Reach' : 'Alcance Social',
+    ticketsSolved: language === 'es' ? 'Tickets Resueltos' : language === 'en' ? 'Tickets Solved' : 'Tickets Resolvidos',
+    advocatesActive: language === 'es' ? 'Advocates Activos' : language === 'en' ? 'Active Advocates' : 'Advocates Ativos',
+    conversions: language === 'es' ? 'Conversiones' : language === 'en' ? 'Conversions' : 'Conversões',
+    growth: language === 'es' ? 'Crecimiento' : language === 'en' ? 'Growth' : 'Crescimento',
+    avgResponseTime: language === 'es' ? 'Tiempo Promedio de Respuesta' : language === 'en' ? 'Avg Response Time' : 'Tempo Médio de Resposta',
+    satisfaction: language === 'es' ? 'Satisfacción' : language === 'en' ? 'Satisfaction' : 'Satisfação',
+    contentShared: language === 'es' ? 'Contenido Compartido' : language === 'en' ? 'Content Shared' : 'Conteúdo Compartilhado',
+    roi: 'ROI',
   };
 
   // Navigation tabs
   const tabs = [
     { id: 'dashboard', label: t.dashboard, comingSoon: false },
-    { id: 'reports', label: t.reports, comingSoon: true },
+    { id: 'reports', label: t.reports, comingSoon: false },
     { id: 'release-notes', label: t.releaseNotes, comingSoon: true },
   ];
 
@@ -524,6 +545,9 @@ export default function DashboardNew() {
 
       {/* Main Content */}
       <main className="relative z-10 pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Dashboard Tab Content */}
+        {activeTab === 'dashboard' && (
+          <>
         {/* Welcome Section with Time-based Greeting */}
         <div className="mb-8 animate-hero-fade-in">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-1">
@@ -815,6 +839,374 @@ export default function DashboardNew() {
               ))}
             </div>
           </section>
+        )}
+          </>
+        )}
+
+        {/* Reports Tab Content */}
+        {activeTab === 'reports' && (
+          <div className="animate-hero-fade-in">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-1">{t.reportsTitle}</h1>
+                <p className="text-white/40 text-lg">{t.reportsSubtitle}</p>
+              </div>
+              <div className="flex items-center gap-3 mt-4 md:mt-0">
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-all border border-white/10">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  {t.exportPDF}
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-all border border-white/10">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  {t.exportExcel}
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0058E7] to-[#0045B4] hover:opacity-90 text-white rounded-xl transition-all">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {t.scheduleReport}
+                </button>
+              </div>
+            </div>
+
+            {/* Executive Summary Card */}
+            <div className="bg-gradient-to-r from-[#0058E7]/20 to-[#ae4a79]/20 backdrop-blur-sm border border-[#0058E7]/30 rounded-2xl p-6 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#ae4a79] flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-white">{t.executiveSummary}</h2>
+                    <p className="text-white/40 text-sm">{t.period}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-white/40 text-sm">{t.totalValue}</p>
+                  <p className="text-3xl font-bold text-white">$<span className="gradient-text">847,293</span></p>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#0058E7]/20 flex items-center justify-center">
+                      <img src={socialgestIsotipo} alt="" className="w-5 h-5" />
+                    </div>
+                    <span className="text-white/60 text-sm">{t.socialReach}</span>
+                  </div>
+                  <p className="text-2xl font-bold text-white">2.4M</p>
+                  <p className="text-[#3ACE76] text-sm flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    +18.5%
+                  </p>
+                </div>
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#3ACE76]/20 flex items-center justify-center">
+                      <img src={tikketIsotipo} alt="" className="w-5 h-5" />
+                    </div>
+                    <span className="text-white/60 text-sm">{t.ticketsSolved}</span>
+                  </div>
+                  <p className="text-2xl font-bold text-white">1,847</p>
+                  <p className="text-[#3ACE76] text-sm flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    +12.3%
+                  </p>
+                </div>
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#ae4a79]/20 flex items-center justify-center">
+                      <img src={advocatesIsotipo} alt="" className="w-5 h-5" />
+                    </div>
+                    <span className="text-white/60 text-sm">{t.advocatesActive}</span>
+                  </div>
+                  <p className="text-2xl font-bold text-white">342</p>
+                  <p className="text-[#3ACE76] text-sm flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    +27.8%
+                  </p>
+                </div>
+                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#FF962C]/20 flex items-center justify-center">
+                      <img src={quanticoIsotipo} alt="" className="w-5 h-5" />
+                    </div>
+                    <span className="text-white/60 text-sm">{t.conversions}</span>
+                  </div>
+                  <p className="text-2xl font-bold text-white">5,234</p>
+                  <p className="text-[#3ACE76] text-sm flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    +34.2%
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Charts Section */}
+            <div className="grid lg:grid-cols-2 gap-6 mb-8">
+              {/* Weekly Trend Chart */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-6">{t.weeklyTrend}</h3>
+                {/* SVG Bar Chart */}
+                <div className="h-64 flex items-end justify-between gap-2 px-4">
+                  {[
+                    { day: 'Lun', value: 65, prev: 55 },
+                    { day: 'Mar', value: 78, prev: 62 },
+                    { day: 'Mié', value: 92, prev: 70 },
+                    { day: 'Jue', value: 85, prev: 75 },
+                    { day: 'Vie', value: 100, prev: 82 },
+                    { day: 'Sáb', value: 72, prev: 58 },
+                    { day: 'Dom', value: 58, prev: 45 },
+                  ].map((item, index) => (
+                    <div key={item.day} className="flex-1 flex flex-col items-center gap-2">
+                      <div className="w-full flex gap-1 h-48 items-end justify-center">
+                        <div
+                          className="w-3 bg-white/20 rounded-t-sm transition-all hover:bg-white/30"
+                          style={{ height: `${item.prev}%` }}
+                          title={`Semana anterior: ${item.prev}%`}
+                        />
+                        <div
+                          className="w-3 bg-gradient-to-t from-[#0058E7] to-[#4d94ff] rounded-t-sm transition-all hover:opacity-80"
+                          style={{ height: `${item.value}%`, animationDelay: `${index * 0.1}s` }}
+                          title={`Esta semana: ${item.value}%`}
+                        />
+                      </div>
+                      <span className="text-white/40 text-xs">{item.day}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-white/10">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-sm bg-white/20" />
+                    <span className="text-white/40 text-sm">Semana anterior</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-sm bg-gradient-to-t from-[#0058E7] to-[#4d94ff]" />
+                    <span className="text-white/40 text-sm">Esta semana</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Performance by Product */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-6">{t.performanceByProduct}</h3>
+                <div className="space-y-5">
+                  {/* SocialGest */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-white p-1.5">
+                          <img src={socialgestIsotipo} alt="SocialGest" className="w-full h-full object-contain" />
+                        </div>
+                        <span className="text-white font-medium">SocialGest</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-white font-semibold">89%</span>
+                        <span className="text-[#3ACE76] text-sm ml-2">+12%</span>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#0058E7] to-[#4d94ff] rounded-full transition-all" style={{ width: '89%' }} />
+                    </div>
+                  </div>
+                  {/* Tikket */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-white p-1.5">
+                          <img src={tikketIsotipo} alt="Tikket" className="w-full h-full object-contain" />
+                        </div>
+                        <span className="text-white font-medium">Tikket</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-white font-semibold">94%</span>
+                        <span className="text-[#3ACE76] text-sm ml-2">+8%</span>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#3ACE76] to-[#6ee7a0] rounded-full transition-all" style={{ width: '94%' }} />
+                    </div>
+                  </div>
+                  {/* AdvocatesPro */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-white p-1.5">
+                          <img src={advocatesIsotipo} alt="AdvocatesPro" className="w-full h-full object-contain" />
+                        </div>
+                        <span className="text-white font-medium">AdvocatesPro</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-white font-semibold">76%</span>
+                        <span className="text-[#3ACE76] text-sm ml-2">+23%</span>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#ae4a79] to-[#d06a94] rounded-full transition-all" style={{ width: '76%' }} />
+                    </div>
+                  </div>
+                  {/* Quantico */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-white p-1.5">
+                          <img src={quanticoIsotipo} alt="Quantico" className="w-full h-full object-contain" />
+                        </div>
+                        <span className="text-white font-medium">Quantico</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-white font-semibold">82%</span>
+                        <span className="text-[#3ACE76] text-sm ml-2">+15%</span>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#FF962C] to-[#ffb366] rounded-full transition-all" style={{ width: '82%' }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Performers & Detailed Metrics */}
+            <div className="grid lg:grid-cols-3 gap-6">
+              {/* Top Performers */}
+              <div className="lg:col-span-1 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">{t.topPerformers}</h3>
+                <div className="space-y-4">
+                  {[
+                    { name: 'María García', role: 'Top Advocate', value: '2.3K', icon: '🏆', gradient: 'from-[#FFD700] to-[#FFA500]' },
+                    { name: 'Carlos López', role: 'Social Manager', value: '1.8K', icon: '🥈', gradient: 'from-[#C0C0C0] to-[#A9A9A9]' },
+                    { name: 'Ana Martínez', role: 'Support Lead', value: '1.5K', icon: '🥉', gradient: 'from-[#CD7F32] to-[#B87333]' },
+                    { name: 'Pedro Sánchez', role: 'Content Creator', value: '1.2K', icon: '⭐', gradient: 'from-[#0058E7] to-[#4d94ff]' },
+                    { name: 'Laura Torres', role: 'Data Analyst', value: '980', icon: '📊', gradient: 'from-[#ae4a79] to-[#d06a94]' },
+                  ].map((performer) => (
+                    <div key={performer.name} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all">
+                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${performer.gradient} flex items-center justify-center text-lg`}>
+                        {performer.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-medium truncate">{performer.name}</p>
+                        <p className="text-white/40 text-sm">{performer.role}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-white font-semibold">{performer.value}</p>
+                        <p className="text-white/40 text-xs">puntos</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Detailed Metrics Table */}
+              <div className="lg:col-span-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">Métricas Detalladas por Producto</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="text-white/40 text-sm border-b border-white/10">
+                        <th className="text-left py-3 px-2">Producto</th>
+                        <th className="text-right py-3 px-2">{t.growth}</th>
+                        <th className="text-right py-3 px-2">{t.roi}</th>
+                        <th className="text-right py-3 px-2">{t.satisfaction}</th>
+                        <th className="text-right py-3 px-2">Tendencia</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-white">
+                      <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                        <td className="py-4 px-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded bg-white p-1">
+                              <img src={socialgestIsotipo} alt="" className="w-full h-full object-contain" />
+                            </div>
+                            SocialGest
+                          </div>
+                        </td>
+                        <td className="text-right py-4 px-2 text-[#3ACE76]">+24.5%</td>
+                        <td className="text-right py-4 px-2">3.2x</td>
+                        <td className="text-right py-4 px-2">4.8/5</td>
+                        <td className="text-right py-4 px-2">
+                          <svg className="w-16 h-8 inline-block" viewBox="0 0 64 32">
+                            <polyline fill="none" stroke="#3ACE76" strokeWidth="2" points="0,28 10,22 20,24 30,16 40,18 50,10 64,4" />
+                          </svg>
+                        </td>
+                      </tr>
+                      <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                        <td className="py-4 px-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded bg-white p-1">
+                              <img src={tikketIsotipo} alt="" className="w-full h-full object-contain" />
+                            </div>
+                            Tikket
+                          </div>
+                        </td>
+                        <td className="text-right py-4 px-2 text-[#3ACE76]">+18.2%</td>
+                        <td className="text-right py-4 px-2">2.8x</td>
+                        <td className="text-right py-4 px-2">4.9/5</td>
+                        <td className="text-right py-4 px-2">
+                          <svg className="w-16 h-8 inline-block" viewBox="0 0 64 32">
+                            <polyline fill="none" stroke="#3ACE76" strokeWidth="2" points="0,24 15,20 25,22 35,14 50,12 64,6" />
+                          </svg>
+                        </td>
+                      </tr>
+                      <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                        <td className="py-4 px-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded bg-white p-1">
+                              <img src={advocatesIsotipo} alt="" className="w-full h-full object-contain" />
+                            </div>
+                            AdvocatesPro
+                          </div>
+                        </td>
+                        <td className="text-right py-4 px-2 text-[#3ACE76]">+42.8%</td>
+                        <td className="text-right py-4 px-2">5.1x</td>
+                        <td className="text-right py-4 px-2">4.7/5</td>
+                        <td className="text-right py-4 px-2">
+                          <svg className="w-16 h-8 inline-block" viewBox="0 0 64 32">
+                            <polyline fill="none" stroke="#3ACE76" strokeWidth="2" points="0,30 12,26 24,20 36,12 48,8 64,2" />
+                          </svg>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-white/5 transition-colors">
+                        <td className="py-4 px-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded bg-white p-1">
+                              <img src={quanticoIsotipo} alt="" className="w-full h-full object-contain" />
+                            </div>
+                            Quantico
+                          </div>
+                        </td>
+                        <td className="text-right py-4 px-2 text-[#3ACE76]">+31.4%</td>
+                        <td className="text-right py-4 px-2">4.3x</td>
+                        <td className="text-right py-4 px-2">4.6/5</td>
+                        <td className="text-right py-4 px-2">
+                          <svg className="w-16 h-8 inline-block" viewBox="0 0 64 32">
+                            <polyline fill="none" stroke="#3ACE76" strokeWidth="2" points="0,26 14,24 28,18 42,14 56,8 64,4" />
+                          </svg>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </main>
 

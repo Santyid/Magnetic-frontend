@@ -27,6 +27,7 @@ export default function DashboardNew() {
   const { user, logout } = useAuthStore();
 
   const [language, setLanguage] = useState<LandingLanguage>(() => detectLandingLanguage());
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const [products, setProducts] = useState<UserProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -118,6 +119,7 @@ export default function DashboardNew() {
 
   const userProductNames = products.map((p) => p.product.name);
   const missingProducts = allProducts.filter((p) => !userProductNames.includes(p.backendName));
+  const connectedProducts = products.filter((p) => p.productEmail && p.enableMetrics);
 
   const languages: { code: LandingLanguage; flag: string; name: string }[] = [
     { code: 'es', flag: '🇪🇸', name: 'ES' },
@@ -125,25 +127,50 @@ export default function DashboardNew() {
     { code: 'pt', flag: '🇧🇷', name: 'PT' },
   ];
 
-  const welcomeText = language === 'es' ? 'Bienvenido' : language === 'en' ? 'Welcome' : 'Bem-vindo';
-  const myProductsText = language === 'es' ? 'Mis Productos' : language === 'en' ? 'My Products' : 'Meus Produtos';
-  const exploreText = language === 'es' ? 'Explorar Más Productos' : language === 'en' ? 'Explore More Products' : 'Explorar Mais Produtos';
-  const accessText = language === 'es' ? 'Acceder' : language === 'en' ? 'Access' : 'Acessar';
-  const connectText = language === 'es' ? 'Conectar' : language === 'en' ? 'Connect' : 'Conectar';
-  const connectedText = language === 'es' ? 'Conectado' : language === 'en' ? 'Connected' : 'Conectado';
-  const notConnectedText = language === 'es' ? 'No conectado' : language === 'en' ? 'Not connected' : 'Não conectado';
-  const visitText = language === 'es' ? 'Visitar sitio' : language === 'en' ? 'Visit site' : 'Visitar site';
-  const loadingText = language === 'es' ? 'Cargando...' : language === 'en' ? 'Loading...' : 'Carregando...';
-  const profileText = language === 'es' ? 'Mi Perfil' : language === 'en' ? 'My Profile' : 'Meu Perfil';
-  const securityText = language === 'es' ? 'Seguridad' : language === 'en' ? 'Security' : 'Segurança';
-  const logoutText = language === 'es' ? 'Cerrar Sesión' : language === 'en' ? 'Logout' : 'Sair';
+  // Translations
+  const t = {
+    welcome: language === 'es' ? 'Bienvenido' : language === 'en' ? 'Welcome' : 'Bem-vindo',
+    subtitle: language === 'es' ? 'Gestiona todos tus productos desde un solo lugar' : language === 'en' ? 'Manage all your products from one place' : 'Gerencie todos os seus produtos em um só lugar',
+    myProducts: language === 'es' ? 'Mis Productos' : language === 'en' ? 'My Products' : 'Meus Produtos',
+    explore: language === 'es' ? 'Explorar Más Productos' : language === 'en' ? 'Explore More Products' : 'Explorar Mais Produtos',
+    access: language === 'es' ? 'Acceder' : language === 'en' ? 'Access' : 'Acessar',
+    connect: language === 'es' ? 'Conectar' : language === 'en' ? 'Connect' : 'Conectar',
+    connected: language === 'es' ? 'Conectado' : language === 'en' ? 'Connected' : 'Conectado',
+    notConnected: language === 'es' ? 'No conectado' : language === 'en' ? 'Not connected' : 'Não conectado',
+    visitSite: language === 'es' ? 'Visitar sitio' : language === 'en' ? 'Visit site' : 'Visitar site',
+    loading: language === 'es' ? 'Cargando...' : language === 'en' ? 'Loading...' : 'Carregando...',
+    profile: language === 'es' ? 'Mi Perfil' : language === 'en' ? 'My Profile' : 'Meu Perfil',
+    security: language === 'es' ? 'Seguridad' : language === 'en' ? 'Security' : 'Segurança',
+    logout: language === 'es' ? 'Cerrar Sesión' : language === 'en' ? 'Logout' : 'Sair',
+    dashboard: 'Dashboard',
+    reports: language === 'es' ? 'Reportes' : language === 'en' ? 'Reports' : 'Relatórios',
+    releaseNotes: 'Release Notes',
+    comingSoon: language === 'es' ? 'Próximamente' : language === 'en' ? 'Coming Soon' : 'Em breve',
+    totalProducts: language === 'es' ? 'Total Productos' : language === 'en' ? 'Total Products' : 'Total Produtos',
+    connectedProducts: language === 'es' ? 'Conectados' : language === 'en' ? 'Connected' : 'Conectados',
+    pendingConnect: language === 'es' ? 'Por conectar' : language === 'en' ? 'Pending' : 'Pendentes',
+    quickActions: language === 'es' ? 'Acciones Rápidas' : language === 'en' ? 'Quick Actions' : 'Ações Rápidas',
+    askAI: language === 'es' ? 'Preguntar a la IA' : language === 'en' ? 'Ask AI' : 'Perguntar à IA',
+    viewFAQ: language === 'es' ? 'Ver FAQ' : language === 'en' ? 'View FAQ' : 'Ver FAQ',
+    changePassword: language === 'es' ? 'Cambiar contraseña' : language === 'en' ? 'Change password' : 'Alterar senha',
+    recentActivity: language === 'es' ? 'Actividad Reciente' : language === 'en' ? 'Recent Activity' : 'Atividade Recente',
+    noActivity: language === 'es' ? 'No hay actividad reciente' : language === 'en' ? 'No recent activity' : 'Sem atividade recente',
+    lastAccess: language === 'es' ? 'Último acceso' : language === 'en' ? 'Last access' : 'Último acesso',
+  };
+
+  // Navigation tabs
+  const tabs = [
+    { id: 'dashboard', label: t.dashboard, comingSoon: false },
+    { id: 'reports', label: t.reports, comingSoon: true },
+    { id: 'release-notes', label: t.releaseNotes, comingSoon: true },
+  ];
 
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#0058E7]/20 border-t-[#0058E7] rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-white/60">{loadingText}</p>
+          <p className="text-white/60">{t.loading}</p>
         </div>
       </div>
     );
@@ -189,17 +216,42 @@ export default function DashboardNew() {
               </span>
             </Link>
 
+            {/* Center: Navigation Tabs */}
+            <nav className="hidden md:flex items-center gap-1">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => !tab.comingSoon && setActiveTab(tab.id)}
+                  className={`relative flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                    tab.comingSoon
+                      ? 'text-white/30 cursor-not-allowed'
+                      : activeTab === tab.id
+                        ? 'text-white bg-white/10'
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {tab.label}
+                  {tab.comingSoon && (
+                    <span className="text-[10px] font-medium text-white/40 bg-white/10 px-2 py-0.5 rounded-full">
+                      {t.comingSoon}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </nav>
+
             {/* Actions */}
-            <div className="flex items-center gap-3">
-              {/* AI Button */}
+            <div className="flex items-center gap-2">
+              {/* AI Button - More Prominent */}
               <button
                 onClick={() => setShowChat(true)}
-                className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all border border-white/10"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-[#0058E7] to-[#ae4a79] hover:opacity-90 text-white transition-all"
                 title="AI Assistant"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
+                <span className="hidden sm:inline text-sm font-medium">AI</span>
               </button>
 
               {/* FAQ Button */}
@@ -261,7 +313,7 @@ export default function DashboardNew() {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        {profileText}
+                        {t.profile}
                       </button>
                       <button
                         onClick={() => { navigate('/change-password'); setShowUserMenu(false); }}
@@ -270,18 +322,18 @@ export default function DashboardNew() {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                         </svg>
-                        {securityText}
+                        {t.security}
                       </button>
                     </div>
                     <div className="border-t border-white/10 py-2">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-danger-500 hover:bg-danger-500/10 transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-[#EE4A79] hover:bg-[#EE4A79]/10 transition-colors"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        {logoutText}
+                        {t.logout}
                       </button>
                     </div>
                   </div>
@@ -295,35 +347,115 @@ export default function DashboardNew() {
       {/* Main Content */}
       <main className="relative z-10 pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Welcome Section */}
-        <div className="mb-12 animate-hero-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            {welcomeText}, <span className="gradient-text">{user?.firstName}</span>
+        <div className="mb-8 animate-hero-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            {t.welcome}, <span className="gradient-text">{user?.firstName}</span>
           </h1>
           <p className="text-white/50 text-lg">
-            {language === 'es' ? 'Gestiona todos tus productos desde un solo lugar' :
-             language === 'en' ? 'Manage all your products from one place' :
-             'Gerencie todos os seus produtos em um só lugar'}
+            {t.subtitle}
           </p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          {/* Total Products */}
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible" style={{ animationDelay: '0.1s' }}>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#4d94ff] flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-white/50 text-sm">{t.totalProducts}</p>
+                <p className="text-3xl font-bold text-white">{products.length}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Connected Products */}
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible" style={{ animationDelay: '0.2s' }}>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#3ACE76] to-[#6ee7a0] flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-white/50 text-sm">{t.connectedProducts}</p>
+                <p className="text-3xl font-bold text-white">{connectedProducts.length}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Pending Connection */}
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 animate-reveal-up visible" style={{ animationDelay: '0.3s' }}>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF962C] to-[#ffb366] flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-white/50 text-sm">{t.pendingConnect}</p>
+                <p className="text-3xl font-bold text-white">{products.length - connectedProducts.length}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8 animate-reveal-up visible" style={{ animationDelay: '0.4s' }}>
+          <h3 className="text-lg font-semibold text-white mb-4">{t.quickActions}</h3>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setShowChat(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0058E7] to-[#ae4a79] hover:opacity-90 text-white rounded-xl transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              {t.askAI}
+            </button>
+            <button
+              onClick={() => setShowFAQ(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {t.viewFAQ}
+            </button>
+            <button
+              onClick={() => navigate('/change-password')}
+              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+              </svg>
+              {t.changePassword}
+            </button>
+          </div>
         </div>
 
         {/* My Products Section */}
         {products.length > 0 && (
-          <section className="mb-16">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0058E7] to-[#4d94ff] flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0058E7] to-[#4d94ff] flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
-                {myProductsText}
+                {t.myProducts}
               </h2>
-              <span className="px-4 py-1.5 bg-white/5 text-white/70 rounded-full text-sm font-medium border border-white/10">
+              <span className="px-3 py-1 bg-white/5 text-white/70 rounded-full text-sm font-medium border border-white/10">
                 {products.length} {products.length === 1 ? 'producto' : 'productos'}
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {products.map((userProduct, index) => {
                 const productInfo = allProducts.find((p) => p.backendName === userProduct.product.name);
                 const isConnected = userProduct.productEmail && userProduct.enableMetrics;
@@ -332,7 +464,7 @@ export default function DashboardNew() {
                   <div
                     key={userProduct.id}
                     className={`group relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 animate-reveal-up visible`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    style={{ animationDelay: `${(index + 5) * 0.1}s` }}
                   >
                     {/* Background Image */}
                     <div className="absolute inset-0">
@@ -345,30 +477,30 @@ export default function DashboardNew() {
                     </div>
 
                     {/* Content */}
-                    <div className="relative p-6">
+                    <div className="relative p-5">
                       {/* Connection Status */}
-                      <div className={`absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                      <div className={`absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
                         isConnected
                           ? 'bg-[#3ACE76]/20 text-[#3ACE76]'
                           : 'bg-white/10 text-white/50'
                       }`}>
                         <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-[#3ACE76] animate-pulse' : 'bg-white/30'}`} />
-                        {isConnected ? connectedText : notConnectedText}
+                        {isConnected ? t.connected : t.notConnected}
                       </div>
 
                       {/* Product Info */}
-                      <div className="pt-16">
+                      <div className="pt-12">
                         <img
                           src={productInfo?.imagotipo}
                           alt={userProduct.product.name}
-                          className="h-8 mb-4 filter brightness-0 invert"
+                          className="h-7 mb-3 filter brightness-0 invert"
                         />
-                        <p className="text-white/60 text-sm mb-6 line-clamp-2">
+                        <p className="text-white/60 text-sm mb-5 line-clamp-2">
                           {productInfo?.description}
                         </p>
 
                         {userProduct.customDomain && (
-                          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#ae4a79]/20 text-[#ae4a79] text-xs font-medium rounded-full mb-4">
+                          <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#ae4a79]/20 text-[#ae4a79] text-xs font-medium rounded-full mb-4">
                             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                               <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
@@ -379,19 +511,19 @@ export default function DashboardNew() {
 
                         {/* Actions */}
                         {isConnected ? (
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
                             <button
                               onClick={() => navigate(`/dashboard/metrics/${userProduct.product.slug}`)}
-                              className="flex-1 flex items-center justify-center gap-2 bg-[#0058E7] hover:bg-[#0045B4] text-white font-medium py-3 rounded-xl transition-all hover:shadow-[0_0_20px_rgba(0,88,231,0.3)]"
+                              className="flex-1 flex items-center justify-center gap-2 bg-[#0058E7] hover:bg-[#0045B4] text-white font-medium py-2.5 rounded-xl transition-all hover:shadow-[0_0_20px_rgba(0,88,231,0.3)]"
                             >
-                              {accessText}
+                              {t.access}
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                               </svg>
                             </button>
                             <button
                               onClick={() => handleProductClick(userProduct.product.slug)}
-                              className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all border border-white/10"
+                              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all border border-white/10"
                               title={language === 'es' ? 'Abrir producto' : language === 'en' ? 'Open product' : 'Abrir produto'}
                             >
                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -402,12 +534,12 @@ export default function DashboardNew() {
                         ) : (
                           <button
                             onClick={() => setConnectProduct(userProduct)}
-                            className="w-full flex items-center justify-center gap-2 border-2 border-[#0058E7] text-[#0058E7] hover:bg-[#0058E7] hover:text-white font-medium py-3 rounded-xl transition-all"
+                            className="w-full flex items-center justify-center gap-2 border-2 border-[#0058E7] text-[#0058E7] hover:bg-[#0058E7] hover:text-white font-medium py-2.5 rounded-xl transition-all"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
-                            {connectText}
+                            {t.connect}
                           </button>
                         )}
                       </div>
@@ -422,26 +554,26 @@ export default function DashboardNew() {
         {/* Explore More Products */}
         {missingProducts.length > 0 && (
           <section>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ae4a79] to-[#d06a94] flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ae4a79] to-[#d06a94] flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>
-                {exploreText}
+                {t.explore}
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {missingProducts.map((product, index) => (
                 <a
                   key={product.name}
                   href={product.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/20 p-5 transition-all duration-300 animate-reveal-scale visible`}
-                  style={{ animationDelay: `${(products.length + index) * 0.1}s` }}
+                  className={`group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/20 p-4 transition-all duration-300 animate-reveal-scale visible`}
+                  style={{ animationDelay: `${(products.length + index + 5) * 0.1}s` }}
                 >
                   {/* Gradient overlay on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
@@ -450,13 +582,13 @@ export default function DashboardNew() {
                     <img
                       src={product.imagotipo}
                       alt={product.name}
-                      className="h-6 mb-3 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+                      className="h-5 mb-3 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
                     />
-                    <p className="text-white/40 text-sm mb-4 line-clamp-2 group-hover:text-white/60 transition-colors">
+                    <p className="text-white/40 text-sm mb-3 line-clamp-2 group-hover:text-white/60 transition-colors">
                       {product.description}
                     </p>
                     <span className="inline-flex items-center gap-1 text-[#0058E7] text-sm font-medium group-hover:gap-2 transition-all">
-                      {visitText}
+                      {t.visitSite}
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>

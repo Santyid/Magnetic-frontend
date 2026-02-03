@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import { landingTranslations } from '../../i18n/landingTranslations';
 
 type LandingLanguage = 'es' | 'en' | 'pt';

@@ -94,13 +94,13 @@ export default function Navbar({ language, onLanguageChange }: NavbarProps) {
             </div>
 
             <Link
-              to="/login"
+              to="/login-new"
               className="text-white/80 hover:text-white transition-colors text-sm font-medium px-4 py-2"
             >
               {t.nav.login}
             </Link>
             <Link
-              to="/register"
+              to="/login-new"
               className="bg-[#0058E7] hover:bg-[#0045B4] text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors"
             >
               {t.nav.register}
@@ -176,14 +176,14 @@ export default function Navbar({ language, onLanguageChange }: NavbarProps) {
 
               <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
                 <Link
-                  to="/login"
+                  to="/login-new"
                   className="text-white/80 hover:text-white transition-colors text-sm font-medium px-2 py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {t.nav.login}
                 </Link>
                 <Link
-                  to="/register"
+                  to="/login-new"
                   className="bg-[#0058E7] hover:bg-[#0045B4] text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors text-center"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

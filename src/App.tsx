@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import DashboardNew from './pages/DashboardNew';
 import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -70,6 +71,14 @@ function App() {
           <Route path="/health" element={<Health />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login-new" element={<LoginNew />} />
+          <Route
+            path="/dashboard-new"
+            element={
+              <ProtectedRoute>
+                <DashboardNew />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route

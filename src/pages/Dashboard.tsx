@@ -30,7 +30,7 @@ import cardSocialgest from '../assets/images/dashboard/card-socialgest.png';
 const productCatalog: Record<string, { imagotipo: string; preview: string; brandColor: string; logoWidth: number; logoHeight: number; connLogoWidth: number; connLogoHeight: number }> = {
   SocialGest: { imagotipo: socialgestImagotipo, preview: cardSocialgest, brandColor: '#F47A37', logoWidth: 137, logoHeight: 26, connLogoWidth: 106, connLogoHeight: 20 },
   Tikket: { imagotipo: tikketImagotipo, preview: cardTikket, brandColor: '#65A610', logoWidth: 100, logoHeight: 26, connLogoWidth: 106, connLogoHeight: 20 },
-  Advocates: { imagotipo: advocatesImagotipo, preview: cardAdvocates, brandColor: '#E84B8A', logoWidth: 137, logoHeight: 26, connLogoWidth: 170, connLogoHeight: 22 },
+  Advocates: { imagotipo: advocatesImagotipo, preview: cardAdvocates, brandColor: '#E84B8A', logoWidth: 215, logoHeight: 26, connLogoWidth: 170, connLogoHeight: 22 },
   Quantico: { imagotipo: quanticoImagotipo, preview: cardQuantico, brandColor: '#9E54E2', logoWidth: 137, logoHeight: 26, connLogoWidth: 106, connLogoHeight: 20 },
 };
 

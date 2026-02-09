@@ -15,7 +15,7 @@ export default function AdminLayout() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/login-new');
   };
 
   const navItems = [
@@ -101,7 +101,7 @@ export default function AdminLayout() {
           <div className="flex items-center gap-3">
             {/* AI Button */}
             <button
-              onClick={() => setShowChat(true)}
+              onClick={() => setShowChat((prev) => !prev)}
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

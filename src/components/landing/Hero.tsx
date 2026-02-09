@@ -79,7 +79,7 @@ export default function Hero({ language }: HeroProps) {
         {/* CTAs */}
         <div className="animate-hero-fade-in animate-hero-delay-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
-            to="/login"
+            to="/login-new"
             className="group relative px-8 py-4 bg-[#0058E7] hover:bg-[#0045B4] text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,88,231,0.4)] flex items-center gap-2"
           >
             {t.hero.ctaLogin}

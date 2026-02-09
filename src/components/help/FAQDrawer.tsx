@@ -7,15 +7,33 @@ interface FAQDrawerProps {
 
 const categoryOrder = ['general', 'products', 'account', 'admin'] as const;
 
+// Icons extracted directly from Figma SVG (Screen/faq.svg) using viewBox offsets
+const categoryIcons: Record<string, React.ReactNode> = {
+  general: (
+    <svg width="27" height="27" viewBox="88 155 31 31" fill="none">
+      <path d="M103.5 175.833V170.5M103.5 165.167H103.513M116.833 170.5C116.833 177.864 110.864 183.833 103.5 183.833C96.136 183.833 90.1665 177.864 90.1665 170.5C90.1665 163.136 96.136 157.167 103.5 157.167C110.864 157.167 116.833 163.136 116.833 170.5Z" stroke="#0061FE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  products: (
+    <svg width="27" height="27" viewBox="88 531 31 31" fill="none">
+      <path d="M103.5 555.833L98.2065 559.007C97.7918 559.256 97.317 559.388 96.8332 559.388C96.3493 559.388 95.8746 559.256 95.4598 559.007L91.4598 556.607C91.0662 556.37 90.7403 556.036 90.5137 555.637C90.2871 555.237 90.1675 554.786 90.1665 554.327V550.007C90.1675 549.547 90.2871 549.096 90.5137 548.697C90.7403 548.297 91.0662 547.963 91.4598 547.727L96.8332 544.5M103.5 555.833V548.5M103.5 555.833L108.793 559.007C109.208 559.256 109.683 559.388 110.167 559.388C110.65 559.388 111.125 559.256 111.54 559.007L115.54 556.607C115.933 556.37 116.259 556.036 116.486 555.637C116.713 555.237 116.832 554.786 116.833 554.327V550.007C116.832 549.547 116.713 549.096 116.486 548.697C116.259 548.297 115.933 547.963 115.54 547.727L110.167 544.5M103.5 548.5L96.8332 544.5M103.5 548.5L96.8332 552.5M103.5 548.5L110.167 544.5M103.5 548.5L110.167 552.5M103.5 548.5V541.167M96.8332 544.5V538.673C96.8342 538.214 96.9538 537.763 97.1804 537.363C97.4069 536.964 97.7328 536.63 98.1265 536.393L102.127 533.993C102.541 533.744 103.016 533.613 103.5 533.613C103.984 533.613 104.458 533.744 104.873 533.993L108.873 536.393C109.267 536.63 109.593 536.964 109.819 537.363C110.046 537.763 110.165 538.214 110.167 538.673V544.5M96.8332 552.5L90.5132 548.7M96.8332 552.5V559.393M110.167 552.5L116.487 548.7M110.167 552.5V559.393M103.5 541.167L97.1798 537.367M103.5 541.167L109.82 537.367" stroke="#0061FE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  account: (
+    <svg width="27" height="27" viewBox="90 892 27 29" fill="none">
+      <path d="M103.5 907.833C107.182 907.833 110.167 904.849 110.167 901.167C110.167 897.485 107.182 894.5 103.5 894.5C99.8183 894.5 96.8335 897.485 96.8335 901.167C96.8335 904.849 99.8183 907.833 103.5 907.833ZM103.5 907.833C106.329 907.833 109.042 908.957 111.043 910.958C113.043 912.958 114.167 915.671 114.167 918.5M103.5 907.833C100.671 907.833 97.9581 908.957 95.9577 910.958C93.9573 912.958 92.8335 915.671 92.8335 918.5" stroke="#0061FE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  admin: (
+    <svg width="27" height="27" viewBox="89 1179 29 31" fill="none">
+      <path d="M100.395 1184.01C100.468 1183.24 100.827 1182.52 101.401 1182C101.976 1181.48 102.724 1181.19 103.501 1181.19C104.277 1181.19 105.025 1181.48 105.6 1182C106.174 1182.52 106.533 1183.24 106.607 1184.01C106.651 1184.51 106.815 1185 107.084 1185.42C107.354 1185.84 107.721 1186.19 108.155 1186.44C108.589 1186.69 109.077 1186.83 109.578 1186.86C110.079 1186.88 110.578 1186.78 111.032 1186.57C111.737 1186.25 112.537 1186.2 113.275 1186.44C114.012 1186.67 114.636 1187.18 115.023 1187.85C115.411 1188.52 115.535 1189.31 115.371 1190.07C115.208 1190.82 114.768 1191.49 114.139 1191.95C113.728 1192.23 113.394 1192.62 113.162 1193.06C112.931 1193.5 112.811 1194 112.811 1194.5C112.811 1195 112.931 1195.49 113.162 1195.94C113.394 1196.38 113.728 1196.77 114.139 1197.05C114.768 1197.5 115.208 1198.17 115.371 1198.93C115.535 1199.69 115.411 1200.48 115.023 1201.15C114.636 1201.82 114.012 1202.32 113.275 1202.56C112.537 1202.8 111.737 1202.75 111.032 1202.43C110.578 1202.22 110.079 1202.12 109.578 1202.14C109.077 1202.16 108.589 1202.31 108.155 1202.56C107.721 1202.81 107.354 1203.16 107.084 1203.58C106.815 1204 106.651 1204.48 106.607 1204.98C106.533 1205.76 106.174 1206.47 105.6 1207C105.025 1207.52 104.277 1207.81 103.501 1207.81C102.724 1207.81 101.976 1207.52 101.401 1207C100.827 1206.47 100.468 1205.76 100.395 1204.98C100.351 1204.48 100.187 1204 99.9171 1203.58C99.6474 1203.16 99.2799 1202.81 98.8456 1202.56C98.4112 1202.31 97.9229 1202.16 97.422 1202.14C96.9211 1202.12 96.4223 1202.22 95.9679 1202.43C95.2624 1202.75 94.463 1202.8 93.7253 1202.56C92.9875 1202.32 92.3641 1201.82 91.9766 1201.15C91.589 1200.48 91.4649 1199.69 91.6284 1198.93C91.7919 1198.17 92.2314 1197.5 92.8613 1197.05C93.2714 1196.77 93.6062 1196.38 93.8374 1195.94C94.0685 1195.49 94.1892 1195 94.1892 1194.5C94.1892 1194 94.0685 1193.5 93.8374 1193.06C93.6062 1192.62 93.2714 1192.23 92.8613 1191.95C92.2323 1191.49 91.7936 1190.82 91.6305 1190.07C91.4673 1189.31 91.5914 1188.52 91.9786 1187.85C92.3657 1187.18 92.9883 1186.68 93.7254 1186.44C94.4624 1186.2 95.2612 1186.25 95.9666 1186.57C96.4209 1186.78 96.9196 1186.88 97.4203 1186.86C97.9211 1186.83 98.4092 1186.69 98.8433 1186.44C99.2774 1186.19 99.6448 1185.84 99.9144 1185.42C100.184 1185 100.348 1184.51 100.392 1184.01M107.5 1194.5C107.5 1196.71 105.709 1198.5 103.5 1198.5C101.291 1198.5 99.4999 1196.71 99.4999 1194.5C99.4999 1192.29 101.291 1190.5 103.5 1190.5C105.709 1190.5 107.5 1192.29 107.5 1194.5Z" stroke="#0061FE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+};
+
 export default function FAQDrawer({ onClose }: FAQDrawerProps) {
   const t = useTranslation();
-  const [search, setSearch] = useState('');
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const filtered = t.faq.items.filter((item) => {
-    const q = search.toLowerCase();
-    return item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q);
-  });
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -24,65 +42,65 @@ export default function FAQDrawer({ onClose }: FAQDrawerProps) {
   return (
     <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
       <div
-        className="w-full max-w-md h-full bg-white shadow-2xl flex flex-col animate-slide-in-right"
+        className="relative w-full max-w-[550px] h-full bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] flex flex-col animate-slide-in-right border-l border-grey-50"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-grey-50 bg-white-700">
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-grey-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h2 className="font-semibold text-grey-500">{t.faq.title}</h2>
+        <div className="flex items-center justify-between px-10 pt-8 pb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-14 h-14 rounded-[50px] bg-white-100 flex items-center justify-center p-3">
+              <svg width="32" height="32" viewBox="100 71 31 31" fill="none">
+                <path d="M111.62 82.5C111.933 81.6089 112.552 80.8575 113.366 80.3789C114.181 79.9003 115.138 79.7253 116.069 79.885C117 80.0447 117.845 80.5287 118.453 81.2514C119.062 81.9741 119.395 82.8887 119.393 83.8334C119.393 86.5 115.393 87.8334 115.393 87.8334M115.5 93.1667H115.513M104.633 81.9934C104.438 81.1167 104.468 80.2052 104.72 79.3432C104.972 78.4812 105.437 77.6966 106.072 77.0623C106.708 76.428 107.494 75.9645 108.356 75.7147C109.219 75.4649 110.13 75.4369 111.006 75.6334C111.489 74.8791 112.153 74.2584 112.938 73.8284C113.724 73.3985 114.604 73.1731 115.5 73.1731C116.395 73.1731 117.276 73.3985 118.061 73.8284C118.846 74.2584 119.511 74.8791 119.993 75.6334C120.871 75.4361 121.784 75.4639 122.648 75.7143C123.512 75.9647 124.298 76.4296 124.934 77.0656C125.57 77.7016 126.035 78.4881 126.285 79.3521C126.536 80.216 126.564 81.1292 126.366 82.0067C127.121 82.489 127.741 83.1534 128.171 83.9386C128.601 84.7239 128.827 85.6048 128.827 86.5C128.827 87.3953 128.601 88.2762 128.171 89.0614C127.741 89.8467 127.121 90.5111 126.366 90.9934C126.563 91.8696 126.535 92.7812 126.285 93.6438C126.035 94.5063 125.572 95.2918 124.937 95.9274C124.303 96.563 123.519 97.0282 122.657 97.2798C121.795 97.5314 120.883 97.5613 120.006 97.3667C119.525 98.1239 118.86 98.7473 118.073 99.1791C117.287 99.611 116.404 99.8375 115.506 99.8375C114.609 99.8375 113.726 99.611 112.94 99.1791C112.153 98.7473 111.488 98.1239 111.006 97.3667C110.13 97.5632 109.219 97.5352 108.356 97.2854C107.494 97.0356 106.708 96.5721 106.072 95.9378C105.437 95.3035 104.972 94.5189 104.72 93.6569C104.468 92.7949 104.438 91.8833 104.633 91.0067C103.873 90.5257 103.247 89.8603 102.813 89.0723C102.379 88.2844 102.152 87.3995 102.152 86.5C102.152 85.6006 102.379 84.7157 102.813 83.9278C103.247 83.1398 103.873 82.4744 104.633 81.9934Z" stroke="#0061FE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <h2 className="text-lg font-semibold text-grey-500">{t.faq.title}</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-grey-50 rounded transition-colors text-grey-300"
+            className="p-1.5 hover:bg-white-100 rounded-lg transition-colors text-grey-500"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M6 18L18 6M6 6l12 12" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
           </button>
         </div>
 
-        {/* Search */}
-        <div className="px-4 py-3 border-b border-grey-50">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => { setSearch(e.target.value); setOpenIndex(null); }}
-            placeholder={t.faq.searchPlaceholder}
-            className="w-full px-3 py-2 border border-grey-50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
-        </div>
-
         {/* FAQ List */}
-        <div className="flex-1 overflow-y-auto">
-          {filtered.length === 0 ? (
-            <p className="px-4 py-8 text-center text-sm text-grey-300">{t.faq.noResults}</p>
-          ) : (
-            categoryOrder.map((cat) => {
-              const catItems = filtered.filter((item) => item.category === cat);
-              if (catItems.length === 0) return null;
-              return (
-                <div key={cat}>
-                  <div className="px-4 py-2 bg-white-700 border-b border-grey-50">
-                    <span className="text-xs font-semibold text-grey-300 uppercase tracking-wide">
-                      {t.faq.categories[cat]}
-                    </span>
+        <div className="flex-1 overflow-y-auto px-10 pb-8">
+          {categoryOrder.map((cat) => {
+            const catItems = t.faq.items.filter((item) => item.category === cat);
+            if (catItems.length === 0) return null;
+            return (
+              <div key={cat} className="mb-8">
+                {/* Category Header */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-7 h-7 flex items-center justify-center flex-shrink-0">
+                    {categoryIcons[cat]}
                   </div>
+                  <span className="font-urbanist text-[20px] font-bold leading-[24px] text-grey-700">
+                    {t.faq.categories[cat]}
+                  </span>
+                </div>
+
+                {/* FAQ Items */}
+                <div className="flex flex-col gap-5">
                   {catItems.map((item) => {
                     const globalIndex = t.faq.items.indexOf(item);
                     const isOpen = openIndex === globalIndex;
                     return (
-                      <div key={globalIndex} className="border-b border-grey-50">
+                      <div
+                        key={globalIndex}
+                        className="bg-white-50 rounded-[18px] overflow-hidden"
+                      >
                         <button
                           onClick={() => toggle(globalIndex)}
-                          className="w-full text-left px-4 py-3 flex items-start justify-between gap-2 hover:bg-white-700 transition-colors"
+                          className="w-full text-left px-5 py-4 flex items-center justify-between gap-4"
                         >
-                          <span className="text-sm font-medium text-grey-500">{item.question}</span>
+                          <span className="text-[13px] font-medium text-grey-700">
+                            {item.question}
+                          </span>
                           <svg
-                            className={`w-4 h-4 mt-0.5 flex-shrink-0 text-grey-100 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                            className={`w-4 h-4 flex-shrink-0 text-grey-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -90,18 +108,22 @@ export default function FAQDrawer({ onClose }: FAQDrawerProps) {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M19 9l-7 7-7-7" />
                           </svg>
                         </button>
-                        {isOpen && (
-                          <div className="px-4 pb-3">
-                            <p className="text-sm text-grey-300 leading-relaxed">{item.answer}</p>
+                        <div
+                          className={`grid transition-all duration-200 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+                        >
+                          <div className="overflow-hidden">
+                            <div className="px-5 pb-4 -mt-1">
+                              <p className="text-[13px] text-grey-300 leading-relaxed">{item.answer}</p>
+                            </div>
                           </div>
-                        )}
+                        </div>
                       </div>
                     );
                   })}
                 </div>
-              );
-            })
-          )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

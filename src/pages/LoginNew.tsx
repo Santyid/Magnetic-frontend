@@ -45,7 +45,7 @@ export default function LoginNew() {
       if (user.isAdmin) {
         navigate('/admin');
       } else {
-        navigate('/dashboard-new');
+        navigate('/dashboard');
       }
     }
   }, [isAuthenticated, user, navigate]);

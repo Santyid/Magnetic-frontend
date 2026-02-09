@@ -9,7 +9,6 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
-import DashboardNew from './pages/DashboardNew';
 import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -19,6 +18,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import Users from './pages/admin/Users';
 import AssignProducts from './pages/admin/AssignProducts';
 import ProductMetrics from './pages/ProductMetrics';
+import CreatorMarketplace from './pages/CreatorMarketplace';
 import Health from './pages/Health';
 
 function App() {
@@ -71,14 +71,6 @@ function App() {
           <Route path="/health" element={<Health />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login-new" element={<LoginNew />} />
-          <Route
-            path="/dashboard-new"
-            element={
-              <ProtectedRoute>
-                <DashboardNew />
-              </ProtectedRoute>
-            }
-          />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
@@ -94,6 +86,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProductMetrics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/creators"
+            element={
+              <ProtectedRoute>
+                <CreatorMarketplace />
               </ProtectedRoute>
             }
           />

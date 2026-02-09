@@ -1990,10 +1990,24 @@ magnetic-frontend/
 │   ├── components/
 │   │   ├── ai/
 │   │   │   ├── AIButton.tsx                   # ✅ Botón flotante AI (legacy)
-│   │   │   └── ChatDrawer.tsx                 # ✅ Chat drawer lateral con historial
+│   │   │   └── ChatDrawer.tsx                 # ✅ Chat flotante esquina inferior derecha (toggle)
 │   │   ├── auth/
 │   │   │   ├── ProtectedRoute.tsx             # ✅ Rutas protegidas
 │   │   │   └── AdminRoute.tsx                 # ✅ Guard admin (isAdmin)
+│   │   ├── ds/                                # 🆕 Design System Components
+│   │   │   ├── index.ts                       # ✅ Barrel export de todo el DS
+│   │   │   ├── tokens.ts                      # ✅ Design tokens (colores, sizes, radii, stroke)
+│   │   │   ├── Button.tsx                     # ✅ Button, IconButton, Toggle (7 variants, 3 sizes)
+│   │   │   ├── Input.tsx                      # ✅ Input, PasswordInput, Textarea, Checkbox, Radio
+│   │   │   ├── Select.tsx                     # ✅ Select dropdown, Segment control
+│   │   │   ├── Chip.tsx                       # ✅ Chip/Badge (6 variants, pill shape)
+│   │   │   ├── Avatar.tsx                     # ✅ Avatar, AvatarGroup (4 sizes, 6 colors)
+│   │   │   ├── Status.tsx                     # ✅ Status dot/badge (active, inactive, error, warning)
+│   │   │   ├── Tabs.tsx                       # ✅ Tabs, UnderlineTabs (3 sizes)
+│   │   │   ├── Stepper.tsx                    # ✅ Stepper bar, StepperWithLabels
+│   │   │   ├── Modal.tsx                      # ✅ Modal, ModalHeader/Body/Footer, AlertModal
+│   │   │   ├── Menu.tsx                       # ✅ Dropdown menu (checkbox/radio items)
+│   │   │   └── Icons.tsx                      # ✅ 40+ iconos SVG (strokeWidth 1.66667)
 │   │   ├── dashboard/
 │   │   │   └── ConnectProductModal.tsx        # ✅ Modal conexión producto
 │   │   ├── help/
@@ -2331,6 +2345,14 @@ VITE_API_URL=http://localhost:3000/api
 | Backend - Dashboard métricas API | ✅ Completo | 100% |
 | Backend - Credenciales Admin API | ✅ Completo | 100% |
 | Design System (tokens, colores, iconos) | ✅ Completo | 100% |
+| DS Component Library (src/components/ds/) | ✅ Completo | 100% |
+| DS - Button, IconButton, Toggle | ✅ Completo | 100% |
+| DS - Input, PasswordInput, Textarea, Checkbox, Radio | ✅ Completo | 100% |
+| DS - Select, Segment | ✅ Completo | 100% |
+| DS - Chip, Avatar, Status | ✅ Completo | 100% |
+| DS - Tabs, Stepper, Modal, Menu | ✅ Completo | 100% |
+| DS - Icons (40+ SVG icons) | ✅ Completo | 100% |
+| DS - Design Tokens (tokens.ts) | ✅ Completo | 100% |
 | E2E Testing - Playwright | ✅ Completo | 100% |
 | E2E - Auth (login, register, forgot) | ✅ 8 tests | 100% |
 | E2E - Dashboard (productos, AI, FAQ) | ✅ 7 tests | 100% |
@@ -2587,7 +2609,7 @@ Mientras se implementan estos endpoints, los usuarios deben ser creados manualme
 
 3. **Asistente AI (ver sección dedicada abajo)**
    - Backend: Módulo AI con proxy a OpenAI
-   - Frontend: Botón flotante + chat drawer
+   - Frontend: Botón AI en TopBanner (toggle) + chat flotante esquina inferior derecha
 
 ### Prioridad Media
 4. **Testing** ✅ COMPLETADO
@@ -2813,20 +2835,24 @@ Límite de mensajes por usuario para controlar costos:
 
 ---
 
-### Frontend - Componentes (por implementar)
+### Frontend - Componentes ✅ IMPLEMENTADO
 
-1. **Botón flotante AI** - Esquina inferior derecha del Dashboard
-   - Icono de AI/sparkles
-   - Badge con indicador de disponibilidad
+1. **Botón AI en TopBanner** - Botón con icono sparkle y borde gradiente en la barra superior
+   - Click funciona como **toggle** (abre/cierra el chat)
+   - Presente en: Dashboard, Profile, ProductMetrics, AdminLayout
 
-2. **Chat Drawer/Modal** - Se abre al hacer click en el botón
-   - Header con título "Magnetic AI"
-   - Lista de mensajes (usuario + asistente)
-   - Input de texto + botón enviar
-   - Indicador de "escribiendo..."
+2. **Chat Flotante** (`src/components/ai/ChatDrawer.tsx`) - Modal flotante tipo chat
+   - Posición fija: esquina **inferior derecha** (`right-4 bottom-4`)
+   - Tamaño: `400px × 520px`, bordes redondeados (`rounded-2xl`)
+   - Header azul con icono sparkle + título "Magnetic AI"
+   - Lista de mensajes con burbujas (usuario azul, asistente gris)
+   - Indicador de "pensando..." con dots animados
+   - Input + botón enviar (Enter para enviar)
+   - Cierre: click fuera, tecla Escape, o botón X
+   - Animación de entrada: `chat-pop-in` (scale + fade, 0.2s)
    - Historial se mantiene en estado local (no persiste entre sesiones)
 
-3. **Traducciones i18n** necesarias:
+3. **Traducciones i18n** ✅ implementadas:
    - `ai.title`: "Magnetic AI" / "Magnetic AI" / "Magnetic AI"
    - `ai.placeholder`: "Escribe tu pregunta..." / "Type your question..." / "Digite sua pergunta..."
    - `ai.send`: "Enviar" / "Send" / "Enviar"
@@ -2834,6 +2860,10 @@ Límite de mensajes por usuario para controlar costos:
    - `ai.rateLimitError`: "Has alcanzado el límite..." / "You've reached the limit..." / "Você atingiu o limite..."
    - `ai.errorMessage`: "Error al procesar tu mensaje" / "Error processing your message" / "Erro ao processar sua mensagem"
    - `ai.welcome`: "Hola! Soy Magnetic AI..." / "Hi! I'm Magnetic AI..." / "Olá! Sou Magnetic AI..."
+
+4. **Animación CSS** (`src/index.css`):
+   - `@keyframes chat-pop-in` — opacity 0→1, translateY(-8px)→0, scale(0.96)→1
+   - `.animate-chat-pop-in` — 0.2s ease-out
 
 ### Costos Estimados (OpenAI gpt-4o-mini)
 
@@ -3018,220 +3048,279 @@ npm run test:e2e         # Ejecuta tests E2E
 
 ### Estado Actualizado
 **Última actualización:** Febrero 2026
-**Versión Frontend:** v1.5.0 (MVP + AI + Métricas + FAQ + Design System + E2E Testing + Landing Page + LoginNew)
+**Versión Frontend:** v1.6.0 (MVP + AI + Métricas + FAQ + DS Component Library + E2E Testing + Landing Page + LoginNew)
 **Versión Backend:** v1.2.0 (Completo con AI + Auth + Conexión Productos + Deploy Railway + Health Check Enhanced)
 
 ---
 
-## 🎨 Design System - Tokens y Especificaciones (✅ APLICADO)
+## 🎨 Design System - Componentes y Tokens (✅ IMPLEMENTADO)
 
-El frontend aplica un Design System unificado. Estos tokens son la fuente de verdad para cualquier componente nuevo.
+El frontend tiene un **Design System completo basado en componentes React** en `src/components/ds/`. Los tokens fueron extraídos de los archivos SVG de Figma ubicados en `SystemDesing/`.
 
-### Colores
+### Origen: `SystemDesing/` (Figma Exports)
 
-#### Primarios (Botones, Links, Acciones)
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `primary-50` | `#e6efff` | Background hover suave |
-| `primary-100` | `#b3d1ff` | Background de icon badges |
-| `primary-200` | `#80b3ff` | Hover de icon badges |
-| `primary-600` | `#0058E7` | **Default** de botones primarios |
-| `primary-700` | `#0045B4` | **Hover** de botones primarios |
+14 archivos SVG exportados de Figma que definen el sistema visual:
 
-#### Danger (Acciones destructivas)
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `danger-500` | `#EE4A79` | Default de botones danger |
-| `danger-600` | `#D9436E` | Hover de botones danger |
+| Archivo | Contenido |
+|---------|-----------|
+| `✅ Color palette (1).svg` | Paleta completa (10-step scales) |
+| `✅ Buttons.svg` | Botones: 3 tamaños, 7 variants, estados |
+| `✅ Inputs.svg` | Inputs, checkboxes, radios, textareas |
+| `✅ Select segments.svg` | Selects y controles segmentados |
+| `✅ Chips.svg` | Chips/badges pill-shaped |
+| `✅ Avatars.svg` | Avatares 4 tamaños con status |
+| `✅ Status.svg` | Indicadores de estado (dot/badge) |
+| `✅ Tabs.svg` | Tabs con 3 tamaños y badges |
+| `✅ Steppers.svg` | Barras de progreso |
+| `✅ Menu.svg` | Menús dropdown |
+| `✅ Modal de alerta.svg` | Modales info/success/warning/error |
+| `✅ Icons.svg` | Librería de iconos SVG |
+| `✅ Flags.svg` | Banderas para i18n |
+| `✅Graficas.svg` | Gráficas y visualizaciones |
 
-#### Semánticos
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `success` | `#3ACE76` | Badges activos, toast success, indicadores |
-| `error` | `#FC3E3E` | Toast error, badges error, validación |
-| `warning` | `#FF962C` | Toast warning |
+### Paleta de Colores Completa (10-step scales, extraídas de SVGs)
 
-#### Grises
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `grey-50` | `#ececec` | Bordes, separadores |
-| `grey-100` | `#c3c3c3` | Iconos inactivos, placeholders |
-| `grey-300` | `#7d7d7d` | Texto secundario |
-| `grey-400` | `#5d5d5d` | Labels de formularios |
-| `grey-500` | `#3d3d3d` | Texto principal, títulos |
+#### Primary Blue
+| Step | Hex | Uso |
+|------|-----|-----|
+| 50 | `#E6EFFF` | Background hover suave, focus ring |
+| 100 | `#B0CEFF` | Background de icon badges |
+| 200 | `#8AB6FF` | Light buttons, disabled primary |
+| 300 | `#5495FE` | — |
+| 400 | `#3381FE` | — |
+| 500 | `#0061FE` | **Default** de botones primarios |
+| 600 | `#0058E7` | **Hover** de botones primarios |
+| 700 | `#0045B4` | **Active/Pressed** de botones primarios |
+| 800 | `#00358C` | — |
+| 900 | `#00296B` | — |
+
+#### Secondary Purple
+| Step | Hex | Uso |
+|------|-----|-----|
+| 50 | `#F5EEFC` | Background suave purple |
+| 100 | `#E1CAF6` | — |
+| 200 | `#D2B0F2` | Light purple buttons |
+| 300 | `#BE8CEC` | — |
+| 400 | `#B176E8` | — |
+| 500 | `#9E54E2` | **Default** botones secondary, toggles activos |
+| 600 | `#904CCE` | **Hover** secondary |
+| 700 | `#703CA0` | **Active** secondary |
+| 800 | `#572E7C` | — |
+| 900 | `#42235F` | — |
+
+#### Greyscale
+| Step | Hex | Uso |
+|------|-----|-----|
+| 50 | `#ECECEC` | Bordes, separadores, disabled bg |
+| 100 | `#C3C3C3` | Bordes de inputs, placeholders, iconos inactivos |
+| 200 | `#A6A6A6` | — |
+| 300 | `#7D7D7D` | Texto secundario, status inactive |
+| 400 | `#646464` | Labels |
+| 500 | `#3D3D3D` | **Texto principal**, títulos |
+| 600 | `#383838` | — |
+| 700 | `#2B2B2B` | — |
+| 800 | `#222222` | — |
+| 900 | `#1A1A1A` | — |
+
+#### Semánticos (con escalas completas)
+| Color | 50 (bg) | 400 (default) | 500+ (dark) |
+|-------|---------|---------------|-------------|
+| **Success** | `#EBFAF1` | `#3ACE76` | `#299053` / `#237E48` |
+| **Error** | `#FFECEC` | `#FC3E3E` | `#B02B2B` / `#9A2626` |
+| **Warning** | `#FFF5EA` | `#FF962C` | `#B3691F` / `#9C5C1B` |
 
 #### Fondos
 | Token | Hex | Uso |
 |-------|-----|-----|
-| `white-600` | `#FAFAFA` | — |
-| `white-700` | `#F1F1F1` | Background de página, hovers suaves |
+| `white-50` | `#FAFAFA` | Background de página |
+| `white-100` | `#F5F7FA` | Background de inputs, tabs inactivos |
+| `white-200` | `#F1F1F1` | Hover suave, disabled buttons |
 
-### Iconos SVG
+### Componentes del Design System (`src/components/ds/`)
 
-Todos los iconos del proyecto siguen estas especificaciones:
-
+#### Importación
 ```tsx
-<svg
-  className="w-5 h-5"          // Tamaño estándar (w-4 h-4 para small, w-6 h-6 para large)
-  fill="none"                   // Siempre none (outline style)
-  stroke="currentColor"         // Color heredado del contenedor
-  viewBox="0 0 24 24"
->
-  <path
-    strokeLinecap="round"       // Obligatorio
-    strokeLinejoin="round"      // Obligatorio
-    strokeWidth={1.66667}       // ⚠️ NO usar 2, siempre 1.66667
-    d="..."
-  />
-</svg>
+import { Button, Input, Avatar, IconSearch, Chip, Status, Tabs, Modal } from '../components/ds';
 ```
 
-**Set de iconos:** Heroicons Outline (compatibles con el design system).
-
-### Botones
-
-#### Primario (filled)
-```tsx
-className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
-```
-
-#### Secundario / Outline
-```tsx
-className="px-4 py-2 text-sm font-medium text-grey-400 bg-white border border-grey-50 hover:bg-white-700 rounded-lg transition-colors"
-```
-
-#### Danger
-```tsx
-className="px-4 py-2 bg-danger-500 hover:bg-danger-600 text-white text-sm font-medium rounded-lg"
-```
-
-#### Icon button (tabla, acciones)
-```tsx
-className="p-2 text-grey-100 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
-```
-
-### Border Radius
-
-| Elemento | Clase | Valor |
-|----------|-------|-------|
-| Botones | `rounded-lg` | 12px (overridden en tailwind.config.js) |
-| Cards | `rounded-lg` o `rounded-xl` | 12px / 16px |
-| Inputs | `rounded-lg` | 12px |
-| Modales | `rounded-lg` | 12px |
-| Badges/Pills | `rounded-full` | 9999px |
-
-### Inputs
+#### Button (`Button.tsx`)
+- **Variants:** `primary` | `secondary` | `outline` | `ghost` | `danger` | `info` | `link`
+- **Sizes:** `lg` (48px) | `md` (40px) | `sm` (36px)
+- **Props:** `leftIcon`, `rightIcon`, `isLoading`, `fullWidth`
+- **Componentes:** `Button`, `IconButton`, `Toggle`
 
 ```tsx
-<input
-  className="w-full px-4 py-3 border border-grey-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-  // Para inputs más compactos (admin):
-  className="w-full px-3 py-2 border border-grey-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-/>
+<Button variant="primary" size="md" leftIcon={<IconSearch size="sm" />}>Buscar</Button>
+<Button variant="outline" size="sm">Cancelar</Button>
+<Button variant="danger" isLoading>Eliminando...</Button>
+<IconButton variant="ghost" size="md" icon={<IconEdit />} aria-label="Editar" />
+<Toggle checked={value} onChange={setValue} />
 ```
 
-### Toast Notifications (react-hot-toast)
-
-Configurados en `App.tsx`:
-
-| Tipo | Border Left | Icon Color | Icon BG |
-|------|------------|------------|---------|
-| Success | `4px solid #3ACE76` | `#3ACE76` | `#EBFAF1` |
-| Error | `4px solid #FC3E3E` | `#FC3E3E` | `#FEF2F2` |
+#### Input (`Input.tsx`)
+- **Sizes:** `lg` (48px) | `md` (40px) | `sm` (36px)
+- **Props:** `label`, `error`, `helperText`, `leftIcon`, `rightIcon`, `leftAddon`, `rightAddon`
+- **Componentes:** `Input`, `PasswordInput`, `Textarea`, `Checkbox`, `Radio`
+- **Border:** `#C3C3C3`, radius `10px`, focus ring `primary-50`
 
 ```tsx
-// Estilos base de todos los toasts:
-style: {
-  borderRadius: '10px',
-  padding: '16px',
-  fontSize: '14px',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-}
+<Input label="Email" placeholder="tu@email.com" error="Campo requerido" />
+<PasswordInput label="Contraseña" size="lg" />
+<Textarea label="Descripción" rows={4} />
+<Checkbox label="Acepto términos" />
+<Radio label="Opción A" name="group" />
 ```
 
-### Badges de Estado
+#### Select (`Select.tsx`)
+- **Componentes:** `Select` (dropdown), `Segment` (segmented control)
+- **Props:** `options`, `value`, `onChange`, `label`, `error`, `placeholder`
 
 ```tsx
-// Activo
-className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-success/20 text-success"
-
-// Inactivo
-className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-white-700 text-grey-300"
-
-// Conectado
-className="text-xs font-medium text-success bg-success/20 px-2 py-0.5 rounded-full"
-
-// No conectado
-className="text-xs font-medium text-grey-300 bg-white-700 px-2 py-0.5 rounded-full"
+<Select label="País" options={[{value:'co',label:'Colombia'}]} value={v} onChange={setV} />
+<Segment options={[{value:'tab1',label:'Tab 1'},{value:'tab2',label:'Tab 2'}]} value={v} onChange={setV} />
 ```
 
-### Alertas / Banners de Error
+#### Chip (`Chip.tsx`)
+- **Variants:** `default` | `primary` | `secondary` | `success` | `error` | `warning`
+- **Sizes:** `md` (28px) | `sm` (24px) — pill shape (rx=14)
+- **Props:** `removable`, `onRemove`, `leftIcon`
 
 ```tsx
-// Error container
-className="bg-error/10 border border-error/30 rounded-lg"
-
-// Success container
-className="bg-success/10 border border-success/30 rounded-lg"
+<Chip variant="success">Activo</Chip>
+<Chip variant="error" removable onRemove={handleRemove}>Error</Chip>
 ```
 
-**⚠️ NO usar colores hardcodeados de Tailwind como `border-red-200`, `bg-green-50`, etc.** Siempre usar los tokens del design system (`border-error/30`, `bg-success/10`).
-
-### Modales
+#### Avatar (`Avatar.tsx`)
+- **Sizes:** `xs` (17px) | `sm` (28px) | `md` (36px) | `lg` (49px)
+- **Colors:** `primary` | `secondary` | `grey` | `error` | `warning` | `success`
+- **Props:** `src`, `name` (auto-genera iniciales), `status` (online/offline/error/warning)
+- **Componentes:** `Avatar`, `AvatarGroup`
 
 ```tsx
-// Overlay
-className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-
-// Container
-className="bg-white rounded-lg w-full max-w-md mx-4 shadow-xl"
-
-// Header
-className="px-6 py-4 border-b border-grey-50"
-
-// Footer actions
-className="flex items-center justify-end gap-3 pt-2"
+<Avatar src="/photo.jpg" size="lg" status="online" />
+<Avatar name="Juan Pérez" color="primary" size="md" />
+<AvatarGroup max={3}><Avatar name="A" /><Avatar name="B" /><Avatar name="C" /></AvatarGroup>
 ```
 
-### Tailwind Config (tailwind.config.js)
+#### Status (`Status.tsx`)
+- **Types:** `active` (#3ACE76) | `inactive` (#7D7D7D) | `error` (#FC3E3E) | `warning` (#FF962C)
+- **Variants:** `dot` (10px circle) | `badge` (pill with label)
+- **Props:** `pulse` (animación)
 
-Overrides importantes en la configuración:
+```tsx
+<Status type="active" variant="badge" label="Conectado" pulse />
+<Status type="error" variant="dot" />
+```
+
+#### Tabs (`Tabs.tsx`)
+- **Sizes:** `lg` (48px) | `md` (40px) | `sm` (36px)
+- **Container:** bg `#F5F7FA`, rx=10; **Active item:** white bg, shadow, rx=5
+- **Componentes:** `Tabs` (pills), `UnderlineTabs` (underline style)
+- **Props:** `items` (con `badge` para contadores)
+
+```tsx
+<Tabs items={[{value:'a',label:'Tab A',badge:3},{value:'b',label:'Tab B'}]} value={v} onChange={setV} />
+```
+
+#### Stepper (`Stepper.tsx`)
+- **Bar:** h=5px, rx=2.5, active `#0061FE`, inactive `#ECECEC`
+- **Componentes:** `Stepper` (simple progress bar), `StepperWithLabels` (numbered steps)
+
+```tsx
+<Stepper steps={4} currentStep={2} />
+<StepperWithLabels steps={[{label:'Info'},{label:'Review'},{label:'Done'}]} currentStep={2} />
+```
+
+#### Modal (`Modal.tsx`)
+- **Sizes:** `sm` | `md` | `lg` (max-w=699px), rx=12
+- **AlertModal types:** `info` | `success` | `warning` | `error` (icon 56px, rx=28)
+- **Sub-components:** `ModalHeader`, `ModalBody`, `ModalFooter`
+- **Props:** `closeOnOverlay`, `closeOnEsc`
+
+```tsx
+<Modal isOpen={open} onClose={close} size="md">
+  <ModalHeader onClose={close}>Título</ModalHeader>
+  <ModalBody>Contenido</ModalBody>
+  <ModalFooter><Button variant="outline">Cancelar</Button><Button>Guardar</Button></ModalFooter>
+</Modal>
+<AlertModal isOpen={open} onClose={close} onConfirm={confirm} type="error" title="Eliminar" message="¿Estás seguro?" />
+```
+
+#### Menu (`Menu.tsx`)
+- **Width:** 242px default, rx=10
+- **Item types:** normal, `checkbox`, `radio`, `divider`, `danger`
+
+```tsx
+<Menu trigger={<IconButton icon={<IconDots />} aria-label="Menu" />} items={[
+  {id:'edit', label:'Editar', icon:<IconEdit />},
+  {id:'div', label:'', divider:true},
+  {id:'delete', label:'Eliminar', danger:true},
+]} />
+```
+
+#### Icons (`Icons.tsx`)
+- **40+ iconos** con `strokeWidth={1.66667}`, `strokeLinecap="round"`, `strokeLinejoin="round"`
+- **Sizes:** `xs` (14px) | `sm` (16px) | `md` (20px) | `lg` (24px)
+- **Categorías:** Navigation, Actions, Status, User, Communication, Data, Misc
+
+```tsx
+import { IconSearch, IconEdit, IconTrash, IconPlus, IconUser, IconSettings } from '../components/ds';
+
+<IconSearch size="md" className="text-grey-300" />
+```
+
+**Lista completa:** `IconHome`, `IconSearch`, `IconMenu`, `IconChevronDown/Right/Left/Up`, `IconArrowLeft/Right`, `IconPlus`, `IconMinus`, `IconClose`, `IconCheck`, `IconEdit`, `IconTrash`, `IconCopy`, `IconDownload`, `IconUpload`, `IconRefresh`, `IconFilter`, `IconSort`, `IconInfo`, `IconWarning`, `IconError`, `IconSuccess`, `IconUser`, `IconUsers`, `IconSettings`, `IconLogout`, `IconChat`, `IconMail`, `IconBell`, `IconChart`, `IconCalendar`, `IconDocument`, `IconFolder`, `IconLink`, `IconImage`, `IconEye`, `IconEyeOff`, `IconLock`, `IconGlobe`, `IconStar`, `IconSparkles`, `IconHelp`, `IconExternalLink`, `IconDots`
+
+### Design Tokens (`tokens.ts`)
+
+Archivo con todas las constantes del DS para uso programático:
+
+```tsx
+import { colors, sizes, radii, stroke, shadows, transitions } from '../components/ds';
+
+colors.primary[500]  // '#0061FE'
+sizes.button.lg      // { height: 48, minWidth: 196, px: 24, fontSize: 15 }
+radii.lg             // '12px'
+stroke.width.default // 1.66667
+shadows.modal        // '0 20px 60px rgba(0, 0, 0, 0.15)'
+```
+
+### Tailwind Config (`tailwind.config.js`)
+
+Config actualizada con escalas completas de 10 pasos:
 
 ```js
 theme: {
   extend: {
     colors: {
-      primary: { 600: '#0058E7', 700: '#0045B4', /* ... */ },
-      danger: { 500: '#EE4A79', 600: '#D9436E' },
-      grey: { /* escala completa 50-900 */ },
-      success: '#3ACE76',
-      error: '#FC3E3E',
-      warning: '#FF962C',
+      primary: { 50:'#E6EFFF', 100:'#B0CEFF', 200:'#8AB6FF', 300:'#5495FE', 400:'#3381FE', 500:'#0061FE', 600:'#0058E7', 700:'#0045B4', 800:'#00358C', 900:'#00296B' },
+      secondary: { 50:'#F5EEFC', 100:'#E1CAF6', 200:'#D2B0F2', 300:'#BE8CEC', 400:'#B176E8', 500:'#9E54E2', 600:'#904CCE', 700:'#703CA0', 800:'#572E7C', 900:'#42235F' },
+      grey: { 50:'#ECECEC', 100:'#C3C3C3', 200:'#A6A6A6', 300:'#7D7D7D', 400:'#646464', 500:'#3D3D3D', 600:'#383838', 700:'#2B2B2B', 800:'#222222', 900:'#1A1A1A' },
+      success: { 50:'#EBFAF1', 100:'#AEEBC7', 200:'#8DE3B0', 300:'#5BD68D', 400:'#3ACE76', 500:'#299053', 600:'#237E48', DEFAULT:'#3ACE76' },
+      error: { 50:'#FFECEC', 100:'#FEB0B0', 200:'#FD8F8F', 300:'#FD5F5F', 400:'#FC3E3E', 500:'#B02B2B', 600:'#9A2626', DEFAULT:'#FC3E3E' },
+      warning: { 50:'#FFF5EA', 100:'#FFD4A8', 200:'#FFC285', 300:'#FFA850', 400:'#FF962C', 500:'#B3691F', 600:'#9C5C1B', DEFAULT:'#FF962C' },
     },
-    borderRadius: {
-      'ds': '12px',
-      'lg': '12px',  // Override: rounded-lg = 12px
-    },
-    fontFamily: {
-      sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-    },
+    borderRadius: { xs:'2.5px', sm:'5px', md:'8px', lg:'12px', xl:'16px', pill:'14px', input:'10px' },
+    fontSize: { 'ds-xs':['12px',{lineHeight:'16px'}], 'ds-sm':['13px',{lineHeight:'18px'}], 'ds-base':['14px',{lineHeight:'20px'}], 'ds-md':['15px',{lineHeight:'22px'}], 'ds-lg':['16px',{lineHeight:'24px'}] },
+    boxShadow: { 'ds-sm':'0 1px 3px rgba(0,0,0,0.08)', 'ds-md':'0 4px 12px rgba(0,0,0,0.1)', 'ds-lg':'0 8px 24px rgba(0,0,0,0.12)', 'ds-modal':'0 20px 60px rgba(0,0,0,0.15)' },
   },
 }
 ```
 
-### Cambios Aplicados (Resumen)
+### Reglas del Design System
 
-| Cambio | Archivos Afectados | Detalle |
-|--------|--------------------|---------|
-| strokeWidth 2 → 1.66667 | Todos los .tsx (70 instancias) | Grosor de trazo de iconos SVG |
-| Toast design system | App.tsx | Border-left coloreado, iconTheme |
-| bg-primary-500 → 600 | Login, Register, ForgotPassword, TopBanner | Botones primarios |
-| hover:bg-primary-600 → 700 | Login, Register, ForgotPassword, TopBanner | Hover de botones |
-| bg-green-50/border-green-200 | ForgotPassword.tsx | → bg-success/10 border-success/30 |
-| border-red-200 | ProductMetrics.tsx, Users.tsx | → border-error/30 |
-| AdminLayout AI button | AdminLayout.tsx | Outline → solid primary rounded-lg |
-| danger-500/600 | Users.tsx, ProductMetrics.tsx | Botones de eliminar/reconectar |
-| rounded-lg override | tailwind.config.js | 12px en vez de 8px default |
+1. **⚠️ SIEMPRE usar componentes del DS** (`Button`, `Input`, `Select`, etc.) en vez de HTML nativo con clases Tailwind
+2. **⚠️ NO usar colores hardcodeados** de Tailwind como `border-red-200`, `bg-green-50` — usar tokens (`bg-error-50`, `border-success-100`)
+3. **⚠️ Iconos SVG:** strokeWidth `1.66667` (NO 2), strokeLinecap/Join `round`
+4. **⚠️ Border radius:** Botones/Cards/Modales = `12px` (`rounded-lg`), Inputs = `10px` (`rounded-input`), Chips = `14px` (`rounded-pill`)
+5. **Font:** Inter, tamaños: `ds-xs` (12px) → `ds-lg` (16px)
+
+### Toast Notifications (react-hot-toast)
+
+| Tipo | Border Left | Icon Color | Icon BG |
+|------|------------|------------|---------|
+| Success | `4px solid #3ACE76` | `#3ACE76` | `#EBFAF1` |
+| Error | `4px solid #FC3E3E` | `#FC3E3E` | `#FFECEC` |
 
 ---
 

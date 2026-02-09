@@ -88,7 +88,7 @@ export default function CTASection({ language }: CTASectionProps) {
               </svg>
             </Link>
             <Link
-              to="/login"
+              to="/login-new"
               className="text-white/90 hover:text-white font-medium transition-colors flex items-center gap-2"
             >
               {t.cta.loginLink}

@@ -169,6 +169,10 @@ export interface Translations {
     tikketDescription: string;
     advocatesDescription: string;
     quanticoDescription: string;
+    socialgestDescriptionLong: string;
+    tikketDescriptionLong: string;
+    advocatesDescriptionLong: string;
+    quanticoDescriptionLong: string;
   };
 
   // Admin
@@ -249,6 +253,7 @@ export interface Translations {
   // Metrics & Connection
   metrics: {
     connect: string;
+    enter: string;
     disconnect: string;
     reconnect: string;
     connected: string;
@@ -290,6 +295,7 @@ export interface Translations {
     totalGroups: string;
     totalAmbassadors: string;
     ambassadorsCreating: string;
+    orConnectWith: string;
   };
 
   // Health
@@ -304,6 +310,43 @@ export interface Translations {
     uptime: string;
     timestamp: string;
     refresh: string;
+  };
+
+  // Creator Marketplace
+  creators: {
+    title: string;
+    subtitle: string;
+    searchPlaceholder: string;
+    facebook: string;
+    followers: string;
+    engagementRate: string;
+    viewProfile: string;
+    verified: string;
+    biography: string;
+    mediaCount: string;
+    avgLikes: string;
+    avgComments: string;
+    details: string;
+    recentMedia: string;
+    viewOnFacebook: string;
+    loading: string;
+    noResults: string;
+    noResultsHint: string;
+    loadMore: string;
+    loadingMore: string;
+    searchHint: string;
+    errorSearch: string;
+    errorProfile: string;
+    rateLimitError: string;
+    metaApiError: string;
+  };
+
+  // Release Notes
+  releaseNotes: {
+    title: string;
+    subtitle: string;
+    noProducts: string;
+    noUpdates: string;
   };
 
   // Language Selector
@@ -401,8 +444,8 @@ export const translations: Record<Language, Translations> = {
       personalInfo: 'Información Personal',
       name: 'Nombre',
       lastName: 'Apellido',
-      emailLabel: 'Email',
-      emailDisabled: 'El email no se puede modificar.',
+      emailLabel: 'Correo electrónico',
+      emailDisabled: 'El correo electrónico no se puede modificar.',
       account: 'Cuenta',
       status: 'Estado',
       statusDescription: 'Estado de tu cuenta',
@@ -467,10 +510,14 @@ export const translations: Record<Language, Translations> = {
       addProducts: 'Agregar Productos',
       addProductsDescription: 'Conoce nuestras soluciones y agrega productos a tu cuenta',
       visitWebsite: 'Visitar sitio',
-      socialgestDescription: 'Gestión integral de redes sociales',
-      tikketDescription: 'Sistema de tickets y soporte al cliente',
-      advocatesDescription: 'Plataforma de employee advocacy',
-      quanticoDescription: 'Analytics y métricas avanzadas',
+      socialgestDescription: 'Planifica, publica y mide tus redes en un solo lugar',
+      tikketDescription: 'Convierte conversaciones en oportunidades',
+      advocatesDescription: 'Impulsa tu contenido con embajadores de marca',
+      quanticoDescription: 'Escucha lo que se dice de tu marca en tiempo real',
+      socialgestDescriptionLong: 'Organiza tu calendario, flujos de aprobación y métricas para que tu equipo publique con consistencia y decida con datos.',
+      tikketDescriptionLong: 'Centraliza mensajes de WhatsApp, redes y web para responder mejor, capturar leads y dar seguimiento con IA y automatizaciones que ayudan a convertir más.',
+      advocatesDescriptionLong: 'Multiplica el alcance con embajadores de marca y convierte esa amplificación en visibilidad y oportunidades medibles para tu equipo.',
+      quanticoDescriptionLong: 'Reúne conversaciones en un solo lugar y recibe alertas para actuar rápido ante tendencias y riesgos reputacionales.',
     },
     admin: {
       panel: 'Admin',
@@ -556,6 +603,7 @@ export const translations: Record<Language, Translations> = {
     },
     metrics: {
       connect: 'Conectar',
+      enter: 'Ingresar',
       disconnect: 'Desconectar',
       reconnect: 'Reconectar',
       connected: 'Conectado',
@@ -596,6 +644,7 @@ export const translations: Record<Language, Translations> = {
       totalGroups: 'Total grupos',
       totalAmbassadors: 'Total embajadores',
       ambassadorsCreating: 'Embajadores generando contenido',
+      orConnectWith: 'O conéctate con',
     },
     health: {
       title: 'Estado del Sistema',
@@ -608,6 +657,39 @@ export const translations: Record<Language, Translations> = {
       uptime: 'Tiempo activo',
       timestamp: 'Última verificación',
       refresh: 'Actualizar',
+    },
+    creators: {
+      title: 'Creators',
+      subtitle: 'Descubre creadores en Facebook',
+      searchPlaceholder: 'Buscar creadores por palabra clave...',
+      facebook: 'Facebook',
+      followers: 'Seguidores',
+      engagementRate: 'Tasa de engagement',
+      viewProfile: 'Ver perfil',
+      verified: 'Verificado',
+      biography: 'Biografía',
+      mediaCount: 'Publicaciones',
+      avgLikes: 'Likes promedio',
+      avgComments: 'Comentarios promedio',
+      details: 'Detalles del creador',
+      recentMedia: 'Publicaciones recientes',
+      viewOnFacebook: 'Ver en Facebook',
+      loading: 'Buscando creadores...',
+      noResults: 'No se encontraron creadores',
+      noResultsHint: 'Intenta con otra palabra clave',
+      loadMore: 'Cargar más',
+      loadingMore: 'Cargando más...',
+      searchHint: 'Busca creadores por nombre, categoría o tema',
+      errorSearch: 'Error al buscar creadores',
+      errorProfile: 'Error al cargar perfil',
+      rateLimitError: 'Has alcanzado el límite de búsquedas. Intenta más tarde.',
+      metaApiError: 'Error de conexión con Meta API',
+    },
+    releaseNotes: {
+      title: 'Novedades',
+      subtitle: 'Descubre las últimas mejoras en tus productos conectados',
+      noProducts: 'No tienes productos para ver novedades',
+      noUpdates: 'No hay novedades disponibles para este producto',
     },
     language: {
       select: 'Idioma',
@@ -768,10 +850,14 @@ export const translations: Record<Language, Translations> = {
       addProducts: 'Add Products',
       addProductsDescription: 'Discover our solutions and add products to your account',
       visitWebsite: 'Visit website',
-      socialgestDescription: 'Comprehensive social media management',
-      tikketDescription: 'Ticketing and customer support system',
-      advocatesDescription: 'Employee advocacy platform',
-      quanticoDescription: 'Advanced analytics and metrics',
+      socialgestDescription: 'Plan, publish and measure your social media in one place',
+      tikketDescription: 'Turn conversations into opportunities',
+      advocatesDescription: 'Boost your content with brand ambassadors',
+      quanticoDescription: 'Listen to what is being said about your brand in real time',
+      socialgestDescriptionLong: 'Organize your calendar, approval workflows and metrics so your team publishes consistently and makes data-driven decisions.',
+      tikketDescriptionLong: 'Centralize WhatsApp, social and web messages to respond better, capture leads and follow up with AI and automations that help convert more.',
+      advocatesDescriptionLong: 'Multiply your reach with brand ambassadors and turn that amplification into measurable visibility and opportunities for your team.',
+      quanticoDescriptionLong: 'Gather conversations in one place and get alerts to act fast on trends and reputational risks.',
     },
     admin: {
       panel: 'Admin',
@@ -857,6 +943,7 @@ export const translations: Record<Language, Translations> = {
     },
     metrics: {
       connect: 'Connect',
+      enter: 'Enter',
       disconnect: 'Disconnect',
       reconnect: 'Reconnect',
       connected: 'Connected',
@@ -897,6 +984,7 @@ export const translations: Record<Language, Translations> = {
       totalGroups: 'Total groups',
       totalAmbassadors: 'Total ambassadors',
       ambassadorsCreating: 'Ambassadors creating content',
+      orConnectWith: 'Or connect with',
     },
     health: {
       title: 'System Status',
@@ -909,6 +997,39 @@ export const translations: Record<Language, Translations> = {
       uptime: 'Uptime',
       timestamp: 'Last check',
       refresh: 'Refresh',
+    },
+    creators: {
+      title: 'Creators',
+      subtitle: 'Discover creators on Facebook',
+      searchPlaceholder: 'Search creators by keyword...',
+      facebook: 'Facebook',
+      followers: 'Followers',
+      engagementRate: 'Engagement Rate',
+      viewProfile: 'View Profile',
+      verified: 'Verified',
+      biography: 'Biography',
+      mediaCount: 'Posts',
+      avgLikes: 'Avg. Likes',
+      avgComments: 'Avg. Comments',
+      details: 'Creator Details',
+      recentMedia: 'Recent Posts',
+      viewOnFacebook: 'View on Facebook',
+      loading: 'Searching creators...',
+      noResults: 'No creators found',
+      noResultsHint: 'Try a different keyword',
+      loadMore: 'Load More',
+      loadingMore: 'Loading more...',
+      searchHint: 'Search creators by name, category or topic',
+      errorSearch: 'Error searching creators',
+      errorProfile: 'Error loading profile',
+      rateLimitError: 'You have reached the search limit. Try again later.',
+      metaApiError: 'Meta API connection error',
+    },
+    releaseNotes: {
+      title: 'Release Notes',
+      subtitle: 'Discover the latest improvements in your connected products',
+      noProducts: 'No products available to view updates',
+      noUpdates: 'No updates available for this product',
     },
     language: {
       select: 'Language',
@@ -1069,10 +1190,14 @@ export const translations: Record<Language, Translations> = {
       addProducts: 'Adicionar Produtos',
       addProductsDescription: 'Conheça nossas soluções e adicione produtos à sua conta',
       visitWebsite: 'Visitar site',
-      socialgestDescription: 'Gestão completa de redes sociais',
-      tikketDescription: 'Sistema de tickets e suporte ao cliente',
-      advocatesDescription: 'Plataforma de employee advocacy',
-      quanticoDescription: 'Analytics e métricas avançadas',
+      socialgestDescription: 'Planeje, publique e meça suas redes em um só lugar',
+      tikketDescription: 'Converta conversas em oportunidades',
+      advocatesDescription: 'Impulsione seu conteúdo com embaixadores de marca',
+      quanticoDescription: 'Escute o que se diz sobre sua marca em tempo real',
+      socialgestDescriptionLong: 'Organize seu calendário, fluxos de aprovação e métricas para que sua equipe publique com consistência e decida com dados.',
+      tikketDescriptionLong: 'Centralize mensagens de WhatsApp, redes e web para responder melhor, capturar leads e acompanhar com IA e automações que ajudam a converter mais.',
+      advocatesDescriptionLong: 'Multiplique o alcance com embaixadores de marca e converta essa amplificação em visibilidade e oportunidades mensuráveis para sua equipe.',
+      quanticoDescriptionLong: 'Reúna conversas em um só lugar e receba alertas para agir rápido diante de tendências e riscos reputacionais.',
     },
     admin: {
       panel: 'Admin',
@@ -1158,6 +1283,7 @@ export const translations: Record<Language, Translations> = {
     },
     metrics: {
       connect: 'Conectar',
+      enter: 'Entrar',
       disconnect: 'Desconectar',
       reconnect: 'Reconectar',
       connected: 'Conectado',
@@ -1198,6 +1324,7 @@ export const translations: Record<Language, Translations> = {
       totalGroups: 'Total grupos',
       totalAmbassadors: 'Total embaixadores',
       ambassadorsCreating: 'Embaixadores gerando conteúdo',
+      orConnectWith: 'Ou conecte com',
     },
     health: {
       title: 'Status do Sistema',
@@ -1210,6 +1337,39 @@ export const translations: Record<Language, Translations> = {
       uptime: 'Tempo ativo',
       timestamp: 'Última verificação',
       refresh: 'Atualizar',
+    },
+    creators: {
+      title: 'Creators',
+      subtitle: 'Descubra criadores no Facebook',
+      searchPlaceholder: 'Buscar criadores por palavra-chave...',
+      facebook: 'Facebook',
+      followers: 'Seguidores',
+      engagementRate: 'Taxa de engajamento',
+      viewProfile: 'Ver perfil',
+      verified: 'Verificado',
+      biography: 'Biografia',
+      mediaCount: 'Publicações',
+      avgLikes: 'Curtidas médias',
+      avgComments: 'Comentários médios',
+      details: 'Detalhes do criador',
+      recentMedia: 'Publicações recentes',
+      viewOnFacebook: 'Ver no Facebook',
+      loading: 'Buscando criadores...',
+      noResults: 'Nenhum criador encontrado',
+      noResultsHint: 'Tente outra palavra-chave',
+      loadMore: 'Carregar mais',
+      loadingMore: 'Carregando mais...',
+      searchHint: 'Busque criadores por nome, categoria ou tema',
+      errorSearch: 'Erro ao buscar criadores',
+      errorProfile: 'Erro ao carregar perfil',
+      rateLimitError: 'Você atingiu o limite de buscas. Tente novamente mais tarde.',
+      metaApiError: 'Erro de conexão com Meta API',
+    },
+    releaseNotes: {
+      title: 'Novidades',
+      subtitle: 'Descubra as últimas melhorias nos seus produtos conectados',
+      noProducts: 'Nenhum produto disponível para ver novidades',
+      noUpdates: 'Nenhuma novidade disponível para este produto',
     },
     language: {
       select: 'Idioma',

@@ -198,8 +198,6 @@ export default function ProductMetrics() {
     finally { setSyncing(false); }
   };
 
-  const handleProductClick = (productSlug: string) => navigate(`/dashboard/metrics/${productSlug}`);
-
   const handleSSO = async () => {
     if (!slug) return;
     try { const { redirectUrl } = await productsAPI.getAccessToken(slug); window.open(redirectUrl, '_blank'); }
@@ -252,11 +250,9 @@ export default function ProductMetrics() {
   return (
     <div className="min-h-screen bg-white-700">
       <TopBanner
-        products={products}
         activeTab={activeTab}
         onTabChange={(tab) => { setActiveTab(tab); if (tab === 'dashboard') navigate('/dashboard'); }}
-        onProductClick={handleProductClick}
-        onAIClick={() => setShowChat(true)}
+        onAIClick={() => setShowChat((prev) => !prev)}
         onHelpClick={() => setShowFAQ(true)}
       />
 

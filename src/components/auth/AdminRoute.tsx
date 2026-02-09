@@ -25,7 +25,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login-new" replace />;
   }
 
   if (!user?.isAdmin) {

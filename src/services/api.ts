@@ -15,6 +15,8 @@ import type {
   ConnectProductResponse,
   MetricsResponse,
   MetricsItem,
+  CreatorProfile,
+  CreatorSearchResult,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
@@ -95,6 +97,10 @@ export const authAPI = {
       refreshToken,
     });
     return data;
+  },
+
+  changePassword: async (currentPassword: string, newPassword: string): Promise<void> => {
+    await api.post('/auth/change-password', { currentPassword, newPassword });
   },
 };
 
@@ -195,6 +201,24 @@ export const dashboardAPI = {
 export const aiAPI = {
   sendMessage: async (message: string, history?: ChatMessage[]): Promise<ChatResponse> => {
     const { data } = await api.post<ChatResponse>('/ai/chat', { message, history });
+    return data;
+  },
+};
+
+// Creators endpoints (Admin)
+export const creatorsAPI = {
+  search: async (params: {
+    q: string;
+    platform?: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<CreatorSearchResult> => {
+    const { data } = await api.get<CreatorSearchResult>('/creators/search', { params });
+    return data;
+  },
+
+  getProfile: async (creatorId: string): Promise<CreatorProfile> => {
+    const { data } = await api.get<CreatorProfile>(`/creators/${creatorId}`);
     return data;
   },
 };

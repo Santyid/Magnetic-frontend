@@ -31,9 +31,10 @@ export default function CreatorMarketplace() {
   const [debouncedQuery, setDebouncedQuery] = useState('');
 
   useEffect(() => {
+    const delay = platform === 'tiktok' ? 600 : 300;
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    }, 300);
+    }, delay);
     return () => clearTimeout(timer);
   }, [searchQuery]);
 

@@ -44,7 +44,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="text-ds-base text-grey-300 mb-6">
               Ocurrio un error inesperado. Por favor, recarga la pagina.
             </p>
-            {process.env.NODE_ENV !== 'production' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <pre className="text-left text-ds-xs text-error bg-error/5 rounded-lg p-4 mb-6 overflow-auto max-h-40">
                 {this.state.error.message}
               </pre>

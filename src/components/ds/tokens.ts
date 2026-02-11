@@ -100,10 +100,10 @@ export const sizes = {
     sm: { height: 36, fontSize: 13 },
   },
   avatar: {
-    xs: { size: 17, radius: 8.5 },
-    sm: { size: 28, radius: 10 },
-    md: { size: 36, radius: 12 },
-    lg: { size: 49, radius: 24.5 },
+    xs: { size: 18, radius: 9 },
+    sm: { size: 26, radius: 13 },
+    md: { size: 36, radius: 18 },
+    lg: { size: 50, radius: 25 },
   },
   chip: {
     md: { height: 28, px: 12, fontSize: 13 },
@@ -111,8 +111,8 @@ export const sizes = {
   },
   tab: {
     lg: { containerHeight: 48, itemHeight: 34 },
-    md: { containerHeight: 40, itemHeight: 32 },
-    sm: { containerHeight: 36, itemHeight: 28 },
+    md: { containerHeight: 40, itemHeight: 24 },
+    sm: { containerHeight: 30, itemHeight: 24 },
   },
   modal: {
     lg: { width: 699, minHeight: 412 },

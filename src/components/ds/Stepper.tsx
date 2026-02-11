@@ -58,7 +58,7 @@ export function StepperWithLabels({ steps, currentStep, className = '' }: Steppe
                 >
                   {isCompleted ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M5 13l4 4L19 7" />
                     </svg>
                   ) : (
                     stepNum
@@ -83,10 +83,10 @@ export function StepperWithLabels({ steps, currentStep, className = '' }: Steppe
 
               {!isLast && (
                 <div className="flex-1 mx-2 mt-[-20px]">
-                  <div className="h-[2px] bg-grey-50 rounded-full">
+                  <div className="h-[5px] bg-grey-50 rounded-xs">
                     <div
                       className={[
-                        'h-full bg-primary-500 rounded-full transition-all duration-300',
+                        'h-full bg-primary-500 rounded-xs transition-all duration-300',
                         isCompleted ? 'w-full' : 'w-0',
                       ].join(' ')}
                     />

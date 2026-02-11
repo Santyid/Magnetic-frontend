@@ -19,6 +19,10 @@ export type { ButtonProps, IconButtonProps, ButtonVariant, ButtonSize, TogglePro
 export { Input, PasswordInput, Textarea, Checkbox, Radio } from './Input';
 export type { InputProps, TextareaProps, CheckboxProps, RadioProps, InputSize } from './Input';
 
+// ─── DATE INPUT ─────────────────────────────────────────────────────────────────
+export { DateInput } from './DateInput';
+export type { DateInputProps, DateInputSize } from './DateInput';
+
 // ─── SELECT ────────────────────────────────────────────────────────────────────
 export { Select, Segment } from './Select';
 export type { SelectProps, SelectOption, SelectSize, SegmentProps, SegmentOption } from './Select';

@@ -26,13 +26,13 @@ export interface TabsProps {
 const containerSizes: Record<TabSize, string> = {
   lg: 'h-12 p-[7px] rounded-input gap-1',
   md: 'h-10 p-1 rounded-input gap-0.5',
-  sm: 'h-9 p-1 rounded-input gap-0.5',
+  sm: 'h-[30px] p-1 rounded-input gap-0.5',
 };
 
 const itemSizes: Record<TabSize, string> = {
   lg: 'h-[34px] px-4 text-ds-base rounded-sm',
-  md: 'h-8 px-3 text-ds-sm rounded-sm',
-  sm: 'h-7 px-2.5 text-ds-xs rounded-sm',
+  md: 'h-6 px-3 text-ds-sm rounded-sm',
+  sm: 'h-6 px-2.5 text-ds-xs rounded-sm',
 };
 
 // ─── TABS COMPONENT ────────────────────────────────────────────────────────────
@@ -71,7 +71,7 @@ export function Tabs({ items, value, onChange, size = 'md', fullWidth, className
             {item.badge !== undefined && item.badge > 0 && (
               <span
                 className={[
-                  'flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-semibold rounded-full',
+                  'flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-semibold rounded-[3px]',
                   isActive ? 'bg-error-400 text-white' : 'bg-grey-100 text-white',
                 ].join(' ')}
               >

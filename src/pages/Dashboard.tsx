@@ -71,7 +71,6 @@ export default function Dashboard() {
       const data = await productsAPI.getMyProducts();
       setProducts(data);
     } catch (error) {
-      console.error('Error loading products:', error);
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { useTranslation } from '../../i18n/LanguageContext';
 import { aiAPI } from '../../services/api';
 import type { ChatMessage } from '../../types';
@@ -60,8 +61,8 @@ export default function ChatDrawer({ onClose }: ChatDrawerProps) {
     try {
       const response = await aiAPI.sendMessage(trimmed, messages);
       setMessages([...history, { role: 'assistant', content: response.reply }]);
-    } catch (err: any) {
-      const status = err.response?.status;
+    } catch (err: unknown) {
+      const status = (err as AxiosError).response?.status;
       if (status === 429) {
         toast.error(t.ai.rateLimitError);
       } else {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { authAPI } from '../services/api';
 import { useTranslation } from '../i18n/LanguageContext';
 import LanguageSelector from '../components/ui/LanguageSelector';
@@ -83,8 +84,9 @@ export default function Register() {
       setTimeout(() => {
         navigate('/login');
       }, 2000);
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Error al registrar usuario');
+    } catch (err: unknown) {
+      const code = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(t.errorCodes[code as keyof typeof t.errorCodes] || t.register.errorMessage);
     } finally {
       setIsLoading(false);
     }

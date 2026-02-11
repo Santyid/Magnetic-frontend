@@ -318,6 +318,8 @@ export interface Translations {
     subtitle: string;
     searchPlaceholder: string;
     facebook: string;
+    instagram: string;
+    tiktok: string;
     followers: string;
     engagementRate: string;
     viewProfile: string;
@@ -329,6 +331,8 @@ export interface Translations {
     details: string;
     recentMedia: string;
     viewOnFacebook: string;
+    viewOnInstagram: string;
+    viewOnTiktok: string;
     loading: string;
     noResults: string;
     noResultsHint: string;
@@ -339,6 +343,7 @@ export interface Translations {
     errorProfile: string;
     rateLimitError: string;
     metaApiError: string;
+    tiktokApiError: string;
   };
 
   // Release Notes
@@ -355,6 +360,36 @@ export interface Translations {
     spanish: string;
     english: string;
     portuguese: string;
+  };
+
+  // Forgot Password
+  forgotPassword: {
+    title: string;
+    subtitle: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    sendButton: string;
+    sending: string;
+    successMessage: string;
+    backToLogin: string;
+    errorMessage: string;
+  };
+
+  // Error Codes (backend → frontend mapping)
+  errorCodes: {
+    INVALID_CREDENTIALS: string;
+    INACTIVE_USER: string;
+    INVALID_SESSION: string;
+    UNAUTHORIZED_USER: string;
+    INVALID_TOKEN: string;
+    CURRENT_PASSWORD_INVALID: string;
+    SESSION_NOT_FOUND: string;
+    RESET_TOKEN_INVALID: string;
+    RESET_TOKEN_EXPIRED: string;
+    PASSWORD_TOO_SHORT: string;
+    PASSWORD_TOO_WEAK: string;
+    INVALID_PRODUCT_CREDENTIALS: string;
+    [key: string]: string;
   };
 }
 
@@ -660,9 +695,11 @@ export const translations: Record<Language, Translations> = {
     },
     creators: {
       title: 'Creators',
-      subtitle: 'Descubre creadores en Facebook',
+      subtitle: 'Descubre creadores en Facebook, Instagram y TikTok',
       searchPlaceholder: 'Buscar creadores por palabra clave...',
       facebook: 'Facebook',
+      instagram: 'Instagram',
+      tiktok: 'TikTok',
       followers: 'Seguidores',
       engagementRate: 'Tasa de engagement',
       viewProfile: 'Ver perfil',
@@ -674,6 +711,8 @@ export const translations: Record<Language, Translations> = {
       details: 'Detalles del creador',
       recentMedia: 'Publicaciones recientes',
       viewOnFacebook: 'Ver en Facebook',
+      viewOnInstagram: 'Ver en Instagram',
+      viewOnTiktok: 'Ver en TikTok',
       loading: 'Buscando creadores...',
       noResults: 'No se encontraron creadores',
       noResultsHint: 'Intenta con otra palabra clave',
@@ -684,6 +723,7 @@ export const translations: Record<Language, Translations> = {
       errorProfile: 'Error al cargar perfil',
       rateLimitError: 'Has alcanzado el límite de búsquedas. Intenta más tarde.',
       metaApiError: 'Error de conexión con Meta API',
+      tiktokApiError: 'Error de conexión con TikTok API',
     },
     releaseNotes: {
       title: 'Novedades',
@@ -696,6 +736,38 @@ export const translations: Record<Language, Translations> = {
       spanish: 'Español',
       english: 'Inglés',
       portuguese: 'Portugués',
+    },
+    forgotPassword: {
+      title: 'Recuperar contrasena',
+      subtitle: 'Ingresa tu correo electronico y te enviaremos instrucciones para restablecer tu contrasena.',
+      emailLabel: 'Correo electronico',
+      emailPlaceholder: 'tu@email.com',
+      sendButton: 'Enviar instrucciones',
+      sending: 'Enviando...',
+      successMessage: 'Si existe una cuenta con ese correo, recibiras instrucciones para restablecer tu contrasena.',
+      backToLogin: 'Volver al inicio de sesion',
+      errorMessage: 'Error al enviar las instrucciones. Intenta de nuevo.',
+    },
+    errorCodes: {
+      INVALID_CREDENTIALS: 'Credenciales invalidas. Verifica tu correo y contrasena.',
+      INACTIVE_USER: 'Tu cuenta esta inactiva. Contacta al administrador.',
+      INVALID_SESSION: 'Sesion invalida. Inicia sesion nuevamente.',
+      UNAUTHORIZED_USER: 'No tienes autorizacion para esta accion.',
+      INVALID_TOKEN: 'Token invalido o expirado. Inicia sesion nuevamente.',
+      CURRENT_PASSWORD_INVALID: 'La contrasena actual es incorrecta.',
+      SESSION_NOT_FOUND: 'Sesion no encontrada.',
+      RESET_TOKEN_INVALID: 'El enlace de restablecimiento es invalido o ya fue utilizado.',
+      RESET_TOKEN_EXPIRED: 'El enlace de restablecimiento ha expirado. Solicita uno nuevo.',
+      PASSWORD_TOO_SHORT: 'La contrasena debe tener al menos 8 caracteres.',
+      PASSWORD_TOO_WEAK: 'La contrasena debe incluir mayuscula, numero y caracter especial.',
+      INVALID_PRODUCT_CREDENTIALS: 'Credenciales del producto invalidas. Verifica tu email y contrasena.',
+      EMAIL_ALREADY_EXISTS: 'El email ya esta registrado.',
+      USER_NOT_FOUND: 'Usuario no encontrado.',
+      PRODUCT_NOT_FOUND: 'Producto no encontrado.',
+      PRODUCT_ALREADY_EXISTS: 'Ya existe un producto con ese nombre.',
+      PRODUCT_ALREADY_ASSIGNED: 'El producto ya esta asignado al usuario.',
+      ASSIGNMENT_NOT_FOUND: 'Asignacion no encontrada.',
+      PRODUCT_ACCESS_DENIED: 'No tienes acceso a este producto.',
     },
   },
 
@@ -1000,9 +1072,11 @@ export const translations: Record<Language, Translations> = {
     },
     creators: {
       title: 'Creators',
-      subtitle: 'Discover creators on Facebook',
+      subtitle: 'Discover creators on Facebook, Instagram and TikTok',
       searchPlaceholder: 'Search creators by keyword...',
       facebook: 'Facebook',
+      instagram: 'Instagram',
+      tiktok: 'TikTok',
       followers: 'Followers',
       engagementRate: 'Engagement Rate',
       viewProfile: 'View Profile',
@@ -1014,6 +1088,8 @@ export const translations: Record<Language, Translations> = {
       details: 'Creator Details',
       recentMedia: 'Recent Posts',
       viewOnFacebook: 'View on Facebook',
+      viewOnInstagram: 'View on Instagram',
+      viewOnTiktok: 'View on TikTok',
       loading: 'Searching creators...',
       noResults: 'No creators found',
       noResultsHint: 'Try a different keyword',
@@ -1024,6 +1100,7 @@ export const translations: Record<Language, Translations> = {
       errorProfile: 'Error loading profile',
       rateLimitError: 'You have reached the search limit. Try again later.',
       metaApiError: 'Meta API connection error',
+      tiktokApiError: 'TikTok API connection error',
     },
     releaseNotes: {
       title: 'Release Notes',
@@ -1036,6 +1113,38 @@ export const translations: Record<Language, Translations> = {
       spanish: 'Spanish',
       english: 'English',
       portuguese: 'Portuguese',
+    },
+    forgotPassword: {
+      title: 'Reset Password',
+      subtitle: 'Enter your email address and we will send you instructions to reset your password.',
+      emailLabel: 'Email address',
+      emailPlaceholder: 'you@email.com',
+      sendButton: 'Send instructions',
+      sending: 'Sending...',
+      successMessage: 'If an account exists with that email, you will receive instructions to reset your password.',
+      backToLogin: 'Back to login',
+      errorMessage: 'Error sending instructions. Please try again.',
+    },
+    errorCodes: {
+      INVALID_CREDENTIALS: 'Invalid credentials. Check your email and password.',
+      INACTIVE_USER: 'Your account is inactive. Contact your administrator.',
+      INVALID_SESSION: 'Invalid session. Please log in again.',
+      UNAUTHORIZED_USER: 'You are not authorized for this action.',
+      INVALID_TOKEN: 'Invalid or expired token. Please log in again.',
+      CURRENT_PASSWORD_INVALID: 'Current password is incorrect.',
+      SESSION_NOT_FOUND: 'Session not found.',
+      RESET_TOKEN_INVALID: 'The reset link is invalid or has already been used.',
+      RESET_TOKEN_EXPIRED: 'The reset link has expired. Please request a new one.',
+      PASSWORD_TOO_SHORT: 'Password must be at least 8 characters long.',
+      PASSWORD_TOO_WEAK: 'Password must include an uppercase letter, a number, and a special character.',
+      INVALID_PRODUCT_CREDENTIALS: 'Invalid product credentials. Check your email and password.',
+      EMAIL_ALREADY_EXISTS: 'Email is already registered.',
+      USER_NOT_FOUND: 'User not found.',
+      PRODUCT_NOT_FOUND: 'Product not found.',
+      PRODUCT_ALREADY_EXISTS: 'A product with that name already exists.',
+      PRODUCT_ALREADY_ASSIGNED: 'Product is already assigned to the user.',
+      ASSIGNMENT_NOT_FOUND: 'Assignment not found.',
+      PRODUCT_ACCESS_DENIED: 'You do not have access to this product.',
     },
   },
 
@@ -1340,9 +1449,11 @@ export const translations: Record<Language, Translations> = {
     },
     creators: {
       title: 'Creators',
-      subtitle: 'Descubra criadores no Facebook',
+      subtitle: 'Descubra criadores no Facebook, Instagram e TikTok',
       searchPlaceholder: 'Buscar criadores por palavra-chave...',
       facebook: 'Facebook',
+      instagram: 'Instagram',
+      tiktok: 'TikTok',
       followers: 'Seguidores',
       engagementRate: 'Taxa de engajamento',
       viewProfile: 'Ver perfil',
@@ -1354,6 +1465,8 @@ export const translations: Record<Language, Translations> = {
       details: 'Detalhes do criador',
       recentMedia: 'Publicações recentes',
       viewOnFacebook: 'Ver no Facebook',
+      viewOnInstagram: 'Ver no Instagram',
+      viewOnTiktok: 'Ver no TikTok',
       loading: 'Buscando criadores...',
       noResults: 'Nenhum criador encontrado',
       noResultsHint: 'Tente outra palavra-chave',
@@ -1364,6 +1477,7 @@ export const translations: Record<Language, Translations> = {
       errorProfile: 'Erro ao carregar perfil',
       rateLimitError: 'Você atingiu o limite de buscas. Tente novamente mais tarde.',
       metaApiError: 'Erro de conexão com Meta API',
+      tiktokApiError: 'Erro de conexão com TikTok API',
     },
     releaseNotes: {
       title: 'Novidades',
@@ -1376,6 +1490,38 @@ export const translations: Record<Language, Translations> = {
       spanish: 'Espanhol',
       english: 'Inglês',
       portuguese: 'Português',
+    },
+    forgotPassword: {
+      title: 'Recuperar senha',
+      subtitle: 'Digite seu email e enviaremos instrucoes para redefinir sua senha.',
+      emailLabel: 'Endereco de email',
+      emailPlaceholder: 'voce@email.com',
+      sendButton: 'Enviar instrucoes',
+      sending: 'Enviando...',
+      successMessage: 'Se existe uma conta com esse email, voce recebera instrucoes para redefinir sua senha.',
+      backToLogin: 'Voltar ao login',
+      errorMessage: 'Erro ao enviar instrucoes. Tente novamente.',
+    },
+    errorCodes: {
+      INVALID_CREDENTIALS: 'Credenciais invalidas. Verifique seu email e senha.',
+      INACTIVE_USER: 'Sua conta esta inativa. Entre em contato com o administrador.',
+      INVALID_SESSION: 'Sessao invalida. Faca login novamente.',
+      UNAUTHORIZED_USER: 'Voce nao tem autorizacao para esta acao.',
+      INVALID_TOKEN: 'Token invalido ou expirado. Faca login novamente.',
+      CURRENT_PASSWORD_INVALID: 'A senha atual esta incorreta.',
+      SESSION_NOT_FOUND: 'Sessao nao encontrada.',
+      RESET_TOKEN_INVALID: 'O link de redefinicao e invalido ou ja foi utilizado.',
+      RESET_TOKEN_EXPIRED: 'O link de redefinicao expirou. Solicite um novo.',
+      PASSWORD_TOO_SHORT: 'A senha deve ter pelo menos 8 caracteres.',
+      PASSWORD_TOO_WEAK: 'A senha deve incluir maiuscula, numero e caractere especial.',
+      INVALID_PRODUCT_CREDENTIALS: 'Credenciais do produto invalidas. Verifique seu email e senha.',
+      EMAIL_ALREADY_EXISTS: 'O email ja esta registrado.',
+      USER_NOT_FOUND: 'Usuario nao encontrado.',
+      PRODUCT_NOT_FOUND: 'Produto nao encontrado.',
+      PRODUCT_ALREADY_EXISTS: 'Ja existe um produto com esse nome.',
+      PRODUCT_ALREADY_ASSIGNED: 'O produto ja esta atribuido ao usuario.',
+      ASSIGNMENT_NOT_FOUND: 'Atribuicao nao encontrada.',
+      PRODUCT_ACCESS_DENIED: 'Voce nao tem acesso a este produto.',
     },
   },
 };

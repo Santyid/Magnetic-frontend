@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { authAPI } from '../services/api';
+import type { AxiosError } from 'axios';
 import type { User, LoginCredentials } from '../types';
 
 interface AuthState {
@@ -34,9 +35,10 @@ export const useAuthStore = create<AuthState>((set) => ({
         isAuthenticated: true,
         isLoading: false,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const msg = (error as AxiosError<{ message: string }>).response?.data?.message;
       set({
-        error: error.response?.data?.message || 'Error al iniciar sesión',
+        error: msg || 'INVALID_CREDENTIALS',
         isLoading: false,
       });
       throw error;
@@ -50,7 +52,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         await authAPI.logout(refreshToken);
       }
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
     } finally {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');

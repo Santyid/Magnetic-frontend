@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { useTranslation, useLanguage } from '../../i18n/LanguageContext';
 import { Skeleton, SkeletonTableRow } from '../../components/ui/Skeleton';
 import { usersAPI } from '../../services/api';
@@ -37,8 +38,9 @@ function UserModal({ user, onClose, onSave, t }: UserModalProps) {
         await onSave(payload);
       }
       onClose();
-    } catch (err: any) {
-      setError(err.response?.data?.message || t.common.error);
+    } catch (err: unknown) {
+      const msg = (err as AxiosError<{ message: string }>).response?.data?.message;
+      setError(msg || t.common.error);
     } finally {
       setSaving(false);
     }
@@ -143,7 +145,6 @@ export default function Users() {
       const data = await usersAPI.getAll();
       setUsers(data);
     } catch (error) {
-      console.error('Error loading users:', error);
     } finally {
       setLoading(false);
     }

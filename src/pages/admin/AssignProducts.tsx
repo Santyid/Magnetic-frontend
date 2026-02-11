@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { useTranslation } from '../../i18n/LanguageContext';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { usersAPI, productsAPI } from '../../services/api';
@@ -36,7 +37,6 @@ export default function AssignProducts() {
         setUsers(usersData.filter((u) => !u.isAdmin));
         setProducts(productsData);
       } catch (err) {
-        console.error('Error loading data:', err);
       } finally {
         setLoading(false);
       }
@@ -58,7 +58,6 @@ export default function AssignProducts() {
       const data = await usersAPI.getProducts(userId);
       setUserProducts(data);
     } catch (err) {
-      console.error('Error loading user products:', err);
       setUserProducts([]);
     } finally {
       setLoadingProducts(false);
@@ -85,8 +84,9 @@ export default function AssignProducts() {
       setAssignForm({ productId: '', externalUserId: '', customDomain: '' });
       await loadUserProducts(selectedUserId);
       toast.success(t.admin.productAssigned);
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || t.common.error);
+    } catch (err: unknown) {
+      const msg = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(msg || t.common.error);
     } finally {
       setAssigning(false);
     }
@@ -97,8 +97,9 @@ export default function AssignProducts() {
       await productsAPI.removeUserProduct(userProductId);
       await loadUserProducts(selectedUserId);
       toast.success(t.admin.productRemoved);
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || t.common.error);
+    } catch (err: unknown) {
+      const msg = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(msg || t.common.error);
     }
   };
 

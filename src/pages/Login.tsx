@@ -17,10 +17,11 @@ export default function Login() {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      const translated = t.errorCodes[error] || error;
+      toast.error(translated);
       clearError();
     }
-  }, [error, clearError]);
+  }, [error, clearError, t.errorCodes]);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,

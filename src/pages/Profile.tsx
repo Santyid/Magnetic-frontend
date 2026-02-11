@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { useTranslation } from '../i18n/LanguageContext';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -54,8 +55,9 @@ export default function Profile() {
     try {
       await usersAPI.update(user.id, { firstName, lastName });
       toast.success(t.profile.savedSuccess);
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || t.profile.savedError);
+    } catch (err: unknown) {
+      const msg = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(msg || t.profile.savedError);
     } finally {
       setSaving(false);
     }
@@ -72,8 +74,9 @@ export default function Profile() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || t.changePassword.errorMessage);
+    } catch (err: unknown) {
+      const msg = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(msg || t.changePassword.errorMessage);
     } finally {
       setUpdatingPassword(false);
     }

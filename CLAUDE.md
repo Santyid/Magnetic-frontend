@@ -143,3 +143,30 @@ Ver [../docs/testing-e2e.md](../docs/testing-e2e.md) para detalles completos.
 ## Password Validation (Register)
 5 reglas en tiempo real: 8+ chars, especial, numero, mayuscula, coincidencia.
 Indicadores visuales (verde/rojo). Boton deshabilitado hasta cumplir todas.
+
+## Shared Resources (workspace root .claude/)
+
+### Rules relevantes para frontend
+| Rule | Tema |
+|------|------|
+| [design-system](../.claude/rules/design-system.md) | Colors, tokens, dark theme, animations |
+| [component-patterns](../.claude/rules/component-patterns.md) | React structure, modals, forms, a11y |
+| [state-management](../.claude/rules/state-management.md) | Zustand patterns, localStorage |
+| [i18n](../.claude/rules/i18n.md) | Languages, translations |
+| [performance](../.claude/rules/performance.md) | useMemo, bundle size, rendering |
+| [naming-conventions](../.claude/rules/naming-conventions.md) | Components, hooks, store |
+| [testing](../.claude/rules/testing.md) | Playwright E2E patterns |
+| [git-workflow](../.claude/rules/git-workflow.md) | Branches, commits |
+
+### Prompts utiles para frontend
+| Tarea | Prompt |
+|-------|--------|
+| Nueva pagina | [new-page](../.claude/prompts/new-page.md) |
+| Feature general | [new-feature](../.claude/prompts/new-feature.md) |
+| Corregir bug | [bug-fix](../.claude/prompts/bug-fix.md) |
+| Escribir tests | [write-tests](../.claude/prompts/write-tests.md) |
+| Refactorizar | [refactoring](../.claude/prompts/refactoring.md) |
+| Code review | [code-review](../.claude/prompts/code-review.md) |
+| Debug | [debug](../.claude/prompts/debug.md) |
+
+### Skills: `/health` `/seed` `/deploy` `/test` `/lint` `/db` `/status`

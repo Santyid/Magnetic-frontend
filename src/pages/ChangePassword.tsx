@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { useTranslation } from '../i18n/LanguageContext';
 import api from '../services/api';
 
@@ -52,8 +53,9 @@ export default function ChangePassword() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || t.changePassword.errorMessage);
+    } catch (err: unknown) {
+      const code = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(t.errorCodes[code as keyof typeof t.errorCodes] || t.changePassword.errorMessage);
     } finally {
       setSaving(false);
     }

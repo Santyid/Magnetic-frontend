@@ -22,7 +22,6 @@ export default function AdminDashboard() {
         setUsers(usersData);
         setProducts(productsData);
       } catch (error) {
-        console.error('Error loading admin data:', error);
       } finally {
         setLoading(false);
       }

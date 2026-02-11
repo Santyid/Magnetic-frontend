@@ -45,7 +45,7 @@ export function Status({
           className,
         ].join(' ')}
       >
-        <span className={['w-[6px] h-[6px] rounded-full', dotColors[type], pulse ? 'animate-pulse' : ''].join(' ')} />
+        <span className={['w-[10px] h-[10px] rounded-full', dotColors[type], pulse ? 'animate-pulse' : ''].join(' ')} />
         {label}
       </span>
     );

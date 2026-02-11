@@ -1,23 +1,33 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
+import { authAPI } from '../services/api';
+import { useTranslation } from '../i18n/LanguageContext';
+import LanguageSelector from '../components/ui/LanguageSelector';
 import backgroundImage from '../assets/images/magnetic-background.webp';
 import magneticLogo from '../assets/images/powered-by-magnetic-logo.svg';
 
 export default function ForgotPassword() {
+  const t = useTranslation();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [sent, setSent] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulación - aquí iría la llamada al API
-    setTimeout(() => {
-      setMessage('If an account exists with this email, you will receive password reset instructions.');
+    try {
+      await authAPI.forgotPassword(email);
+      setSent(true);
+    } catch (err: unknown) {
+      const code = (err as AxiosError<{ message: string }>).response?.data?.message;
+      toast.error(t.errorCodes[code as keyof typeof t.errorCodes] || t.forgotPassword.errorMessage);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -35,49 +45,54 @@ export default function ForgotPassword() {
       {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
+          {/* Language Selector */}
+          <div className="flex justify-end mb-4">
+            <LanguageSelector />
+          </div>
+
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-grey-500 mb-3">
-              Forgot your password?
+              {t.forgotPassword.title}
             </h1>
             <p className="text-grey-300">
-              Enter your email address and we'll send you instructions to reset your password.
+              {t.forgotPassword.subtitle}
             </p>
           </div>
 
           {/* Success Message */}
-          {message && (
+          {sent && (
             <div className="mb-6 p-4 bg-success/10 border border-success/30 rounded-lg">
-              <p className="text-sm text-success">{message}</p>
+              <p className="text-sm text-success">{t.forgotPassword.successMessage}</p>
             </div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Input */}
-            <div>
-              <label className="block text-sm font-medium text-grey-500 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-grey-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                placeholder=""
-                required
-              />
-            </div>
+          {!sent && (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-grey-500 mb-2">
+                  {t.forgotPassword.emailLabel}
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 border border-grey-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder={t.forgotPassword.emailPlaceholder}
+                  required
+                />
+              </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Sending...' : 'Send reset instructions'}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? t.forgotPassword.sending : t.forgotPassword.sendButton}
+              </button>
+            </form>
+          )}
 
           {/* Back to Login */}
           <div className="mt-8 text-center">
@@ -86,7 +101,7 @@ export default function ForgotPassword() {
               onClick={() => navigate('/login')}
               className="text-primary-500 hover:text-primary-600 font-medium"
             >
-              ← Back to login
+              &larr; {t.forgotPassword.backToLogin}
             </button>
           </div>
 

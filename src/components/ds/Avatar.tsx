@@ -25,10 +25,10 @@ export interface AvatarGroupProps {
 // ─── STYLE MAPS ────────────────────────────────────────────────────────────────
 
 const sizeStyles: Record<AvatarSize, { container: string; text: string; status: string }> = {
-  xs: { container: 'w-[17px] h-[17px] rounded-[8.5px]', text: 'text-[8px]', status: 'w-1.5 h-1.5 -right-0 -bottom-0' },
-  sm: { container: 'w-7 h-7 rounded-[10px]', text: 'text-[10px]', status: 'w-2 h-2 -right-0.5 -bottom-0.5' },
-  md: { container: 'w-9 h-9 rounded-[12px]', text: 'text-ds-xs', status: 'w-2.5 h-2.5 -right-0.5 -bottom-0.5' },
-  lg: { container: 'w-[49px] h-[49px] rounded-[24.5px]', text: 'text-ds-lg', status: 'w-3 h-3 right-0 bottom-0' },
+  xs: { container: 'w-[18px] h-[18px] rounded-full', text: 'text-[8px]', status: 'w-1.5 h-1.5 -right-0 -bottom-0' },
+  sm: { container: 'w-[26px] h-[26px] rounded-full', text: 'text-[10px]', status: 'w-2 h-2 -right-0.5 -bottom-0.5' },
+  md: { container: 'w-9 h-9 rounded-full', text: 'text-ds-xs', status: 'w-2.5 h-2.5 -right-0.5 -bottom-0.5' },
+  lg: { container: 'w-[50px] h-[50px] rounded-full', text: 'text-ds-lg', status: 'w-3 h-3 right-0 bottom-0' },
 };
 
 const colorStyles: Record<AvatarColor, string> = {
@@ -41,7 +41,7 @@ const colorStyles: Record<AvatarColor, string> = {
 };
 
 const statusColors: Record<string, string> = {
-  online: 'bg-success-400',
+  online: 'bg-primary-500',
   offline: 'bg-grey-300',
   error: 'bg-error-400',
   warning: 'bg-warning-400',

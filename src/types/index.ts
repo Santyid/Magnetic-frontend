@@ -98,7 +98,7 @@ export interface MetricsResponse {
 }
 
 // Creator Marketplace
-export type CreatorPlatform = 'facebook';
+export type CreatorPlatform = 'facebook' | 'instagram' | 'tiktok';
 
 export interface CreatorSummary {
   id: string;

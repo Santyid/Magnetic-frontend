@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import type { AxiosError } from 'axios';
 import { useTranslation } from '../../i18n/LanguageContext';
 import { dashboardAPI } from '../../services/api';
 import type { UserProduct } from '../../types';
@@ -48,8 +49,8 @@ export default function ConnectProductModal({ userProduct, onClose, onSuccess }:
       toast.success(t.metrics.connected);
       onSuccess();
       onClose();
-    } catch (err: any) {
-      const msg = err.response?.data?.message;
+    } catch (err: unknown) {
+      const msg = (err as AxiosError<{ message: string }>).response?.data?.message;
       if (msg === 'INVALID_PRODUCT_CREDENTIALS') {
         toast.error(t.metrics.connectionError);
       } else {

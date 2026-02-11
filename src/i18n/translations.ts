@@ -33,17 +33,20 @@ export interface Translations {
     alreadyHaveAccount: string;
     createAccount: string;
     welcomeBack: string;
+    welcomeBackSubtitle: string;
     emailPlaceholder: string;
     passwordPlaceholder: string;
     confirmPasswordPlaceholder: string;
     firstNamePlaceholder: string;
     lastNamePlaceholder: string;
+    back: string;
   };
 
   // Register
   register: {
     title: string;
     subtitle: string;
+    createPasswordSubtitle: string;
     emailLabel: string;
     nameLabel: string;
     lastNameLabel: string;
@@ -131,11 +134,16 @@ export interface Translations {
     hasSpecialChar: string;
     hasNumber: string;
     hasUpperCase: string;
+    hasLowerCase: string;
     passwordsMatch: string;
     updateButton: string;
     updating: string;
     successMessage: string;
     errorMessage: string;
+    strengthTitle: string;
+    strengthWeak: string;
+    strengthMedium: string;
+    strengthStrong: string;
   };
 
   // Dashboard extra
@@ -344,6 +352,9 @@ export interface Translations {
     rateLimitError: string;
     metaApiError: string;
     tiktokApiError: string;
+    creatorPrice: string;
+    medianViews: string;
+    views: string;
   };
 
   // Release Notes
@@ -352,6 +363,39 @@ export interface Translations {
     subtitle: string;
     noProducts: string;
     noUpdates: string;
+    viewMore: string;
+    viewLess: string;
+  };
+
+  // Release Notes Page
+  releaseNotesPage: {
+    title: string;
+    subtitle: string;
+  };
+
+  // Auth Social
+  authSocial: {
+    continueWithEmail: string;
+    continueWithGoogle: string;
+    continueWithFacebook: string;
+    continueWithApple: string;
+    orSignUpWith: string;
+    orConnectWith: string;
+    comingSoon: string;
+    tagline: string;
+    taglineSubtitle: string;
+  };
+
+  // Auth 2FA
+  auth2fa: {
+    title: string;
+    emailSubtitle: string;
+    appSubtitle: string;
+    confirmButton: string;
+    resendCode: string;
+    resendLink: string;
+    invalidCode: string;
+    codeLabel: string;
   };
 
   // Language Selector
@@ -373,6 +417,10 @@ export interface Translations {
     successMessage: string;
     backToLogin: string;
     errorMessage: string;
+    sentTitle: string;
+    sentSubtitle: string;
+    resetTitle: string;
+    resetSubtitle: string;
   };
 
   // Error Codes (backend → frontend mapping)
@@ -430,10 +478,13 @@ export const translations: Record<Language, Translations> = {
       confirmPasswordPlaceholder: 'Escribe nuevamente tu contraseña',
       firstNamePlaceholder: 'Escribe tu nombre',
       lastNamePlaceholder: 'Escribe tu apellido',
+      back: 'Atrás',
+      welcomeBackSubtitle: 'Inicia sesión con tu correo electrónico o vuelve para elegir otro método.',
     },
     register: {
       title: 'Crear cuenta',
       subtitle: 'Completa el formulario para crear tu cuenta en Login Magnetic.',
+      createPasswordSubtitle: 'Crea tu contraseña segura',
       emailLabel: 'Correo o usuario',
       nameLabel: 'Nombre',
       lastNameLabel: 'Apellido',
@@ -513,11 +564,16 @@ export const translations: Record<Language, Translations> = {
       hasSpecialChar: 'Al menos un carácter especial (!@#$%^&*)',
       hasNumber: 'Al menos un número',
       hasUpperCase: 'Al menos una mayúscula',
+      hasLowerCase: 'Al menos una letra minúscula',
       passwordsMatch: 'Las contraseñas coinciden',
       updateButton: 'Actualizar Contraseña',
       updating: 'Actualizando...',
       successMessage: 'Contraseña actualizada correctamente.',
       errorMessage: 'Error al cambiar la contraseña',
+      strengthTitle: 'Fortaleza de contraseña',
+      strengthWeak: 'Débil',
+      strengthMedium: 'Media',
+      strengthStrong: 'Fuerte',
     },
     dashboardExtra: {
       welcome: 'Bienvenido',
@@ -724,12 +780,42 @@ export const translations: Record<Language, Translations> = {
       rateLimitError: 'Has alcanzado el límite de búsquedas. Intenta más tarde.',
       metaApiError: 'Error de conexión con Meta API',
       tiktokApiError: 'Error de conexión con TikTok API',
+      creatorPrice: 'Precio estimado',
+      medianViews: 'Views promedio',
+      views: 'Views',
     },
     releaseNotes: {
       title: 'Novedades',
       subtitle: 'Descubre las últimas mejoras en tus productos conectados',
       noProducts: 'No tienes productos para ver novedades',
       noUpdates: 'No hay novedades disponibles para este producto',
+      viewMore: 'Ver más',
+      viewLess: 'Ver menos',
+    },
+    releaseNotesPage: {
+      title: 'Novedades',
+      subtitle: 'Descubre las últimas mejoras en tus productos conectados',
+    },
+    authSocial: {
+      continueWithEmail: 'Continuar con correo electrónico',
+      continueWithGoogle: 'Continuar con Google',
+      continueWithFacebook: 'Continuar con Facebook',
+      continueWithApple: 'Continuar con Apple',
+      orSignUpWith: 'O regístrate con',
+      orConnectWith: 'O conéctate con',
+      comingSoon: 'Próximamente',
+      tagline: '¡Programa el contenido y mantén la frecuencia que necesita tu red social!',
+      taglineSubtitle: 'Inicia sesión con una de las siguientes opciones.',
+    },
+    auth2fa: {
+      title: 'Verificación en dos pasos',
+      emailSubtitle: 'Ingresa el código de verificación que enviamos a tu correo electrónico',
+      appSubtitle: 'Ingresa el código de verificación de la aplicación de autenticación',
+      confirmButton: 'Confirmar',
+      resendCode: 'Enviar nuevo código',
+      resendLink: 'nuevo código',
+      invalidCode: 'Código inválido. Intenta de nuevo.',
+      codeLabel: 'Escribe tu código de seguridad de 6 dígitos',
     },
     language: {
       select: 'Idioma',
@@ -747,6 +833,10 @@ export const translations: Record<Language, Translations> = {
       successMessage: 'Si existe una cuenta con ese correo, recibiras instrucciones para restablecer tu contrasena.',
       backToLogin: 'Volver al inicio de sesion',
       errorMessage: 'Error al enviar las instrucciones. Intenta de nuevo.',
+      sentTitle: '¡Revisa tu correo!',
+      sentSubtitle: 'Te hemos enviado un enlace para restablecer tu contraseña. Revisa tu bandeja de entrada.',
+      resetTitle: '¡Casi allí!',
+      resetSubtitle: 'Crea tu nueva contraseña segura',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Credenciales invalidas. Verifica tu correo y contrasena.',
@@ -807,10 +897,13 @@ export const translations: Record<Language, Translations> = {
       confirmPasswordPlaceholder: 'Enter your password again',
       firstNamePlaceholder: 'Enter your first name',
       lastNamePlaceholder: 'Enter your last name',
+      back: 'Back',
+      welcomeBackSubtitle: 'Log in via email or go back for other method.',
     },
     register: {
       title: 'Create account',
       subtitle: 'Fill out the form to create your account on Login Magnetic.',
+      createPasswordSubtitle: 'Create your secure password',
       emailLabel: 'Email or username',
       nameLabel: 'First name',
       lastNameLabel: 'Last name',
@@ -890,11 +983,16 @@ export const translations: Record<Language, Translations> = {
       hasSpecialChar: 'At least one special character (!@#$%^&*)',
       hasNumber: 'At least one number',
       hasUpperCase: 'At least one uppercase letter',
+      hasLowerCase: 'At least one lowercase',
       passwordsMatch: 'Passwords match',
       updateButton: 'Update Password',
       updating: 'Updating...',
       successMessage: 'Password updated successfully.',
       errorMessage: 'Error changing password',
+      strengthTitle: 'Pick a password',
+      strengthWeak: 'Weak',
+      strengthMedium: 'Medium',
+      strengthStrong: 'Strong',
     },
     dashboardExtra: {
       welcome: 'Welcome',
@@ -1101,12 +1199,42 @@ export const translations: Record<Language, Translations> = {
       rateLimitError: 'You have reached the search limit. Try again later.',
       metaApiError: 'Meta API connection error',
       tiktokApiError: 'TikTok API connection error',
+      creatorPrice: 'Estimated Price',
+      medianViews: 'Avg. Views',
+      views: 'Views',
     },
     releaseNotes: {
       title: 'Release Notes',
       subtitle: 'Discover the latest improvements in your connected products',
       noProducts: 'No products available to view updates',
       noUpdates: 'No updates available for this product',
+      viewMore: 'View more',
+      viewLess: 'View less',
+    },
+    releaseNotesPage: {
+      title: 'What\'s new',
+      subtitle: 'Discover the latest improvements in your connected products',
+    },
+    authSocial: {
+      continueWithEmail: 'Continue with email',
+      continueWithGoogle: 'Continue with Google',
+      continueWithFacebook: 'Continue with Facebook',
+      continueWithApple: 'Continue with Apple',
+      orSignUpWith: 'Or sign up with',
+      orConnectWith: 'Or connect with',
+      comingSoon: 'Coming soon',
+      tagline: 'Schedule content and keep the frequency your social media needs!',
+      taglineSubtitle: 'Log in with one of the following options.',
+    },
+    auth2fa: {
+      title: 'Two-step verification',
+      emailSubtitle: 'Enter the verification code we sent to your email',
+      appSubtitle: 'Enter the verification code from your authentication app',
+      confirmButton: 'Confirm',
+      resendCode: 'Send new code',
+      resendLink: 'new code',
+      invalidCode: 'Invalid code. Try again.',
+      codeLabel: 'Enter your 6-digit security code',
     },
     language: {
       select: 'Language',
@@ -1124,6 +1252,10 @@ export const translations: Record<Language, Translations> = {
       successMessage: 'If an account exists with that email, you will receive instructions to reset your password.',
       backToLogin: 'Back to login',
       errorMessage: 'Error sending instructions. Please try again.',
+      sentTitle: 'Check your email!',
+      sentSubtitle: 'We sent you a link to reset your password. Check your inbox.',
+      resetTitle: 'Almost there!',
+      resetSubtitle: 'Create your new secure password',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Invalid credentials. Check your email and password.',
@@ -1184,10 +1316,13 @@ export const translations: Record<Language, Translations> = {
       confirmPasswordPlaceholder: 'Digite sua senha novamente',
       firstNamePlaceholder: 'Digite seu nome',
       lastNamePlaceholder: 'Digite seu sobrenome',
+      back: 'Voltar',
+      welcomeBackSubtitle: 'Faça login pelo email ou volte para outro método.',
     },
     register: {
       title: 'Criar conta',
       subtitle: 'Preencha o formulário para criar sua conta no Login Magnetic.',
+      createPasswordSubtitle: 'Crie sua senha segura',
       emailLabel: 'E-mail ou usuário',
       nameLabel: 'Nome',
       lastNameLabel: 'Sobrenome',
@@ -1267,11 +1402,16 @@ export const translations: Record<Language, Translations> = {
       hasSpecialChar: 'Pelo menos um caractere especial (!@#$%^&*)',
       hasNumber: 'Pelo menos um número',
       hasUpperCase: 'Pelo menos uma letra maiúscula',
+      hasLowerCase: 'Pelo menos uma letra minúscula',
       passwordsMatch: 'As senhas coincidem',
       updateButton: 'Atualizar Senha',
       updating: 'Atualizando...',
       successMessage: 'Senha atualizada com sucesso.',
       errorMessage: 'Erro ao alterar a senha',
+      strengthTitle: 'Força da senha',
+      strengthWeak: 'Fraca',
+      strengthMedium: 'Média',
+      strengthStrong: 'Forte',
     },
     dashboardExtra: {
       welcome: 'Bem-vindo',
@@ -1478,12 +1618,42 @@ export const translations: Record<Language, Translations> = {
       rateLimitError: 'Você atingiu o limite de buscas. Tente novamente mais tarde.',
       metaApiError: 'Erro de conexão com Meta API',
       tiktokApiError: 'Erro de conexão com TikTok API',
+      creatorPrice: 'Preço estimado',
+      medianViews: 'Views médias',
+      views: 'Views',
     },
     releaseNotes: {
       title: 'Novidades',
       subtitle: 'Descubra as últimas melhorias nos seus produtos conectados',
       noProducts: 'Nenhum produto disponível para ver novidades',
       noUpdates: 'Nenhuma novidade disponível para este produto',
+      viewMore: 'Ver mais',
+      viewLess: 'Ver menos',
+    },
+    releaseNotesPage: {
+      title: 'Novidades',
+      subtitle: 'Descubra as últimas melhorias nos seus produtos conectados',
+    },
+    authSocial: {
+      continueWithEmail: 'Continuar com email',
+      continueWithGoogle: 'Continuar com Google',
+      continueWithFacebook: 'Continuar com Facebook',
+      continueWithApple: 'Continuar com Apple',
+      orSignUpWith: 'Ou registre-se com',
+      orConnectWith: 'Ou conecte-se com',
+      comingSoon: 'Em breve',
+      tagline: 'Programe o conteúdo e mantenha a frequência que sua rede social precisa!',
+      taglineSubtitle: 'Inicie sessão com uma das seguintes opções.',
+    },
+    auth2fa: {
+      title: 'Verificação em duas etapas',
+      emailSubtitle: 'Insira o código de verificação que enviamos para seu email',
+      appSubtitle: 'Insira o código de verificação do aplicativo de autenticação',
+      confirmButton: 'Confirmar',
+      resendCode: 'Enviar novo código',
+      resendLink: 'novo código',
+      invalidCode: 'Código inválido. Tente novamente.',
+      codeLabel: 'Digite seu código de segurança de 6 dígitos',
     },
     language: {
       select: 'Idioma',
@@ -1501,6 +1671,10 @@ export const translations: Record<Language, Translations> = {
       successMessage: 'Se existe uma conta com esse email, voce recebera instrucoes para redefinir sua senha.',
       backToLogin: 'Voltar ao login',
       errorMessage: 'Erro ao enviar instrucoes. Tente novamente.',
+      sentTitle: 'Verifique seu email!',
+      sentSubtitle: 'Enviamos um link para redefinir sua senha. Verifique sua caixa de entrada.',
+      resetTitle: 'Quase lá!',
+      resetSubtitle: 'Crie sua nova senha segura',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Credenciais invalidas. Verifique seu email e senha.',

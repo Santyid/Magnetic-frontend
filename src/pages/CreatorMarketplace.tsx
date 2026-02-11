@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { AxiosError } from 'axios';
 import { useTranslation } from '../i18n/LanguageContext';
 import { creatorsAPI } from '../services/api';
-import TopBanner from '../components/layout/TopBanner';
 import CreatorCard from '../components/creators/CreatorCard';
 import CreatorProfileModal from '../components/creators/CreatorProfileModal';
 import PlatformToggle from '../components/creators/PlatformToggle';
@@ -12,7 +10,6 @@ import toast from 'react-hot-toast';
 
 export default function CreatorMarketplace() {
   const t = useTranslation();
-  const navigate = useNavigate();
 
   // Platform state
   const [platform, setPlatform] = useState<CreatorPlatform>('facebook');
@@ -113,20 +110,9 @@ export default function CreatorMarketplace() {
     setHasSearched(false);
   };
 
-  const handleTabChange = (tab: string) => {
-    if (tab === 'dashboard') {
-      navigate('/dashboard');
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white">
-      <TopBanner
-        activeTab="creators"
-        onTabChange={handleTabChange}
-      />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div>
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-grey-500">{t.creators.title}</h1>
@@ -220,7 +206,7 @@ export default function CreatorMarketplace() {
             )}
           </>
         )}
-      </main>
+      </div>
 
       {/* Loading profile overlay */}
       {loadingProfile && (

@@ -19,16 +19,23 @@ function formatNumber(num: number | undefined): string {
   return num.toLocaleString();
 }
 
+function formatPrice(price: number | undefined, currency?: string): string {
+  if (!price) return '—';
+  const curr = currency || 'USD';
+  return `$${price.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })} ${curr}`;
+}
+
 export default function CreatorProfileModal({ creator, onClose }: CreatorProfileModalProps) {
   const t = useTranslation();
 
   const stats = [
     { label: t.creators.followers, value: formatFollowers(creator.followersCount) },
+    { label: t.creators.engagementRate, value: `${creator.engagementRate.toFixed(1)}%` },
+    { label: t.creators.medianViews, value: formatNumber(creator.medianViews) },
+    { label: t.creators.creatorPrice, value: formatPrice(creator.creatorPrice, creator.currency) },
     { label: t.creators.mediaCount, value: formatNumber(creator.mediaCount) },
     { label: t.creators.avgLikes, value: formatNumber(creator.avgLikes) },
-    { label: t.creators.avgComments, value: formatNumber(creator.avgComments) },
-    { label: t.creators.engagementRate, value: `${creator.engagementRate.toFixed(1)}%` },
-  ];
+  ].filter((s) => s.value !== '—');
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
@@ -90,7 +97,7 @@ export default function CreatorProfileModal({ creator, onClose }: CreatorProfile
 
         {/* Stats */}
         <div className="px-6 py-4 border-b border-grey-50">
-          <div className="grid grid-cols-5 gap-4">
+          <div className={`grid gap-4 ${stats.length <= 3 ? 'grid-cols-3' : stats.length <= 4 ? 'grid-cols-4' : stats.length <= 5 ? 'grid-cols-5' : 'grid-cols-3 sm:grid-cols-6'}`}>
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="text-lg font-semibold text-grey-500">{stat.value}</p>
@@ -178,6 +185,15 @@ export default function CreatorProfileModal({ creator, onClose }: CreatorProfile
                   {/* Overlay with stats */}
                   <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
                     <div className="flex items-center gap-3 text-white text-xs font-medium">
+                      {media.viewCount ? (
+                        <span className="flex items-center gap-1">
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          {formatNumber(media.viewCount)}
+                        </span>
+                      ) : null}
                       <span className="flex items-center gap-1">
                         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />

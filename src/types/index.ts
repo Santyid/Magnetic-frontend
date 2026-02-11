@@ -123,6 +123,9 @@ export interface CreatorProfile extends CreatorSummary {
   mediaCount?: number;
   avgLikes?: number;
   avgComments?: number;
+  creatorPrice?: number;
+  currency?: string;
+  medianViews?: number;
   recentMedia?: Array<{
     id: string;
     type: 'IMAGE' | 'VIDEO' | 'CAROUSEL';
@@ -130,6 +133,7 @@ export interface CreatorProfile extends CreatorSummary {
     caption?: string;
     likeCount: number;
     commentCount: number;
+    viewCount?: number;
     timestamp?: string;
   }>;
 }

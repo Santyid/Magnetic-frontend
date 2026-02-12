@@ -8,6 +8,10 @@ export async function loginAs(
   expectedPath: string,
 ) {
   await page.goto('/login');
+  // Step 1: Click "Continue with email" button
+  await page.getByRole('button', { name: /correo|email/i }).click();
+  await page.waitForURL('**/login/email**', { timeout: 10_000 });
+  // Step 2: Fill credentials and submit
   await page.getByPlaceholder(/correo|email|usuario/i).fill(email);
   await page.getByPlaceholder(/contraseña|password|senha/i).fill(password);
   await page.getByRole('button', { name: /iniciar|log in|entrar/i }).click();

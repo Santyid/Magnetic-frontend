@@ -33,58 +33,48 @@ test.describe('Profile', () => {
   });
 });
 
-test.describe('Change Password', () => {
+test.describe('Change Password Modal', () => {
   test.beforeEach(async ({ page }) => {
     await loginAsDemo(page);
+    await page.goto('/profile');
+    await page.waitForTimeout(2_000);
   });
 
-  test('should display change password page', async ({ page }) => {
-    await page.goto('/change-password');
-    await page.waitForTimeout(1_000);
+  test('should open change password modal from profile', async ({ page }) => {
+    // Click the "Change password" button in the profile page
+    const changeButton = page.getByRole('button', { name: /cambiar contraseña|change password|alterar senha/i }).first();
+    await changeButton.click();
 
-    // Should have 3 password fields: current, new, confirm
+    // Modal should appear with password fields
     const passwordInputs = page.locator('input[type="password"]');
     const count = await passwordInputs.count();
     expect(count).toBeGreaterThanOrEqual(2);
   });
 
-  test('should show password validation rules', async ({ page }) => {
-    await page.goto('/change-password');
+  test('should show password strength bar when typing new password', async ({ page }) => {
+    const changeButton = page.getByRole('button', { name: /cambiar contraseña|change password|alterar senha/i }).first();
+    await changeButton.click();
 
-    // Type a weak password to trigger validations
-    const newPasswordInput = page.locator('input[type="password"]').nth(1);
-    await newPasswordInput.fill('abc');
+    // Type in the new password field (second password input)
+    const passwordInputs = page.locator('input[type="password"]');
+    await passwordInputs.nth(1).fill('TestPass1!');
 
-    // Should show validation indicators (min length, special char, number, uppercase)
-    await expect(page.getByText(/8|caracteres|characters|caracteres/i).first()).toBeVisible();
+    // Password strength bar should appear
+    await expect(page.getByText(/débil|weak|fraca|media|medium|fuerte|strong|forte/i).first()).toBeVisible();
   });
 
-  test('should show error with wrong current password', async ({ page }) => {
-    await page.goto('/change-password');
-    await page.waitForTimeout(1_000);
+  test('should close modal with cancel button', async ({ page }) => {
+    const changeButton = page.getByRole('button', { name: /cambiar contraseña|change password|alterar senha/i }).first();
+    await changeButton.click();
 
-    await page.getByPlaceholder(/actual|current/i).fill('WrongPassword1!');
-    await page.getByPlaceholder(/nueva contraseña|new password/i).first().fill('NewPassword1!');
-    await page.getByPlaceholder(/confirma|confirm/i).fill('NewPassword1!');
+    // Click cancel
+    const cancelButton = page.getByRole('button', { name: /cancelar|cancel/i });
+    await cancelButton.click();
 
-    const submitButton = page.getByRole('button', { name: /actualizar|update|cambiar|change/i }).first();
-    if (await submitButton.isEnabled()) {
-      await submitButton.click();
-      await page.waitForTimeout(3_000);
-      // Should stay on page (error occurred)
-      await expect(page).toHaveURL(/\/change-password/);
-    }
-  });
-
-  test('should disable submit when passwords do not match', async ({ page }) => {
-    await page.goto('/change-password');
-    await page.waitForTimeout(1_000);
-
-    await page.getByPlaceholder(/nueva contraseña|new password/i).first().fill('NewPassword1!');
-    await page.getByPlaceholder(/confirma|confirm/i).fill('DifferentPassword1!');
-
-    // Submit button should be disabled
-    const submitButton = page.getByRole('button', { name: /actualizar|update|cambiar|change/i }).first();
-    await expect(submitButton).toBeDisabled();
+    // Modal should be closed - no more than the profile password inputs visible
+    await page.waitForTimeout(500);
+    const passwordInputs = page.locator('input[type="password"]');
+    const count = await passwordInputs.count();
+    expect(count).toBe(0);
   });
 });

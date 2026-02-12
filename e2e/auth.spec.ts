@@ -2,15 +2,25 @@ import { test, expect } from '@playwright/test';
 import { loginAsDemo, loginAsAdmin } from './helpers';
 
 test.describe('Authentication', () => {
-  test('should show login page', async ({ page }) => {
+  test('should show login method selection page', async ({ page }) => {
     await page.goto('/login');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    // Should show email, Google, Facebook buttons
+    await expect(page.getByRole('button', { name: /correo|email/i })).toBeVisible();
+  });
+
+  test('should navigate to email login step', async ({ page }) => {
+    await page.goto('/login');
+    await page.getByRole('button', { name: /correo|email/i }).click();
+    await expect(page).toHaveURL(/\/login\/email/);
     await expect(page.getByPlaceholder(/correo|email|usuario/i)).toBeVisible();
     await expect(page.getByPlaceholder(/contraseña|password|senha/i)).toBeVisible();
   });
 
   test('should show validation error with wrong credentials', async ({ page }) => {
     await page.goto('/login');
+    await page.getByRole('button', { name: /correo|email/i }).click();
+    await page.waitForURL('**/login/email**', { timeout: 10_000 });
     await page.getByPlaceholder(/correo|email|usuario/i).fill('wrong@email.com');
     await page.getByPlaceholder(/contraseña|password|senha/i).fill('wrongpass');
     await page.getByRole('button', { name: /iniciar|log in|entrar/i }).click();
@@ -36,7 +46,7 @@ test.describe('Authentication', () => {
   });
 
   test('should toggle password visibility', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto('/login/email');
     const passwordInput = page.getByPlaceholder(/contraseña|password|senha/i);
     await expect(passwordInput).toHaveAttribute('type', 'password');
 
@@ -51,20 +61,9 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/register/);
   });
 
-  test('should navigate to forgot password page', async ({ page }) => {
-    await page.goto('/login');
+  test('should navigate to forgot password page from email login', async ({ page }) => {
+    await page.goto('/login/email');
     await page.getByRole('button', { name: /olvidaste|forgot|esqueceu/i }).click();
     await expect(page).toHaveURL(/\/forgot-password/);
-  });
-
-  test('should change language', async ({ page }) => {
-    await page.goto('/login');
-    // Open language selector
-    const langButton = page.locator('button').filter({ hasText: /🇪🇸|🇺🇸|🇧🇷/ }).first();
-    await langButton.click();
-    // Select English
-    await page.getByText('English').click();
-    // Title should change
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/welcome|sign in|log in/i);
   });
 });

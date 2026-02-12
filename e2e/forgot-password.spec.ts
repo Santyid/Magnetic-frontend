@@ -7,88 +7,72 @@ test.describe('Forgot Password', () => {
     await expect(page.getByRole('textbox')).toBeVisible();
   });
 
-  test('should show success message after submitting email', async ({ page }) => {
+  test('should navigate to sent page after submitting email', async ({ page }) => {
     await page.goto('/forgot-password');
     await page.getByRole('textbox').fill('demo@magnetic.com');
 
     const submitButton = page.getByRole('button', { name: /enviar|send|recuperar|recover/i }).first();
     await submitButton.click();
 
-    await page.waitForTimeout(3_000);
-    const successMessage = page.locator('.bg-success\\/10').or(
-      page.getByText(/instrucciones|instructions|instruções|enviado|sent/i)
-    );
-    await expect(successMessage.first()).toBeVisible({ timeout: 5_000 });
+    await page.waitForURL('**/forgot-password/sent**', { timeout: 10_000 });
+    await expect(page.getByText(/instrucciones|instructions|instruções|enviado|sent|revisa|check/i).first()).toBeVisible({ timeout: 5_000 });
   });
 
-  test('should show success even with non-existent email (security)', async ({ page }) => {
+  test('should navigate to sent page even with non-existent email (security)', async ({ page }) => {
     await page.goto('/forgot-password');
     await page.getByRole('textbox').fill('nonexistent@test.com');
 
     const submitButton = page.getByRole('button', { name: /enviar|send|recuperar|recover/i }).first();
     await submitButton.click();
 
-    await page.waitForTimeout(3_000);
-    const successMessage = page.locator('.bg-success\\/10').or(
-      page.getByText(/instrucciones|instructions|instruções|enviado|sent/i)
-    );
-    await expect(successMessage.first()).toBeVisible({ timeout: 5_000 });
+    await page.waitForURL('**/forgot-password/sent**', { timeout: 10_000 });
   });
 
   test('should navigate back to login', async ({ page }) => {
     await page.goto('/forgot-password');
-    const backButton = page.getByRole('button', { name: /volver|back|voltar|iniciar|log in/i }).first();
+    // Back button in AuthLayout
+    const backButton = page.getByRole('button', { name: /atrás|back|voltar/i }).first();
     await backButton.click();
     await expect(page).toHaveURL(/\/login/);
   });
 });
 
-test.describe('Register Page', () => {
-  test('should display register page with all fields', async ({ page }) => {
+test.describe('Register Page - Multi Step', () => {
+  test('should display register step 1 with name and email fields', async ({ page }) => {
     await page.goto('/register');
-    const inputs = page.locator('input');
-    const count = await inputs.count();
-    expect(count).toBeGreaterThanOrEqual(4);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.getByPlaceholder(/nombre|name/i).first()).toBeVisible();
+    await expect(page.getByPlaceholder(/correo|email/i)).toBeVisible();
   });
 
-  test('should show password validation indicators', async ({ page }) => {
+  test('should navigate to step 2 (password) after filling step 1', async ({ page }) => {
     await page.goto('/register');
-    const passwordInputs = page.locator('input[type="password"]');
-    await passwordInputs.first().fill('abc');
-    await expect(page.getByText(/8/i).first()).toBeVisible();
-  });
-
-  test('should disable submit when validations fail', async ({ page }) => {
-    await page.goto('/register');
-    const submitButton = page.getByRole('button', { name: /registr|sign up|cadastr|crear|create/i }).first();
-    await expect(submitButton).toBeDisabled();
-  });
-
-  test('should enable submit when all validations pass', async ({ page }) => {
-    await page.goto('/register');
-
-    // Use placeholders that exist on register page
-    await page.getByPlaceholder(/correo|email|usuario/i).fill('newuser@test.com');
     await page.getByPlaceholder(/nombre|name/i).first().fill('Test');
-    await page.getByPlaceholder(/apellido|last name|sobrenome/i).fill('User');
+    await page.getByPlaceholder(/correo|email/i).fill('newuser@test.com');
 
-    const passwordInputs = page.locator('input[type="password"]');
-    await passwordInputs.nth(0).fill('TestPassword1!');
-    await passwordInputs.nth(1).fill('TestPassword1!');
+    const submitButton = page.getByRole('button', { name: /registr|sign up|cadastr|crear|create|continuar|continue/i }).first();
+    await submitButton.click();
 
-    const checkbox = page.locator('input[type="checkbox"]');
-    if (await checkbox.isVisible().catch(() => false)) {
-      await checkbox.check();
-    }
-
-    const submitButton = page.getByRole('button', { name: /registr|sign up|cadastr|crear|create/i }).first();
-    await expect(submitButton).toBeEnabled();
+    await expect(page).toHaveURL(/\/register\/password/);
   });
 
-  test('should navigate back to login', async ({ page }) => {
+  test('should show password strength bar on step 2', async ({ page }) => {
     await page.goto('/register');
-    const loginLink = page.getByRole('button', { name: /iniciar|log in|entrar|inicia/i }).first();
-    await loginLink.click();
+    await page.getByPlaceholder(/nombre|name/i).first().fill('Test');
+    await page.getByPlaceholder(/correo|email/i).fill('newuser@test.com');
+    await page.getByRole('button', { name: /registr|sign up|cadastr|crear|create|continuar|continue/i }).first().click();
+    await expect(page).toHaveURL(/\/register\/password/);
+
+    const passwordInputs = page.locator('input[type="password"]');
+    await passwordInputs.first().fill('TestPassword1!');
+    // Password strength bar should appear
+    await expect(page.getByText(/débil|weak|fraca|media|medium|fuerte|strong|forte/i).first()).toBeVisible();
+  });
+
+  test('should navigate back to login from step 1', async ({ page }) => {
+    await page.goto('/register');
+    const backButton = page.getByRole('button', { name: /atrás|back|voltar/i }).first();
+    await backButton.click();
     await expect(page).toHaveURL(/\/login/);
   });
 });

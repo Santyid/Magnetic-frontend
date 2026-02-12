@@ -3,15 +3,19 @@ import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from './store/authStore';
 import { LanguageProvider } from './i18n/LanguageContext';
-import Login from './pages/Login';
-import LoginNew from './pages/LoginNew';
-import Register from './pages/Register';
+import LoginStep1 from './pages/auth/LoginStep1';
+import LoginStep2 from './pages/auth/LoginStep2';
+import RegisterStep1 from './pages/auth/RegisterStep1';
+import RegisterStep2 from './pages/auth/RegisterStep2';
+import TwoFactorEmail from './pages/auth/TwoFactorEmail';
+import TwoFactorApp from './pages/auth/TwoFactorApp';
 import ForgotPassword from './pages/ForgotPassword';
+import ForgotPasswordSent from './pages/auth/ForgotPasswordSent';
 import ResetPassword from './pages/ResetPassword';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import ChangePassword from './pages/ChangePassword';
+import ReleaseNotesPage from './pages/ReleaseNotesPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute';
 import AdminLayout from './components/layout/AdminLayout';
@@ -71,11 +75,15 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/health" element={<Health />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/login-new" element={<LoginNew />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<LoginStep1 />} />
+          <Route path="/login/email" element={<LoginStep2 />} />
+          <Route path="/register" element={<RegisterStep1 />} />
+          <Route path="/register/password" element={<RegisterStep2 />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/2fa/email" element={<TwoFactorEmail />} />
+          <Route path="/2fa/app" element={<TwoFactorApp />} />
           <Route
             path="/dashboard"
             element={
@@ -93,6 +101,14 @@ function App() {
             }
           />
           <Route
+            path="/release-notes"
+            element={
+              <ProtectedRoute>
+                <ReleaseNotesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/profile"
             element={
               <ProtectedRoute>
@@ -100,15 +116,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/change-password"
-            element={
-              <ProtectedRoute>
-                <ChangePassword />
-              </ProtectedRoute>
-            }
-          />
-
           {/* Admin Routes */}
           <Route
             path="/admin"

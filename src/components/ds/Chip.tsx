@@ -30,8 +30,8 @@ const variantStyles: Record<ChipVariant, string> = {
 const disabledStyle = 'bg-grey-50 text-grey-100 border-grey-50';
 
 const sizeStyles: Record<ChipSize, string> = {
-  md: 'h-7 px-3 text-ds-sm gap-1.5',
-  sm: 'h-6 px-2.5 text-ds-xs gap-1',
+  md: 'h-7 px-[11px] text-ds-sm gap-[10px]',
+  sm: 'h-6 px-[9px] text-ds-xs gap-[8px]',
 };
 
 // ─── CHIP COMPONENT ────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ export function Chip({
   return (
     <span
       className={[
-        'inline-flex items-center rounded-pill font-medium select-none',
+        'inline-flex items-center rounded-[23px] font-semibold select-none',
         disabled ? disabledStyle : variantStyles[variant],
         sizeStyles[size],
         className,
@@ -64,7 +64,7 @@ export function Chip({
           className="flex-shrink-0 ml-0.5 hover:opacity-70 transition-opacity"
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       )}

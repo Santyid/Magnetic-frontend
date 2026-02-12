@@ -23,23 +23,24 @@ export interface DateInputProps {
 // ─── STYLE MAPS ────────────────────────────────────────────────────────────────
 
 const inputSizeStyles: Record<DateInputSize, string> = {
-  lg: 'h-12 px-4 text-ds-md',
-  md: 'h-10 px-3.5 text-ds-base',
-  sm: 'h-9 px-3 text-ds-sm',
+  lg: 'h-12 px-5 text-[18px]',
+  md: 'h-10 px-5 text-[16px]',
+  sm: 'h-9 px-5 text-[14px]',
 };
 
 const labelSizeStyles: Record<DateInputSize, string> = {
-  lg: 'text-ds-base mb-1.5',
-  md: 'text-ds-sm mb-1',
-  sm: 'text-ds-xs mb-1',
+  lg: 'text-[16px] mb-2',
+  md: 'text-[14px] mb-1.5',
+  sm: 'text-[13px] mb-1',
 };
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────────
 
+// Figma: weeks start on Sunday
 const WEEKDAYS: Record<string, string[]> = {
-  es: ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'],
-  en: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-  pt: ['Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa', 'Do'],
+  es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+  en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+  pt: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
 };
 
 const MONTHS: Record<string, string[]> = {
@@ -53,8 +54,8 @@ function getDaysInMonth(year: number, month: number): number {
 }
 
 function getFirstDayOfWeek(year: number, month: number): number {
-  const day = new Date(year, month, 1).getDay();
-  return day === 0 ? 6 : day - 1; // Monday = 0
+  // Sunday = 0 (Figma starts on Sunday)
+  return new Date(year, month, 1).getDay();
 }
 
 function isSameDay(a: Date, b: Date): boolean {
@@ -65,12 +66,11 @@ function isToday(date: Date): boolean {
   return isSameDay(date, new Date());
 }
 
-function formatDate(date: Date, locale: string): string {
-  return date.toLocaleDateString(locale === 'es' ? 'es-ES' : locale === 'pt' ? 'pt-BR' : 'en-US', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
+function formatDate(date: Date): string {
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = date.getFullYear();
+  return `${d}-${m}-${y}`;
 }
 
 // ─── CALENDAR ICON ────────────────────────────────────────────────────────────
@@ -163,14 +163,6 @@ export function DateInput({
     setIsOpen(false);
   }
 
-  function goToToday() {
-    const today = new Date();
-    setViewYear(today.getFullYear());
-    setViewMonth(today.getMonth());
-    onChange?.(today);
-    setIsOpen(false);
-  }
-
   function isDateDisabled(day: number): boolean {
     const date = new Date(viewYear, viewMonth, day);
     if (minDate && date < new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate())) return true;
@@ -178,7 +170,7 @@ export function DateInput({
     return false;
   }
 
-  // Build calendar grid
+  // Build calendar grid (Sunday = 0)
   const daysInMonth = getDaysInMonth(viewYear, viewMonth);
   const firstDay = getFirstDayOfWeek(viewYear, viewMonth);
   const daysInPrevMonth = getDaysInMonth(viewYear, viewMonth === 0 ? 11 : viewMonth - 1);
@@ -205,7 +197,7 @@ export function DateInput({
   return (
     <div ref={containerRef} className={[fullWidth ? 'w-full' : '', 'relative', className].join(' ')}>
       {label && (
-        <label className={['block font-medium text-grey-500', labelSizeStyles[size]].join(' ')}>
+        <label className={['block font-semibold text-grey-800', labelSizeStyles[size]].join(' ')}>
           {label}
         </label>
       )}
@@ -216,7 +208,7 @@ export function DateInput({
         disabled={disabled}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         className={[
-          'w-full flex items-center justify-between border rounded-input transition-colors duration-200 text-left',
+          'w-full flex items-center justify-between border rounded-lg transition-colors duration-200 text-left font-medium',
           hasError
             ? 'border-error-400 focus:ring-2 focus:ring-error-100'
             : isOpen
@@ -226,8 +218,8 @@ export function DateInput({
           inputSizeStyles[size],
         ].join(' ')}
       >
-        <span className={value ? 'text-grey-500' : 'text-grey-100'}>
-          {value ? formatDate(value, locale) : (placeholder || 'dd/mm/yyyy')}
+        <span className={value ? 'text-grey-800' : 'text-grey-100'}>
+          {value ? formatDate(value) : (placeholder || 'dd-mm-yyyy')}
         </span>
         <span className={['flex-shrink-0', disabled ? 'text-grey-100' : 'text-grey-300'].join(' ')}>
           <CalendarIcon />
@@ -242,29 +234,34 @@ export function DateInput({
 
       {/* Calendar dropdown */}
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-[267px] bg-white rounded-lg shadow-ds-lg border border-grey-50 overflow-hidden">
+        <div className="absolute z-50 mt-1 w-[267px] bg-white rounded-lg shadow-[0px_4px_15px_0px_rgba(0,0,0,0.12)] overflow-hidden">
           {/* Header: month/year navigation */}
-          <div className="flex items-center justify-between px-5 h-[53px]">
+          <div className="flex items-center justify-between px-[41px] pt-6 pb-3">
             <button
               type="button"
               onClick={prevMonth}
               className="p-1 rounded-md text-grey-800 hover:bg-white-200 transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-[5px] h-[10px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
 
-            <span className="text-ds-sm font-semibold text-grey-500">
-              {months[viewMonth]} {viewYear}
-            </span>
+            <div className="flex items-center gap-[21px]">
+              <span className="text-[16px] font-semibold text-[#272727]">
+                {months[viewMonth]}
+              </span>
+              <span className="text-[16px] font-semibold text-[#272727]">
+                {viewYear}
+              </span>
+            </div>
 
             <button
               type="button"
               onClick={nextMonth}
               className="p-1 rounded-md text-grey-800 hover:bg-white-200 transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-[5px] h-[10px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -276,18 +273,18 @@ export function DateInput({
           {/* Weekday headers */}
           <div className="grid grid-cols-7 px-5 pt-3 pb-1">
             {weekdays.map((day, i) => (
-              <div key={i} className="text-center text-[11px] font-medium text-grey-300">
+              <div key={i} className="text-center text-[16px] font-semibold text-[#272727]">
                 {day}
               </div>
             ))}
           </div>
 
           {/* Day grid */}
-          <div className="grid grid-cols-7 px-5 pb-3 gap-y-0.5">
+          <div className="grid grid-cols-7 px-5 pb-3 gap-y-[11px]">
             {/* Previous month days */}
             {prevMonthDays.map((day) => (
               <div key={`prev-${day}`} className="flex items-center justify-center w-full aspect-square">
-                <span className="text-ds-xs text-grey-100">{day}</span>
+                <span className="text-[16px] font-semibold text-grey-100">{day}</span>
               </div>
             ))}
 
@@ -305,12 +302,12 @@ export function DateInput({
                   disabled={isDisabledDay}
                   onClick={() => selectDate(day)}
                   className={[
-                    'flex items-center justify-center w-full aspect-square rounded-full text-ds-xs transition-colors',
+                    'flex items-center justify-center w-full aspect-square rounded-full text-[16px] font-semibold transition-colors',
                     isSelected
-                      ? 'bg-primary-500 text-white font-semibold'
+                      ? 'bg-primary-500 text-white'
                       : isTodayDate
-                        ? 'bg-primary-50 text-primary-500 font-medium'
-                        : 'text-grey-500 hover:bg-white-200',
+                        ? 'bg-primary-50 text-primary-500'
+                        : 'text-[#272727] hover:bg-white-200',
                     isDisabledDay ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer',
                   ].join(' ')}
                 >
@@ -322,32 +319,9 @@ export function DateInput({
             {/* Next month days */}
             {nextMonthDays.map((day) => (
               <div key={`next-${day}`} className="flex items-center justify-center w-full aspect-square">
-                <span className="text-ds-xs text-grey-100">{day}</span>
+                <span className="text-[16px] font-semibold text-grey-100">{day}</span>
               </div>
             ))}
-          </div>
-
-          {/* Divider */}
-          <div className="mx-5 h-px bg-grey-100" />
-
-          {/* Footer */}
-          <div className="flex items-center justify-between px-5 py-3">
-            <button
-              type="button"
-              onClick={goToToday}
-              className="text-ds-xs font-medium text-primary-500 hover:text-primary-600 transition-colors"
-            >
-              {locale === 'es' ? 'Hoy' : locale === 'pt' ? 'Hoje' : 'Today'}
-            </button>
-            {value && (
-              <button
-                type="button"
-                onClick={() => { onChange?.(null); setIsOpen(false); }}
-                className="text-ds-xs font-medium text-grey-300 hover:text-grey-500 transition-colors"
-              >
-                {locale === 'es' ? 'Limpiar' : locale === 'pt' ? 'Limpar' : 'Clear'}
-              </button>
-            )}
           </div>
         </div>
       )}

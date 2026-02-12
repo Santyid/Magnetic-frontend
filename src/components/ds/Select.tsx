@@ -153,29 +153,29 @@ export interface SegmentProps {
 
 export function Segment({ options, value, onChange, size = 'md', className = '' }: SegmentProps) {
   const containerSize = {
-    lg: 'h-[68px] p-4 rounded-md',
-    md: 'h-12 p-1.5 rounded-md',
-    sm: 'h-10 p-1 rounded-md',
+    lg: 'h-12 p-1.5 rounded-[10px]',
+    md: 'h-10 p-1 rounded-[10px]',
+    sm: 'h-9 p-1 rounded-[10px]',
   };
 
   const itemSize = {
-    lg: 'h-9 text-ds-md rounded-sm',
-    md: 'h-8 text-ds-base rounded-sm',
-    sm: 'h-7 text-ds-sm rounded-sm',
+    lg: 'h-9 text-[16px] rounded-[8px]',
+    md: 'h-8 text-[14px] rounded-[8px]',
+    sm: 'h-7 text-[13px] rounded-[8px]',
   };
 
   return (
-    <div className={['inline-flex items-center bg-white-100 gap-0.5', containerSize[size], className].join(' ')}>
+    <div className={['inline-flex items-center bg-white-100 gap-[9px]', containerSize[size], className].join(' ')}>
       {options.map((option) => (
         <button
           key={option.value}
           type="button"
           onClick={() => onChange(option.value)}
           className={[
-            'flex-1 flex items-center justify-center px-4 font-medium transition-all duration-200',
+            'flex-1 flex items-center justify-center px-4 font-semibold transition-all duration-200',
             itemSize[size],
             option.value === value
-              ? 'bg-white text-grey-500 shadow-ds-sm border border-grey-50'
+              ? 'bg-white text-grey-500 shadow-ds-sm'
               : 'text-grey-300 hover:text-grey-500',
           ].join(' ')}
         >

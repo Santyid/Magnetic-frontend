@@ -26,15 +26,15 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 // ─── STYLE MAPS ────────────────────────────────────────────────────────────────
 
 const inputSizeStyles: Record<InputSize, string> = {
-  lg: 'h-12 px-4 text-ds-md',
-  md: 'h-10 px-3.5 text-ds-base',
-  sm: 'h-9 px-3 text-ds-sm',
+  lg: 'h-12 px-5 text-[18px]',
+  md: 'h-10 px-5 text-[16px]',
+  sm: 'h-9 px-5 text-[14px]',
 };
 
 const labelSizeStyles: Record<InputSize, string> = {
-  lg: 'text-ds-base mb-1.5',
-  md: 'text-ds-sm mb-1',
-  sm: 'text-ds-xs mb-1',
+  lg: 'text-[16px] mb-2',
+  md: 'text-[14px] mb-1.5',
+  sm: 'text-[13px] mb-1',
 };
 
 // ─── INPUT COMPONENT ───────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={inputId}
             className={[
-              'block font-medium text-grey-500',
+              'block font-semibold text-grey-800',
               labelSizeStyles[size],
             ].join(' ')}
           >
@@ -196,7 +196,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className={fullWidth ? 'w-full' : ''}>
         {label && (
-          <label htmlFor={textareaId} className="block font-medium text-grey-500 text-ds-sm mb-1">
+          <label htmlFor={textareaId} className="block font-semibold text-grey-800 text-[14px] mb-1.5">
             {label}
           </label>
         )}

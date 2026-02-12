@@ -85,9 +85,9 @@ export const colors = {
 
 export const sizes = {
   button: {
-    lg: { height: 48, minWidth: 196, px: 24, fontSize: 15 },
-    md: { height: 40, minWidth: 182, px: 20, fontSize: 14 },
-    sm: { height: 36, minWidth: 164, px: 16, fontSize: 13 },
+    lg: { height: 48, minWidth: 196, px: 20, fontSize: 18 },
+    md: { height: 40, minWidth: 182, px: 20, fontSize: 16 },
+    sm: { height: 36, minWidth: 164, px: 16, fontSize: 14 },
   },
   iconButton: {
     lg: { size: 48 },
@@ -95,9 +95,9 @@ export const sizes = {
     sm: { size: 36 },
   },
   input: {
-    lg: { height: 48, fontSize: 15 },
-    md: { height: 40, fontSize: 14 },
-    sm: { height: 36, fontSize: 13 },
+    lg: { height: 48, fontSize: 18 },
+    md: { height: 40, fontSize: 16 },
+    sm: { height: 36, fontSize: 14 },
   },
   avatar: {
     xs: { size: 18, radius: 9 },

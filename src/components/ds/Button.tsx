@@ -41,9 +41,9 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  lg: 'h-12 min-w-[196px] px-6 text-ds-md gap-2',
-  md: 'h-10 min-w-[182px] px-5 text-ds-base gap-2',
-  sm: 'h-9 min-w-[164px] px-4 text-ds-sm gap-1.5',
+  lg: 'h-12 min-w-[196px] px-5 text-[18px] gap-2',
+  md: 'h-10 min-w-[182px] px-5 text-[16px] gap-2',
+  sm: 'h-9 min-w-[164px] px-4 text-[14px] gap-1.5',
 };
 
 const iconButtonSizeStyles: Record<ButtonSize, string> = {
@@ -77,11 +77,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={isDisabled}
         className={[
-          'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 cursor-pointer select-none',
+          'inline-flex items-center justify-center font-semibold rounded-lg transition-colors duration-200 cursor-pointer select-none',
           'focus:outline-none focus:ring-2 focus:ring-primary-200 focus:ring-offset-1',
           'disabled:cursor-not-allowed',
           variantStyles[variant],
-          variant !== 'link' ? sizeStyles[size] : `text-ds-${size === 'lg' ? 'md' : size === 'md' ? 'base' : 'sm'}`,
+          variant !== 'link' ? sizeStyles[size] : size === 'lg' ? 'text-[18px]' : size === 'md' ? 'text-[16px]' : 'text-[14px]',
           fullWidth ? 'w-full' : '',
           className,
         ]

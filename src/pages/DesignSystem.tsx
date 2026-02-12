@@ -100,6 +100,11 @@ import {
   IconDots,
 } from '../components/ds';
 
+// Auth / Figma components
+import SocialAuthButton from '../components/auth/SocialAuthButton';
+import OTPInput from '../components/ds/OTPInput';
+import PasswordStrengthBar from '../components/auth/PasswordStrengthBar';
+
 // ─── NAV CONFIG ──────────────────────────────────────────────────────────────
 
 const navItems = [
@@ -116,6 +121,10 @@ const navItems = [
   { id: 'modals', label: 'Modals', icon: IconDocument },
   { id: 'menus', label: 'Menus', icon: IconSort },
   { id: 'icons', label: 'Icons', icon: IconGlobe },
+  { id: 'auth-layout', label: 'Auth Layout', icon: IconImage },
+  { id: 'social-auth', label: 'Social Auth', icon: IconUsers },
+  { id: 'otp-input', label: 'OTP Input', icon: IconLock },
+  { id: 'password-strength', label: 'Strength Bar', icon: IconEye },
 ];
 
 // ─── LAYOUT HELPERS ──────────────────────────────────────────────────────────
@@ -199,6 +208,10 @@ export default function DesignSystem() {
   const [dateVal, setDateVal] = useState<Date | null>(null);
   const [dateVal2, setDateVal2] = useState<Date | null>(new Date());
   const [activeNav, setActiveNav] = useState('colors');
+  const [otpVal, setOtpVal] = useState('');
+  const [otpVal2, setOtpVal2] = useState('38');
+  const [strengthPwd, setStrengthPwd] = useState('');
+  const [socialComingSoon, setSocialComingSoon] = useState(true);
 
   return (
     <div className="min-h-screen bg-white-100 flex">
@@ -244,7 +257,7 @@ export default function DesignSystem() {
 
         <div className="px-5 py-4 border-t border-grey-50">
           <p className="text-[10px] text-grey-300">
-            12 components &middot; 40+ icons
+            16 components &middot; 40+ icons
           </p>
         </div>
       </nav>
@@ -860,14 +873,183 @@ export default function DesignSystem() {
           </SubSection>
         </Section>
 
+        {/* ─── AUTH LAYOUT ────────────────────────────────────────────── */}
+        <Section id="auth-layout" title="Auth Layout" description="Layout split para pantallas de autenticacion. Imagen izquierda, formulario derecha. Back button pill.">
+          <SubSection title="Preview (miniatura)">
+            <div className="border border-grey-50 rounded-lg overflow-hidden" style={{ height: 320 }}>
+              <div className="flex h-full">
+                {/* Left image mock */}
+                <div className="hidden md:flex w-1/2 bg-gradient-to-br from-primary-500 to-primary-700 items-center justify-center">
+                  <span className="text-white/60 text-sm font-medium">magnetic-background.webp</span>
+                </div>
+                {/* Right form mock */}
+                <div className="flex-1 flex flex-col bg-white">
+                  <div className="p-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-grey-500 border border-grey-50 rounded-full">
+                      <IconArrowLeft size="xs" /> Atras
+                    </span>
+                  </div>
+                  <div className="flex-1 flex items-center justify-center px-6">
+                    <div className="w-full max-w-[200px] space-y-3">
+                      <div className="h-5 bg-grey-50 rounded w-3/4 mx-auto" />
+                      <div className="h-3 bg-grey-50 rounded w-1/2 mx-auto" />
+                      <div className="h-8 bg-white-200 rounded border border-grey-50" />
+                      <div className="h-8 bg-white-200 rounded border border-grey-50" />
+                      <div className="h-8 bg-primary-500 rounded" />
+                    </div>
+                  </div>
+                  <div className="pb-4 flex justify-center">
+                    <div className="h-4 w-24 bg-grey-50 rounded" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SubSection>
+
+          <SubSection title="Propiedades">
+            <div className="space-y-2 text-ds-sm">
+              <Row label="children: ReactNode">
+                <Chip variant="primary" size="sm">Requerido</Chip>
+                <span className="text-grey-400">Contenido del formulario</span>
+              </Row>
+              <Row label="onBack?: () => void">
+                <Chip variant="secondary" size="sm">Opcional</Chip>
+                <span className="text-grey-400">Muestra boton back pill si se proporciona</span>
+              </Row>
+            </div>
+          </SubSection>
+
+          <SubSection title="Uso">
+            <div className="bg-white-100 rounded-lg p-4 font-mono text-ds-sm text-grey-400">
+              <p className="text-grey-300">{'// Con back button'}</p>
+              <p>{'<AuthLayout onBack={() => navigate("/login")}>'}</p>
+              <p className="pl-4 text-primary-500">{'<LoginForm />'}</p>
+              <p>{'</AuthLayout>'}</p>
+              <p className="mt-2 text-grey-300">{'// Sin back button (paso 1)'}</p>
+              <p>{'<AuthLayout>'}</p>
+              <p className="pl-4 text-primary-500">{'<WelcomeContent />'}</p>
+              <p>{'</AuthLayout>'}</p>
+            </div>
+          </SubSection>
+        </Section>
+
+        {/* ─── SOCIAL AUTH BUTTONS ───────────────────────────────────────── */}
+        <Section id="social-auth" title="Social Auth Buttons" description="Botones de autenticacion social. Google, Facebook, Apple con estado 'Proximamente'.">
+          <SubSection title="Providers">
+            <div className="flex gap-3 max-w-lg">
+              <SocialAuthButton provider="google" />
+              <SocialAuthButton provider="facebook" />
+              <SocialAuthButton provider="apple" />
+            </div>
+          </SubSection>
+
+          <SubSection title="Coming Soon (hover para tooltip)">
+            <div className="flex items-center gap-3 mb-4">
+              <Toggle size="sm" checked={socialComingSoon} onChange={setSocialComingSoon} />
+              <span className="text-ds-sm text-grey-400">comingSoon: {socialComingSoon ? 'true' : 'false'}</span>
+            </div>
+            <div className="flex gap-3 max-w-lg">
+              <SocialAuthButton provider="google" comingSoon={socialComingSoon} />
+              <SocialAuthButton provider="facebook" comingSoon={socialComingSoon} />
+              <SocialAuthButton provider="apple" comingSoon={socialComingSoon} />
+            </div>
+          </SubSection>
+
+          <SubSection title="Full Width">
+            <div className="max-w-sm space-y-2">
+              <SocialAuthButton provider="google" fullWidth />
+              <SocialAuthButton provider="facebook" fullWidth />
+              <SocialAuthButton provider="apple" fullWidth />
+            </div>
+          </SubSection>
+
+          <SubSection title="Custom Labels">
+            <div className="flex gap-3 max-w-lg">
+              <SocialAuthButton provider="google" label="Continuar con Google" />
+              <SocialAuthButton provider="facebook" label="Facebook Login" />
+            </div>
+          </SubSection>
+        </Section>
+
+        {/* ─── OTP INPUT ─────────────────────────────────────────────────── */}
+        <Section id="otp-input" title="OTP Input" description="Input de codigo de verificacion. 6 digitos con auto-avance, paste y navegacion por teclado.">
+          <SubSection title="Default (6 digitos)">
+            <OTPInput value={otpVal} onChange={setOtpVal} />
+            <p className="text-ds-xs text-grey-300 mt-3 text-center font-mono">
+              Valor: "{otpVal}" ({otpVal.length}/6)
+            </p>
+          </SubSection>
+
+          <SubSection title="Pre-llenado parcial">
+            <OTPInput value={otpVal2} onChange={setOtpVal2} />
+          </SubSection>
+
+          <SubSection title="Con error">
+            <OTPInput value="123" onChange={() => {}} error="Codigo incorrecto. Intenta de nuevo." />
+          </SubSection>
+
+          <SubSection title="Disabled">
+            <OTPInput value="482916" onChange={() => {}} disabled />
+          </SubSection>
+
+          <SubSection title="4 digitos">
+            <OTPInput length={4} value="" onChange={() => {}} />
+          </SubSection>
+        </Section>
+
+        {/* ─── PASSWORD STRENGTH BAR ─────────────────────────────────────── */}
+        <Section id="password-strength" title="Password Strength Bar" description="Barra de fuerza de contrasena con checklist de validaciones. Se usa en registro, reset password y cambiar contrasena.">
+          <SubSection title="Interactivo">
+            <div className="max-w-sm space-y-4">
+              <Input
+                label="Escribe una contrasena"
+                placeholder="Prueba diferentes combinaciones..."
+                value={strengthPwd}
+                onChange={(e) => setStrengthPwd(e.target.value)}
+              />
+              <PasswordStrengthBar password={strengthPwd} />
+            </div>
+          </SubSection>
+
+          <SubSection title="Niveles de fuerza">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+              <div>
+                <p className="text-ds-xs text-grey-300 mb-2 font-mono">Weak (1 criterio)</p>
+                <PasswordStrengthBar password="abc" />
+              </div>
+              <div>
+                <p className="text-ds-xs text-grey-300 mb-2 font-mono">Weak (2 criterios)</p>
+                <PasswordStrengthBar password="abcABC" />
+              </div>
+              <div>
+                <p className="text-ds-xs text-grey-300 mb-2 font-mono">Medium (3 criterios)</p>
+                <PasswordStrengthBar password="abcABC1" />
+              </div>
+              <div>
+                <p className="text-ds-xs text-grey-300 mb-2 font-mono">Strong (4 criterios)</p>
+                <PasswordStrengthBar password="abcABC12" />
+              </div>
+            </div>
+          </SubSection>
+
+          <SubSection title="Criterios de validacion">
+            <div className="bg-white-100 rounded-lg p-4 text-ds-sm text-grey-400 space-y-1">
+              <p><Chip variant="success" size="sm">hasLowerCase</Chip> Al menos una minuscula (a-z)</p>
+              <p><Chip variant="success" size="sm">hasUpperCase</Chip> Al menos una mayuscula (A-Z)</p>
+              <p><Chip variant="success" size="sm">hasNumber</Chip> Al menos un numero (0-9)</p>
+              <p><Chip variant="success" size="sm">minLength</Chip> Minimo 8 caracteres</p>
+            </div>
+          </SubSection>
+        </Section>
+
         {/* ── Footer ─────────────────────────────────────────────────────── */}
         <div className="pt-6 pb-10 border-t border-grey-50">
           <div className="flex items-center justify-between">
             <p className="text-ds-xs text-grey-300">
-              Magnetic Design System &middot; Tokens + Components + Icons
+              Magnetic Design System &middot; Tokens + Components + Icons + Auth
             </p>
             <p className="text-[10px] text-grey-200 font-mono">
-              src/components/ds/
+              src/components/ds/ &middot; src/components/auth/
             </p>
           </div>
         </div>

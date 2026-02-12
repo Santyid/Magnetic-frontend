@@ -107,20 +107,20 @@ export function UnderlineTabs({ items, value, onChange, className = '' }: Underl
             disabled={item.disabled}
             onClick={() => !item.disabled && onChange(item.value)}
             className={[
-              'relative flex items-center justify-center gap-1.5 px-4 py-2.5 text-ds-sm font-medium transition-colors duration-200',
-              isActive ? 'text-primary-500' : 'text-grey-300 hover:text-grey-500',
+              'relative flex items-center justify-center gap-1.5 px-6 py-2.5 text-[16px] transition-colors duration-200',
+              isActive ? 'text-grey-800 font-bold' : 'text-grey-100 font-medium hover:text-grey-300',
               item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
             ].join(' ')}
           >
             {item.icon}
             {item.label}
             {item.badge !== undefined && item.badge > 0 && (
-              <span className="flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-semibold rounded-full bg-error-400 text-white">
+              <span className="flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-semibold rounded-[11px] bg-error-400 text-white">
                 {item.badge > 99 ? '99+' : item.badge}
               </span>
             )}
             {isActive && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500 rounded-full" />
+              <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary-500 rounded-full" />
             )}
           </button>
         );

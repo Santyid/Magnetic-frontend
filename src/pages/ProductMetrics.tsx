@@ -165,7 +165,6 @@ export default function ProductMetrics() {
   const [showChat, setShowChat] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
   const [showConnect, setShowConnect] = useState(false);
-  const [activeTab, setActiveTab] = useState(slug || 'dashboard');
 
   const currentProduct = products.find((p) => p.product.slug === slug);
   const isConnected = currentProduct?.productEmail && currentProduct?.enableMetrics;
@@ -250,8 +249,6 @@ export default function ProductMetrics() {
   return (
     <div className="min-h-screen bg-white-700">
       <TopBanner
-        activeTab={activeTab}
-        onTabChange={(tab) => { setActiveTab(tab); if (tab === 'dashboard') navigate('/dashboard'); }}
         onAIClick={() => setShowChat((prev) => !prev)}
         onHelpClick={() => setShowFAQ(true)}
       />

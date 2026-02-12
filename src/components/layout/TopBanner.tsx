@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from '../../i18n/LanguageContext';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -14,17 +14,16 @@ const languages: { code: Language; label: string }[] = [
 ];
 
 interface TopBannerProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
   onAIClick?: () => void;
   onHelpClick?: () => void;
 }
 
-export default function TopBanner({ activeTab, onTabChange, onAIClick, onHelpClick }: TopBannerProps) {
+export default function TopBanner({ onAIClick, onHelpClick }: TopBannerProps) {
   const t = useTranslation();
   const { user, logout } = useAuthStore();
   const { language, setLanguage } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const [langOpen, setLangOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -45,13 +44,17 @@ export default function TopBanner({ activeTab, onTabChange, onAIClick, onHelpCli
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login-new');
+    navigate('/login');
   };
 
+  const activeTab = location.pathname.startsWith('/release-notes')
+    ? 'release-notes'
+    : 'dashboard';
+
   const tabs = [
-    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'dashboard', label: 'Dashboard', path: '/dashboard' },
     { id: 'reports', label: 'Reportes', comingSoon: true },
-    { id: 'release-notes', label: t.releaseNotes.title },
+    { id: 'release-notes', label: t.releaseNotes.title, path: '/release-notes' },
   ];
 
   return (
@@ -69,8 +72,8 @@ export default function TopBanner({ activeTab, onTabChange, onAIClick, onHelpCli
               <button
                 key={tab.id}
                 onClick={() => {
-                  if (!tab.comingSoon) {
-                    onTabChange(tab.id);
+                  if (!tab.comingSoon && tab.path) {
+                    navigate(tab.path);
                   }
                 }}
                 className={[
@@ -228,7 +231,7 @@ export default function TopBanner({ activeTab, onTabChange, onAIClick, onHelpCli
             <button
               key={tab.id}
               onClick={() => {
-                if (!tab.comingSoon) onTabChange(tab.id);
+                if (!tab.comingSoon && tab.path) navigate(tab.path);
               }}
               className={[
                 'flex-shrink-0 flex items-center gap-2 text-xs font-medium transition-colors',

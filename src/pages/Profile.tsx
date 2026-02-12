@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import type { AxiosError } from 'axios';
 import { useAuthStore } from '../store/authStore';
@@ -9,12 +8,12 @@ import { usersAPI, authAPI } from '../services/api';
 import TopBanner from '../components/layout/TopBanner';
 import FAQDrawer from '../components/help/FAQDrawer';
 import ChatDrawer from '../components/ai/ChatDrawer';
+import PasswordStrengthBar from '../components/auth/PasswordStrengthBar';
 
 export default function Profile() {
   const t = useTranslation();
   const { language } = useLanguage();
   const { user } = useAuthStore();
-  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState(user?.firstName || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
@@ -33,18 +32,15 @@ export default function Profile() {
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [updatingPassword, setUpdatingPassword] = useState(false);
 
-  const validation = {
-    minLength: newPassword.length >= 8,
-    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(newPassword),
-    hasNumber: /\d/.test(newPassword),
-    hasUpperCase: /[A-Z]/.test(newPassword),
-    passwordsMatch: newPassword === confirmPassword && newPassword !== '' && confirmPassword !== '',
-  };
+  const passwordValid =
+    newPassword.length >= 8 &&
+    /[!@#$%^&*(),.?":{}|<>]/.test(newPassword) &&
+    /\d/.test(newPassword) &&
+    /[A-Z]/.test(newPassword) &&
+    newPassword === confirmPassword &&
+    newPassword !== '';
 
-  const allValid = Object.values(validation).every(Boolean) && currentPassword.length > 0;
-
-  const validCount = Object.values(validation).filter(Boolean).length;
-  const progressPercent = (validCount / 5) * 100;
+  const allValid = passwordValid && currentPassword.length > 0;
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,8 +109,6 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-[#F5F7FA]">
       <TopBanner
-        activeTab="profile"
-        onTabChange={(tab) => { if (tab === 'dashboard') navigate('/dashboard'); }}
         onAIClick={() => setShowAI((prev) => !prev)}
         onHelpClick={() => setShowFAQ(true)}
       />
@@ -340,44 +334,12 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* Requirements panel */}
-            <div className="bg-[#FAFAFA] rounded-2xl p-6 mb-8">
-              <p className="text-sm font-semibold text-grey-500 mb-3">{t.changePassword.requirements}</p>
-
-              {/* Progress bar */}
-              <div className="h-3 bg-[#E2E8F0] rounded-full mb-4 overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-300"
-                  style={{
-                    width: `${progressPercent}%`,
-                    backgroundColor: progressPercent === 100 ? '#3ACE76' : '#F59E0B',
-                  }}
-                />
+            {/* Password strength */}
+            {newPassword && (
+              <div className="mb-8">
+                <PasswordStrengthBar password={newPassword} />
               </div>
-
-              <ul className="space-y-2">
-                {([
-                  ['minLength', t.changePassword.minLength],
-                  ['hasSpecialChar', t.changePassword.hasSpecialChar],
-                  ['hasNumber', t.changePassword.hasNumber],
-                  ['hasUpperCase', t.changePassword.hasUpperCase],
-                  ['passwordsMatch', t.changePassword.passwordsMatch],
-                ] as const).map(([key, label]) => (
-                  <li key={key} className="flex items-center gap-2 text-sm">
-                    {validation[key] ? (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3ACE76" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
-                    ) : (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C3C3C3" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
-                    )}
-                    <span className={validation[key] ? 'text-success' : 'text-grey-300'}>{label}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            )}
 
             {/* Buttons */}
             <div className="flex justify-end gap-3">

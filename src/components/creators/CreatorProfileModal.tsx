@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { CreatorProfile } from '../../types';
 import { useTranslation } from '../../i18n/LanguageContext';
 
@@ -27,6 +28,25 @@ function formatPrice(price: number | undefined, currency?: string): string {
 
 export default function CreatorProfileModal({ creator, onClose }: CreatorProfileModalProps) {
   const t = useTranslation();
+
+  // Load TikTok embed script when viewing a TikTok creator
+  useEffect(() => {
+    if (creator.platform !== 'tiktok') return;
+
+    const timer = setTimeout(() => {
+      // Remove old script to force re-processing of blockquotes
+      const old = document.getElementById('tiktok-embed-js');
+      if (old) old.remove();
+
+      const script = document.createElement('script');
+      script.id = 'tiktok-embed-js';
+      script.src = 'https://www.tiktok.com/embed.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [creator.platform, creator.username]);
 
   const stats = [
     { label: t.creators.followers, value: formatFollowers(creator.followersCount) },
@@ -162,8 +182,32 @@ export default function CreatorProfileModal({ creator, onClose }: CreatorProfile
           </div>
         )}
 
-        {/* Recent Media */}
-        {creator.recentMedia && creator.recentMedia.length > 0 && (
+        {/* TikTok Embed — shows creator profile with latest videos in real-time */}
+        {creator.platform === 'tiktok' && (
+          <div className="px-6 py-4">
+            <h3 className="text-sm font-semibold text-grey-500 mb-3">{t.creators.recentMedia}</h3>
+            <blockquote
+              className="tiktok-embed"
+              cite={`https://www.tiktok.com/@${creator.username}`}
+              data-unique-id={creator.username}
+              data-embed-type="creator"
+              style={{ maxWidth: '100%', minWidth: '288px' }}
+            >
+              <section>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://www.tiktok.com/@${creator.username}`}
+                >
+                  @{creator.username}
+                </a>
+              </section>
+            </blockquote>
+          </div>
+        )}
+
+        {/* Recent Media (Meta platforms) */}
+        {creator.platform !== 'tiktok' && creator.recentMedia && creator.recentMedia.length > 0 && (
           <div className="px-6 py-4">
             <h3 className="text-sm font-semibold text-grey-500 mb-3">{t.creators.recentMedia}</h3>
             <div className="grid grid-cols-3 gap-2">

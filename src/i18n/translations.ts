@@ -357,6 +357,20 @@ export interface Translations {
     views: string;
   };
 
+  // Creators Meta (page-specific)
+  creatorsMeta: {
+    sidebarLabel: string;
+    title: string;
+    subtitle: string;
+  };
+
+  // Creators TikTok (page-specific)
+  creatorsTiktok: {
+    sidebarLabel: string;
+    title: string;
+    subtitle: string;
+  };
+
   // Release Notes
   releaseNotes: {
     title: string;
@@ -784,6 +798,16 @@ export const translations: Record<Language, Translations> = {
       medianViews: 'Views promedio',
       views: 'Views',
     },
+    creatorsMeta: {
+      sidebarLabel: 'Creators Meta',
+      title: 'Creators Meta',
+      subtitle: 'Descubre creadores en Facebook e Instagram',
+    },
+    creatorsTiktok: {
+      sidebarLabel: 'Creators TikTok',
+      title: 'Creators TikTok',
+      subtitle: 'Descubre creadores en TikTok',
+    },
     releaseNotes: {
       title: 'Novedades',
       subtitle: 'Descubre las últimas mejoras en tus productos conectados',
@@ -1203,6 +1227,16 @@ export const translations: Record<Language, Translations> = {
       medianViews: 'Avg. Views',
       views: 'Views',
     },
+    creatorsMeta: {
+      sidebarLabel: 'Creators Meta',
+      title: 'Creators Meta',
+      subtitle: 'Discover creators on Facebook and Instagram',
+    },
+    creatorsTiktok: {
+      sidebarLabel: 'Creators TikTok',
+      title: 'Creators TikTok',
+      subtitle: 'Discover creators on TikTok',
+    },
     releaseNotes: {
       title: 'Release Notes',
       subtitle: 'Discover the latest improvements in your connected products',
@@ -1621,6 +1655,16 @@ export const translations: Record<Language, Translations> = {
       creatorPrice: 'Preço estimado',
       medianViews: 'Views médias',
       views: 'Views',
+    },
+    creatorsMeta: {
+      sidebarLabel: 'Creators Meta',
+      title: 'Creators Meta',
+      subtitle: 'Descubra criadores no Facebook e Instagram',
+    },
+    creatorsTiktok: {
+      sidebarLabel: 'Creators TikTok',
+      title: 'Creators TikTok',
+      subtitle: 'Descubra criadores no TikTok',
     },
     releaseNotes: {
       title: 'Novidades',

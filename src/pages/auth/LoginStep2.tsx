@@ -57,7 +57,7 @@ export default function LoginStep2() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-3 border border-grey-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-500 transition-all text-sm"
-            placeholder="Placeholder input"
+            placeholder={t.auth.emailPlaceholder}
             required
           />
         </div>
@@ -73,7 +73,7 @@ export default function LoginStep2() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 pr-10 border border-grey-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-500 transition-all text-sm"
-              placeholder="Placeholder input"
+              placeholder={t.auth.passwordPlaceholder}
               required
             />
             <button
@@ -111,7 +111,7 @@ export default function LoginStep2() {
           disabled={isLoading}
           className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
-          {isLoading ? t.login.loggingIn : 'Sign in'}
+          {isLoading ? t.login.loggingIn : t.auth.login}
         </button>
       </form>
 

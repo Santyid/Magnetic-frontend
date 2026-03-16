@@ -1,20 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { AxiosError } from 'axios';
 import { useTranslation } from '../i18n/LanguageContext';
-import { creatorsAPI } from '../services/api';
+import { creatorsMetaAPI } from '../services/api';
 import CreatorCard from '../components/creators/CreatorCard';
 import CreatorProfileModal from '../components/creators/CreatorProfileModal';
-import PlatformToggle from '../components/creators/PlatformToggle';
-import type { CreatorSummary, CreatorProfile, CreatorPlatform } from '../types';
+import MetaPlatformToggle from '../components/creators/MetaPlatformToggle';
+import type { CreatorSummary, CreatorProfile } from '../types';
 import toast from 'react-hot-toast';
 
-export default function CreatorMarketplace() {
+type MetaPlatform = 'facebook' | 'instagram';
+
+export default function CreatorsMetaPage() {
   const t = useTranslation();
 
-  // Platform state
-  const [platform, setPlatform] = useState<CreatorPlatform>('facebook');
-
-  // Search state
+  const [platform, setPlatform] = useState<MetaPlatform>('facebook');
   const [searchQuery, setSearchQuery] = useState('');
   const [creators, setCreators] = useState<CreatorSummary[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,19 +21,14 @@ export default function CreatorMarketplace() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
-  // Profile modal state
   const [selectedCreator, setSelectedCreator] = useState<CreatorProfile | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
-
-  // Debounced search
   const [debouncedQuery, setDebouncedQuery] = useState('');
 
   useEffect(() => {
-    const delay = platform === 'tiktok' ? 600 : 300;
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    }, delay);
+    }, 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
@@ -50,7 +44,7 @@ export default function CreatorMarketplace() {
       }
 
       try {
-        const result = await creatorsAPI.search({
+        const result = await creatorsMetaAPI.search({
           q: query.trim(),
           platform,
           limit: 20,
@@ -72,8 +66,6 @@ export default function CreatorMarketplace() {
           toast.error(t.creators.rateLimitError);
         } else if (message === 'META_API_ERROR') {
           toast.error(t.creators.metaApiError);
-        } else if (message === 'TIKTOK_API_ERROR') {
-          toast.error(t.creators.tiktokApiError);
         } else {
           toast.error(t.creators.errorSearch);
         }
@@ -85,7 +77,6 @@ export default function CreatorMarketplace() {
     [cursor, platform, t],
   );
 
-  // Trigger search when debounced query or platform changes
   useEffect(() => {
     if (debouncedQuery.trim()) {
       handleSearch(debouncedQuery);
@@ -95,7 +86,7 @@ export default function CreatorMarketplace() {
   const handleViewProfile = async (creatorId: string) => {
     setLoadingProfile(true);
     try {
-      const profile = await creatorsAPI.getProfile(creatorId, platform);
+      const profile = await creatorsMetaAPI.getProfile(creatorId, platform);
       setSelectedCreator(profile);
     } catch {
       toast.error(t.creators.errorProfile);
@@ -104,7 +95,7 @@ export default function CreatorMarketplace() {
     }
   };
 
-  const handlePlatformChange = (newPlatform: CreatorPlatform) => {
+  const handlePlatformChange = (newPlatform: MetaPlatform) => {
     setPlatform(newPlatform);
     setCreators([]);
     setCursor(undefined);
@@ -116,8 +107,8 @@ export default function CreatorMarketplace() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-grey-500">{t.creators.title}</h1>
-          <p className="text-sm text-grey-300 mt-1">{t.creators.subtitle}</p>
+          <h1 className="text-2xl font-bold text-grey-500">{t.creatorsMeta.title}</h1>
+          <p className="text-sm text-grey-300 mt-1">{t.creatorsMeta.subtitle}</p>
         </div>
 
         {/* Search bar */}
@@ -144,7 +135,7 @@ export default function CreatorMarketplace() {
               className="w-full pl-10 pr-4 py-3 border border-grey-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm"
             />
           </div>
-          <PlatformToggle value={platform} onChange={handlePlatformChange} />
+          <MetaPlatformToggle value={platform} onChange={handlePlatformChange} />
         </div>
 
         {/* Loading state */}
@@ -155,7 +146,7 @@ export default function CreatorMarketplace() {
           </div>
         )}
 
-        {/* Initial state - no search yet */}
+        {/* Initial state */}
         {!loading && !hasSearched && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4">
@@ -193,7 +184,6 @@ export default function CreatorMarketplace() {
               ))}
             </div>
 
-            {/* Load more */}
             {hasNextPage && (
               <div className="flex justify-center mt-8">
                 <button
@@ -209,7 +199,6 @@ export default function CreatorMarketplace() {
         )}
       </div>
 
-      {/* Loading profile overlay */}
       {loadingProfile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
           <div className="bg-white rounded-xl p-6 shadow-xl flex items-center gap-3">
@@ -219,7 +208,6 @@ export default function CreatorMarketplace() {
         </div>
       )}
 
-      {/* Profile Modal */}
       {selectedCreator && (
         <CreatorProfileModal
           creator={selectedCreator}

@@ -23,7 +23,10 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import Users from './pages/admin/Users';
 import AssignProducts from './pages/admin/AssignProducts';
 import ProductMetrics from './pages/ProductMetrics';
-import CreatorMarketplace from './pages/CreatorMarketplace';
+import CreatorsMetaPage from './pages/CreatorsMetaPage';
+import CreatorsTikTokPage from './pages/CreatorsTikTokPage';
+import Proposals from './pages/admin/proposals/Proposals';
+import ProposalDetail from './pages/admin/proposals/ProposalDetail';
 import Health from './pages/Health';
 import DesignSystem from './pages/DesignSystem';
 
@@ -129,7 +132,10 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="products" element={<AssignProducts />} />
             <Route path="components" element={<DesignSystem />} />
-            <Route path="creators" element={<CreatorMarketplace />} />
+            <Route path="creators-meta" element={<CreatorsMetaPage />} />
+            <Route path="creators-tiktok" element={<CreatorsTikTokPage />} />
+            <Route path="proposals" element={<Proposals />} />
+            <Route path="proposals/:id" element={<ProposalDetail />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

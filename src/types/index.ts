@@ -147,6 +147,94 @@ export interface CreatorSearchResult {
   totalCount?: number;
 }
 
+// Proposals (Propuesta Comercial Adpro)
+export type ProposalStatus = 'pending' | 'processing' | 'done' | 'failed';
+export type ProposalClassification = 'HIGH' | 'MEDIUM' | 'LOW';
+export type ProposalPlatform = 'linkedin' | 'facebook' | 'instagram' | 'tiktok' | 'twitter';
+
+export interface ProposalListItem {
+  id: string;
+  linkedinCompanyUrl: string;
+  platforms: ProposalPlatform[];
+  status: ProposalStatus;
+  createdAt: string;
+  completedAt?: string;
+  companyName?: string;
+  companyLogo?: string;
+  companyIndustry?: string;
+  companyDescription?: string;
+}
+
+export interface ProposalEmployee {
+  id: string;
+  linkedinUrl: string;
+  name?: string;
+  title?: string;
+  location?: string;
+  avatar?: string;
+  linkedinFollowers: number;
+  linkedinArticles: { title?: string; url?: string; likes?: number }[];
+  avgArticleLikes: number;
+}
+
+export interface ProposalProjection {
+  id: string;
+  platform: ProposalPlatform;
+  followers: number;
+  avgLikes: number;
+  avgComments: number;
+  avgReposts: number;
+  currentER: number;
+  projectedLikes: number;
+  growthFactor: number;
+  ambassadorCount: number;
+  ambassadorFollowers?: number;
+  potentialReach?: number;
+  ambassadorAvgLikes: number;
+  classification: ProposalClassification;
+  recommendations: string[];
+}
+
+export interface ProposalDetail extends ProposalListItem {
+  adminUserId: string;
+  errorMessage?: string;
+  company?: {
+    id: string;
+    name?: string;
+    industry?: string;
+    description?: string;
+    logo?: string;
+    website?: string;
+    employeeCount?: number;
+    followers?: number;
+    headquarters?: string;
+    linkedinPosts?: { url: string; date_published?: string; likes: number; comments: number; reposts: number; text?: string; imageUrl?: string; contentType?: 'image' | 'document' | 'video' | 'text'; documentTitle?: string; documentPageCount?: number; coverImageUrl?: string }[];
+    instagramData?: Record<string, any>;
+    facebookData?: Record<string, any>;
+    tiktokData?: Record<string, any>;
+    twitterData?: Record<string, any>;
+  };
+  employees: ProposalEmployee[];
+  projections: ProposalProjection[];
+}
+
+export interface ProposalAIAnalysisResult {
+  summary: string;
+  platformInsights: { platform: string; insight: string; opportunity: string }[];
+  keyBenefits: string[];
+  callToAction: string;
+}
+
+export interface CreateProposalDto {
+  linkedinCompanyUrl?: string;
+  companyName?: string;
+  platforms?: ProposalPlatform[];
+  facebookUrl?: string;
+  instagramHandle?: string;
+  tiktokHandle?: string;
+  twitterHandle?: string;
+}
+
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;

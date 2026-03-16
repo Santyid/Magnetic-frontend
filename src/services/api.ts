@@ -17,6 +17,10 @@ import type {
   MetricsItem,
   CreatorProfile,
   CreatorSearchResult,
+  ProposalListItem,
+  ProposalDetail,
+  ProposalAIAnalysisResult,
+  CreateProposalDto,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
@@ -215,22 +219,81 @@ export const aiAPI = {
   },
 };
 
-// Creators endpoints (Admin)
-export const creatorsAPI = {
+// Creators Meta endpoints (Admin)
+export const creatorsMetaAPI = {
   search: async (params: {
     q: string;
-    platform?: string;
+    platform?: 'facebook' | 'instagram';
     limit?: number;
     cursor?: string;
   }): Promise<CreatorSearchResult> => {
-    const { data } = await api.get<CreatorSearchResult>('/creators/search', { params });
+    const { data } = await api.get<CreatorSearchResult>('/creators-meta/search', { params });
     return data;
   },
 
-  getProfile: async (creatorId: string, platform?: string): Promise<CreatorProfile> => {
-    const { data } = await api.get<CreatorProfile>(`/creators/${creatorId}`, {
+  getProfile: async (creatorId: string, platform?: 'facebook' | 'instagram'): Promise<CreatorProfile> => {
+    const { data } = await api.get<CreatorProfile>(`/creators-meta/${creatorId}`, {
       params: { ...(platform && { platform }) },
     });
+    return data;
+  },
+};
+
+// Creators TikTok endpoints (Admin)
+export const creatorsTikTokAPI = {
+  search: async (params: {
+    q: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<CreatorSearchResult> => {
+    const { data } = await api.get<CreatorSearchResult>('/creators-tiktok/search', { params });
+    return data;
+  },
+
+  getProfile: async (creatorId: string): Promise<CreatorProfile> => {
+    const { data } = await api.get<CreatorProfile>(`/creators-tiktok/${creatorId}`);
+    return data;
+  },
+
+  sync: async (body?: { keywords?: string[]; maxPagesPerKeyword?: number }) => {
+    const { data } = await api.post('/creators-tiktok/sync', body || {});
+    return data;
+  },
+
+  getSyncStats: async () => {
+    const { data } = await api.get('/creators-tiktok/sync/stats');
+    return data;
+  },
+};
+
+// Proposals endpoints (Admin)
+export const proposalsAPI = {
+  create: async (dto: CreateProposalDto): Promise<ProposalListItem> => {
+    const { data } = await api.post<ProposalListItem>('/proposals', dto);
+    return data;
+  },
+
+  list: async (): Promise<ProposalListItem[]> => {
+    const { data } = await api.get<ProposalListItem[]>('/proposals');
+    return data;
+  },
+
+  getOne: async (id: string): Promise<ProposalDetail> => {
+    const { data } = await api.get<ProposalDetail>(`/proposals/${id}`);
+    return data;
+  },
+
+  getStatus: async (id: string): Promise<{ status: string; completedAt?: string }> => {
+    const { data } = await api.get<{ status: string; completedAt?: string }>(`/proposals/${id}/status`);
+    return data;
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/proposals/${id}`);
+  },
+
+  getAiAnalysis: async (id: string): Promise<ProposalAIAnalysisResult> => {
+    const { data } = await api.post<ProposalAIAnalysisResult>(`/proposals/${id}/ai-analysis`);
     return data;
   },
 };

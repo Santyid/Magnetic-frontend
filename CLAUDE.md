@@ -37,7 +37,8 @@ src/
 │   ├── Login.tsx, LoginNew.tsx, Register.tsx, ForgotPassword.tsx
 │   ├── Dashboard.tsx, ProductMetrics.tsx
 │   ├── Profile.tsx, ChangePassword.tsx
-│   └── admin/ (AdminDashboard, Users, AssignProducts)
+│   ├── admin/ (AdminDashboard, Users, AssignProducts)
+│   └── admin/ proposals/ (Proposals, ProposalDetail) ← PENDIENTE
 ├── services/api.ts          # Axios client + interceptors
 ├── store/authStore.ts       # Zustand (user, tokens, auth actions)
 ├── styles/animations.css    # Landing page keyframes
@@ -59,6 +60,8 @@ src/
 | `/admin` | AdminDashboard.tsx | JWT + Admin |
 | `/admin/users` | Users.tsx | JWT + Admin |
 | `/admin/products` | AssignProducts.tsx | JWT + Admin |
+| `/admin/proposals` | Proposals.tsx | JWT + Admin ← PENDIENTE |
+| `/admin/proposals/:id` | ProposalDetail.tsx | JWT + Admin ← PENDIENTE |
 
 ## Role-Based Routing
 - `isAdmin: true` → redirige a `/admin` despues del login

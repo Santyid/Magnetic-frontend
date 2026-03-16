@@ -371,6 +371,106 @@ export interface Translations {
     subtitle: string;
   };
 
+  // Proposals (Propuesta Comercial Adpro)
+  proposals: {
+    sidebarLabel: string;
+    title: string;
+    subtitle: string;
+    newProposal: string;
+    noProposals: string;
+    noProposalsHint: string;
+    loading: string;
+    status: {
+      pending: string;
+      processing: string;
+      done: string;
+      failed: string;
+    };
+    form: {
+      title: string;
+      linkedinUrl: string;
+      linkedinUrlPlaceholder: string;
+      platforms: string;
+      platformsHint: string;
+      facebookUrl: string;
+      facebookUrlPlaceholder: string;
+      facebookType: string;
+      facebookTypePage: string;
+      facebookTypeProfile: string;
+      instagramHandle: string;
+      instagramHandlePlaceholder: string;
+      tiktokHandle: string;
+      tiktokHandlePlaceholder: string;
+      submit: string;
+      submitting: string;
+      successMessage: string;
+      errorMessage: string;
+    };
+    detail: {
+      company: string;
+      employees: string;
+      projections: string;
+      processingTitle: string;
+      processingHint: string;
+      failedTitle: string;
+      noCompany: string;
+      industry: string;
+      headquarters: string;
+      employees_count: string;
+      followers: string;
+      website: string;
+      recentPosts: string;
+      avgLikes: string;
+      avgComments: string;
+      avgReposts: string;
+      noEmployees: string;
+      articles: string;
+      noProjections: string;
+    };
+    aiAnalysis: {
+      title: string;
+      subtitle: string;
+      badge: string;
+      platformInsights: string;
+      keyBenefits: string;
+      error: string;
+    };
+    projection: {
+      currentER: string;
+      avgInteractions: string;
+      projectedLikes: string;
+      growthFactor: string;
+      ambassadors: string;
+      employees: string;
+      potentialReach: string;
+      impressionsWith: string;
+      impressionsHint: string;
+      estimatedReactions: string;
+      classification: string;
+      recommendations: string;
+      followers: string;
+    };
+    classification: {
+      HIGH: string;
+      MEDIUM: string;
+      LOW: string;
+      HIGHHint: string;
+      MEDIUMHint: string;
+      LOWHint: string;
+    };
+    deleteConfirm: string;
+    deleteConfirmMessage: string;
+    deleted: string;
+    createdAt: string;
+    completedAt: string;
+    backToList: string;
+    platforms: string;
+    openLinkedin: string;
+    pollingHint: string;
+    downloadProposal: string;
+    exporting: string;
+  };
+
   // Release Notes
   releaseNotes: {
     title: string;
@@ -808,6 +908,104 @@ export const translations: Record<Language, Translations> = {
       title: 'Creators TikTok',
       subtitle: 'Descubre creadores en TikTok',
     },
+    proposals: {
+      sidebarLabel: 'Propuestas',
+      title: 'Propuestas Comerciales',
+      subtitle: 'Genera propuestas con proyecciones Adpro para tus clientes',
+      newProposal: 'Nueva Propuesta',
+      noProposals: 'Sin propuestas aún',
+      noProposalsHint: 'Crea tu primera propuesta comercial Adpro',
+      loading: 'Cargando propuestas...',
+      status: {
+        pending: 'Pendiente',
+        processing: 'Procesando',
+        done: 'Completada',
+        failed: 'Error',
+      },
+      form: {
+        title: 'Nueva Propuesta Comercial',
+        linkedinUrl: 'URL LinkedIn de la empresa',
+        linkedinUrlPlaceholder: 'https://www.linkedin.com/company/nombre-empresa',
+        platforms: 'Redes sociales a analizar',
+        platformsHint: 'LinkedIn es obligatorio. Agrega más plataformas para una propuesta más completa.',
+        facebookUrl: 'URL de Facebook',
+        facebookUrlPlaceholder: 'https://www.facebook.com/nombreempresa',
+        facebookType: 'Tipo de perfil Facebook',
+        facebookTypePage: 'Página',
+        facebookTypeProfile: 'Perfil personal',
+        instagramHandle: 'Usuario de Instagram',
+        instagramHandlePlaceholder: '@nombreempresa',
+        tiktokHandle: 'Usuario de TikTok',
+        tiktokHandlePlaceholder: '@nombreempresa',
+        submit: 'Generar Propuesta',
+        submitting: 'Generando...',
+        successMessage: 'Propuesta creada. Procesando datos...',
+        errorMessage: 'Error al crear la propuesta. Inténtalo de nuevo.',
+      },
+      detail: {
+        company: 'Empresa',
+        employees: 'Empleados LinkedIn',
+        projections: 'Proyecciones Adpro',
+        processingTitle: 'Analizando datos...',
+        processingHint: 'Estamos recopilando información de redes sociales. Esto puede tomar 30-60 segundos.',
+        failedTitle: 'La propuesta falló al procesarse',
+        noCompany: 'Sin datos de empresa',
+        industry: 'Industria',
+        headquarters: 'Sede',
+        employees_count: 'Empleados',
+        followers: 'Seguidores',
+        website: 'Sitio web',
+        recentPosts: 'Posts recientes',
+        avgLikes: 'Likes promedio',
+        avgComments: 'Comentarios promedio',
+        avgReposts: 'Compartidos promedio',
+        noEmployees: 'Sin datos de empleados',
+        articles: 'artículos',
+        noProjections: 'Sin proyecciones disponibles',
+      },
+      aiAnalysis: {
+        title: 'Análisis IA',
+        subtitle: 'Generado por inteligencia artificial',
+        badge: 'Powered by GPT',
+        platformInsights: 'Oportunidades por plataforma',
+        keyBenefits: 'Beneficios clave para tu empresa',
+        error: 'No se pudo generar el análisis. Intenta de nuevo.',
+      },
+      projection: {
+        currentER: 'ER Actual',
+        avgInteractions: 'Interacciones / Post',
+        projectedLikes: 'Likes con Adpro',
+        growthFactor: 'Factor de Crecimiento',
+        ambassadors: 'Embajadores',
+        employees: 'Empleados Registrados',
+        potentialReach: 'Alcance Potencial',
+        impressionsWith: 'Impresiones Estimadas',
+        impressionsHint: 'Alcance orgánico estimado',
+        estimatedReactions: 'Reacciones Estimadas',
+        classification: 'Clasificación',
+        recommendations: 'Recomendaciones',
+        followers: 'Seguidores actuales',
+      },
+      classification: {
+        HIGH: 'Alto Potencial',
+        MEDIUM: 'Potencial Moderado',
+        LOW: 'Sobre el Promedio',
+        HIGHHint: 'Gran oportunidad de crecimiento con Adpro',
+        MEDIUMHint: 'Potencial moderado de mejora con Adpro',
+        LOWHint: 'Ya está sobre el benchmark del sector',
+      },
+      deleteConfirm: 'Eliminar propuesta',
+      deleteConfirmMessage: '¿Estás seguro? Esta acción no se puede deshacer.',
+      deleted: 'Propuesta eliminada',
+      createdAt: 'Creada',
+      completedAt: 'Completada',
+      backToList: 'Volver a propuestas',
+      platforms: 'Plataformas',
+      openLinkedin: 'Ver en LinkedIn',
+      pollingHint: 'Actualizando estado automáticamente...',
+      downloadProposal: 'Descargar Propuesta',
+      exporting: 'Generando...',
+    },
     releaseNotes: {
       title: 'Novedades',
       subtitle: 'Descubre las últimas mejoras en tus productos conectados',
@@ -1237,6 +1435,104 @@ export const translations: Record<Language, Translations> = {
       title: 'Creators TikTok',
       subtitle: 'Discover creators on TikTok',
     },
+    proposals: {
+      sidebarLabel: 'Proposals',
+      title: 'Commercial Proposals',
+      subtitle: 'Generate proposals with Adpro projections for your clients',
+      newProposal: 'New Proposal',
+      noProposals: 'No proposals yet',
+      noProposalsHint: 'Create your first Adpro commercial proposal',
+      loading: 'Loading proposals...',
+      status: {
+        pending: 'Pending',
+        processing: 'Processing',
+        done: 'Completed',
+        failed: 'Failed',
+      },
+      form: {
+        title: 'New Commercial Proposal',
+        linkedinUrl: 'Company LinkedIn URL',
+        linkedinUrlPlaceholder: 'https://www.linkedin.com/company/company-name',
+        platforms: 'Social networks to analyze',
+        platformsHint: 'LinkedIn is required. Add more platforms for a more complete proposal.',
+        facebookUrl: 'Facebook URL',
+        facebookUrlPlaceholder: 'https://www.facebook.com/companyname',
+        facebookType: 'Facebook profile type',
+        facebookTypePage: 'Page',
+        facebookTypeProfile: 'Personal profile',
+        instagramHandle: 'Instagram username',
+        instagramHandlePlaceholder: '@companyname',
+        tiktokHandle: 'TikTok username',
+        tiktokHandlePlaceholder: '@companyname',
+        submit: 'Generate Proposal',
+        submitting: 'Generating...',
+        successMessage: 'Proposal created. Processing data...',
+        errorMessage: 'Error creating the proposal. Please try again.',
+      },
+      detail: {
+        company: 'Company',
+        employees: 'LinkedIn Employees',
+        projections: 'Adpro Projections',
+        processingTitle: 'Analyzing data...',
+        processingHint: 'We are collecting social media information. This may take 30-60 seconds.',
+        failedTitle: 'The proposal failed to process',
+        noCompany: 'No company data',
+        industry: 'Industry',
+        headquarters: 'Headquarters',
+        employees_count: 'Employees',
+        followers: 'Followers',
+        website: 'Website',
+        recentPosts: 'Recent posts',
+        avgLikes: 'Avg. likes',
+        avgComments: 'Avg. comments',
+        avgReposts: 'Avg. shares',
+        noEmployees: 'No employee data',
+        articles: 'articles',
+        noProjections: 'No projections available',
+      },
+      aiAnalysis: {
+        title: 'AI Analysis',
+        subtitle: 'Generated by artificial intelligence',
+        badge: 'Powered by GPT',
+        platformInsights: 'Opportunities by platform',
+        keyBenefits: 'Key benefits for your company',
+        error: 'Could not generate the analysis. Please try again.',
+      },
+      projection: {
+        currentER: 'Current ER',
+        avgInteractions: 'Interactions / Post',
+        projectedLikes: 'Likes with Adpro',
+        growthFactor: 'Growth Factor',
+        ambassadors: 'Ambassadors',
+        employees: 'Registered Employees',
+        potentialReach: 'Potential Reach',
+        impressionsWith: 'Estimated Impressions',
+        impressionsHint: 'Estimated organic reach',
+        estimatedReactions: 'Estimated Reactions',
+        classification: 'Classification',
+        recommendations: 'Recommendations',
+        followers: 'Current followers',
+      },
+      classification: {
+        HIGH: 'High Potential',
+        MEDIUM: 'Moderate Potential',
+        LOW: 'Above Average',
+        HIGHHint: 'Great growth opportunity with Adpro',
+        MEDIUMHint: 'Moderate improvement potential with Adpro',
+        LOWHint: 'Already above sector benchmark',
+      },
+      deleteConfirm: 'Delete proposal',
+      deleteConfirmMessage: 'Are you sure? This action cannot be undone.',
+      deleted: 'Proposal deleted',
+      createdAt: 'Created',
+      completedAt: 'Completed',
+      backToList: 'Back to proposals',
+      platforms: 'Platforms',
+      openLinkedin: 'View on LinkedIn',
+      pollingHint: 'Auto-updating status...',
+      downloadProposal: 'Download Proposal',
+      exporting: 'Generating...',
+    },
     releaseNotes: {
       title: 'Release Notes',
       subtitle: 'Discover the latest improvements in your connected products',
@@ -1665,6 +1961,104 @@ export const translations: Record<Language, Translations> = {
       sidebarLabel: 'Creators TikTok',
       title: 'Creators TikTok',
       subtitle: 'Descubra criadores no TikTok',
+    },
+    proposals: {
+      sidebarLabel: 'Propostas',
+      title: 'Propostas Comerciais',
+      subtitle: 'Gere propostas com projeções Adpro para seus clientes',
+      newProposal: 'Nova Proposta',
+      noProposals: 'Sem propostas ainda',
+      noProposalsHint: 'Crie sua primeira proposta comercial Adpro',
+      loading: 'Carregando propostas...',
+      status: {
+        pending: 'Pendente',
+        processing: 'Processando',
+        done: 'Concluída',
+        failed: 'Erro',
+      },
+      form: {
+        title: 'Nova Proposta Comercial',
+        linkedinUrl: 'URL do LinkedIn da empresa',
+        linkedinUrlPlaceholder: 'https://www.linkedin.com/company/nome-empresa',
+        platforms: 'Redes sociais para analisar',
+        platformsHint: 'LinkedIn é obrigatório. Adicione mais plataformas para uma proposta mais completa.',
+        facebookUrl: 'URL do Facebook',
+        facebookUrlPlaceholder: 'https://www.facebook.com/nomeempresa',
+        facebookType: 'Tipo de perfil Facebook',
+        facebookTypePage: 'Página',
+        facebookTypeProfile: 'Perfil pessoal',
+        instagramHandle: 'Usuário do Instagram',
+        instagramHandlePlaceholder: '@nomeempresa',
+        tiktokHandle: 'Usuário do TikTok',
+        tiktokHandlePlaceholder: '@nomeempresa',
+        submit: 'Gerar Proposta',
+        submitting: 'Gerando...',
+        successMessage: 'Proposta criada. Processando dados...',
+        errorMessage: 'Erro ao criar a proposta. Tente novamente.',
+      },
+      detail: {
+        company: 'Empresa',
+        employees: 'Funcionários LinkedIn',
+        projections: 'Projeções Adpro',
+        processingTitle: 'Analisando dados...',
+        processingHint: 'Estamos coletando informações das redes sociais. Isso pode levar 30-60 segundos.',
+        failedTitle: 'A proposta falhou ao ser processada',
+        noCompany: 'Sem dados da empresa',
+        industry: 'Setor',
+        headquarters: 'Sede',
+        employees_count: 'Funcionários',
+        followers: 'Seguidores',
+        website: 'Site',
+        recentPosts: 'Posts recentes',
+        avgLikes: 'Curtidas médias',
+        avgComments: 'Comentários médios',
+        avgReposts: 'Compartilhamentos médios',
+        noEmployees: 'Sem dados de funcionários',
+        articles: 'artigos',
+        noProjections: 'Sem projeções disponíveis',
+      },
+      aiAnalysis: {
+        title: 'Análise IA',
+        subtitle: 'Gerado por inteligência artificial',
+        badge: 'Powered by GPT',
+        platformInsights: 'Oportunidades por plataforma',
+        keyBenefits: 'Benefícios-chave para sua empresa',
+        error: 'Não foi possível gerar a análise. Tente novamente.',
+      },
+      projection: {
+        currentER: 'ER Atual',
+        avgInteractions: 'Interações / Post',
+        projectedLikes: 'Curtidas com Adpro',
+        growthFactor: 'Fator de Crescimento',
+        ambassadors: 'Embaixadores',
+        employees: 'Funcionários Registrados',
+        potentialReach: 'Alcance Potencial',
+        impressionsWith: 'Impressões Estimadas',
+        impressionsHint: 'Alcance orgânico estimado',
+        estimatedReactions: 'Reações Estimadas',
+        classification: 'Classificação',
+        recommendations: 'Recomendações',
+        followers: 'Seguidores atuais',
+      },
+      classification: {
+        HIGH: 'Alto Potencial',
+        MEDIUM: 'Potencial Moderado',
+        LOW: 'Acima da Média',
+        HIGHHint: 'Grande oportunidade de crescimento com Adpro',
+        MEDIUMHint: 'Potencial moderado de melhoria com Adpro',
+        LOWHint: 'Já está acima do benchmark do setor',
+      },
+      deleteConfirm: 'Excluir proposta',
+      deleteConfirmMessage: 'Tem certeza? Esta ação não pode ser desfeita.',
+      deleted: 'Proposta excluída',
+      createdAt: 'Criada',
+      completedAt: 'Concluída',
+      backToList: 'Voltar às propostas',
+      platforms: 'Plataformas',
+      openLinkedin: 'Ver no LinkedIn',
+      pollingHint: 'Atualizando status automaticamente...',
+      downloadProposal: 'Baixar Proposta',
+      exporting: 'Gerando...',
     },
     releaseNotes: {
       title: 'Novidades',

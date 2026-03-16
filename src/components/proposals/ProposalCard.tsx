@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from '../../i18n/LanguageContext';
 import type { ProposalListItem } from '../../types';
 
 interface Props {
@@ -100,8 +99,6 @@ function extractCompanyName(url: string): string {
 }
 
 export default function ProposalCard({ proposal, onDelete }: Props) {
-  const t = useTranslation();
-  const tp = t.proposals;
   const navigate = useNavigate();
 
   const isClickable = proposal.status === 'done';

@@ -315,7 +315,7 @@ export default function ProposalDetailPage() {
                 const posts = Array.isArray(ig.posts) ? ig.posts : [];
                 const avgLikes = posts.length ? Math.round(posts.reduce((s: number, p: any) => s + (p.likes ?? 0), 0) / posts.length) : 0;
                 const avgComments = posts.length ? Math.round(posts.reduce((s: number, p: any) => s + (p.comments ?? 0), 0) / posts.length) : 0;
-                const er = ig.followers > 0 ? ((avgLikes + avgComments) / ig.followers * 100).toFixed(2) : '0.00';
+                void (ig.followers > 0 ? ((avgLikes + avgComments) / ig.followers * 100).toFixed(2) : '0.00');
                 return (
                   <a href={`https://www.instagram.com/${ig.username}/`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white-700 rounded-lg px-4 py-3 hover:ring-2 hover:ring-pink-400/20 transition-shadow">
                     {/* Instagram logo */}
@@ -743,7 +743,7 @@ export default function ProposalDetailPage() {
               const posts = Array.isArray(ig.posts) ? ig.posts : [];
               const avgLikes = posts.length ? Math.round(posts.reduce((s: number, p: any) => s + (p.likes ?? 0), 0) / posts.length) : 0;
               const avgComments = posts.length ? Math.round(posts.reduce((s: number, p: any) => s + (p.comments ?? 0), 0) / posts.length) : 0;
-              const er = ig.followers > 0 ? ((avgLikes + avgComments) / ig.followers * 100).toFixed(2) : '0.00';
+              void (ig.followers > 0 ? ((avgLikes + avgComments) / ig.followers * 100).toFixed(2) : '0.00');
               return (
                 <div>
                   {/* Posts grid */}

@@ -528,7 +528,7 @@ export async function generateProposalPdf(
   }
 
   const blob = await pdf(
-    React.createElement(ProposalDocument, { proposal, analysis, logoB64 }),
+    React.createElement(ProposalDocument, { proposal, analysis, logoB64 }) as any,
   ).toBlob();
 
   const url  = URL.createObjectURL(blob);

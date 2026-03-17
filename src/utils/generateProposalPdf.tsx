@@ -362,6 +362,113 @@ function ProjectionsPage({ projections }: { projections: ProposalDetail['project
   );
 }
 
+// ── PAGE 3b: ROI + Advocacy Score ────────────────────────────────────────────
+function ROIScorePage({
+  proposal,
+}: { proposal: ProposalDetail }) {
+  const projections = proposal.projections ?? [];
+  const totalEarned = proposal.totalEarnedMedia ?? projections.reduce((s, p) => s + (p.earnedMediaValue ?? 0), 0);
+  const score = proposal.advocacyScore;
+
+  return (
+    <Page size="A4" style={{ backgroundColor: WHITE, fontFamily: 'Helvetica', paddingBottom: 56 }}>
+      <AccentBar />
+      <View style={{ paddingHorizontal: 48, paddingTop: 32 }}>
+
+        <SLabel>ROI y preparación</SLabel>
+
+        <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 22, color: TXT_DARK, marginBottom: 4 }}>
+          Impacto económico estimado
+        </Text>
+        <Text style={{ fontSize: 10, color: TXT_MID, marginBottom: 20 }}>
+          Valor de earned media equivalente al ahorro en pauta pagada
+        </Text>
+
+        {/* ROI cards */}
+        <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+          <View style={{ flex: 1, backgroundColor: BLUE, borderRadius: 10, padding: 18, marginRight: 10 }}>
+            <Text style={{ fontSize: 9, color: '#93C5FD', marginBottom: 4 }}>Valor mensual estimado</Text>
+            <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 28, color: WHITE }}>
+              ${fmt(totalEarned)}
+            </Text>
+            <Text style={{ fontSize: 8, color: '#93C5FD' }}>USD / mes en earned media</Text>
+          </View>
+          <View style={{ flex: 1, backgroundColor: PURPLE, borderRadius: 10, padding: 18 }}>
+            <Text style={{ fontSize: 9, color: '#C4B5FD', marginBottom: 4 }}>Valor anual estimado</Text>
+            <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 28, color: WHITE }}>
+              ${fmt(totalEarned * 12)}
+            </Text>
+            <Text style={{ fontSize: 8, color: '#C4B5FD' }}>USD / año en earned media</Text>
+          </View>
+        </View>
+
+        {/* Per-platform ROI breakdown */}
+        {projections.some(p => p.earnedMediaValue && p.earnedMediaValue > 0) && (
+          <View style={{ marginBottom: 22 }}>
+            {projections.filter(p => p.earnedMediaValue && p.earnedMediaValue > 0).map((proj, i) => {
+              const meta = PLATFORM_META[proj.platform.toLowerCase()] ?? { color: BLUE, label: proj.platform };
+              return (
+                <View key={i} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: BORDER }}>
+                  <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: meta.color, marginRight: 8 }} />
+                  <Text style={{ fontSize: 10, color: TXT_DARK, width: 80 }}>{meta.label}</Text>
+                  <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 11, color: TXT_DARK, width: 70 }}>${fmt(proj.earnedMediaValue!)}</Text>
+                  <Text style={{ fontSize: 9, color: TXT_MID, flex: 1 }}>
+                    {proj.industryLabel ? `Sector: ${proj.industryLabel}` : ''}
+                    {proj.erVsBenchmark != null ? ` · ER ${proj.erVsBenchmark >= 0 ? '+' : ''}${proj.erVsBenchmark}% vs benchmark` : ''}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Advocacy Score */}
+        {score && (
+          <View>
+            <View style={{ height: 1, backgroundColor: BORDER, marginBottom: 18 }} />
+            <SLabel>Advocacy Readiness Score</SLabel>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+              <View style={{
+                width: 64, height: 64, borderRadius: 32,
+                backgroundColor: score.score >= 75 ? '#16A34A' : score.score >= 50 ? BLUE : score.score >= 25 ? '#D97706' : '#EF4444',
+                alignItems: 'center', justifyContent: 'center', marginRight: 14,
+              }}>
+                <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 22, color: WHITE }}>{score.score}</Text>
+              </View>
+              <View>
+                <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 16, color: TXT_DARK }}>
+                  {score.score >= 75 ? 'Excelente' : score.score >= 50 ? 'Bueno' : score.score >= 25 ? 'Moderado' : 'Bajo'}
+                </Text>
+                <Text style={{ fontSize: 9, color: TXT_MID }}>{score.score} de 100 puntos</Text>
+              </View>
+            </View>
+
+            {score.breakdown.map((item, i) => (
+              <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                <Text style={{ fontSize: 9, color: TXT_MID, width: 140 }}>{item.description}</Text>
+                <View style={{ flex: 1, height: 6, backgroundColor: BORDER, borderRadius: 3, marginRight: 8 }}>
+                  <View style={{
+                    width: `${(item.score / item.maxScore) * 100}%`,
+                    height: 6,
+                    backgroundColor: BLUE,
+                    borderRadius: 3,
+                  }} />
+                </View>
+                <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 9, color: TXT_DARK, width: 30 }}>
+                  {item.score}/{item.maxScore}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+      </View>
+      <PageFooter />
+    </Page>
+  );
+}
+
 // ── PAGE 4: AI Analysis + Benefits ───────────────────────────────────────────
 function AnalysisPage({ analysis }: { analysis: ProposalAIAnalysisResult }) {
   return (
@@ -509,6 +616,7 @@ function ProposalDocument({
       <CoverPage company={company} date={date} logoB64={logoB64} />
       <CompanyPage company={company} projections={projections} />
       {projections.length > 0 && <ProjectionsPage projections={projections} />}
+      <ROIScorePage proposal={proposal} />
       <AnalysisPage analysis={analysis} />
       <CtaPage analysis={analysis} companyName={company?.name ?? ''} />
     </Document>

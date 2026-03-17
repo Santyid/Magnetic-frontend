@@ -283,8 +283,8 @@ export const proposalsAPI = {
     return data;
   },
 
-  getStatus: async (id: string): Promise<{ status: string; completedAt?: string }> => {
-    const { data } = await api.get<{ status: string; completedAt?: string }>(`/proposals/${id}/status`);
+  getStatus: async (id: string): Promise<{ status: string; progress: number; completedAt?: string }> => {
+    const { data } = await api.get<{ status: string; progress: number; completedAt?: string }>(`/proposals/${id}/status`);
     return data;
   },
 

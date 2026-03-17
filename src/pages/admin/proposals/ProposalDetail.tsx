@@ -1,11 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../../i18n/LanguageContext';
 import { proposalsAPI } from '../../../services/api';
 import type { ProposalDetail as ProposalDetailType } from '../../../types';
 import ProjectionCard from '../../../components/proposals/ProjectionCard';
+import TotalROICard from '../../../components/proposals/TotalROICard';
 import ProposalAIAnalysis from '../../../components/proposals/ProposalAIAnalysis';
+import CompetitorCard from '../../../components/proposals/CompetitorCard';
+import BrandAnalysisCard from '../../../components/proposals/BrandAnalysisCard';
+import type { CompetitorBrandAnalysis } from '../../../types';
 import { Skeleton } from '../../../components/ui/Skeleton';
+
+type MainTab = 'projections' | 'competitors' | 'ai' | 'social';
 
 const POLL_INTERVAL = 4000;
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api';
@@ -27,7 +33,9 @@ export default function ProposalDetailPage() {
   const [proposal, setProposal] = useState<ProposalDetailType | null>(null);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
-  const [activeTab, setActiveTab] = useState<'linkedin' | 'facebook' | 'instagram' | 'tiktok' | 'twitter'>('linkedin');
+  const [progress, setProgress] = useState(0);
+  const [mainTab, setMainTab] = useState<MainTab>('projections');
+  const [socialTab, setSocialTab] = useState<'linkedin' | 'facebook' | 'instagram' | 'tiktok' | 'twitter'>('linkedin');
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const handleExport = async () => {
@@ -65,19 +73,19 @@ export default function ProposalDetailPage() {
     return () => stopPolling();
   }, [id]);
 
-  // Auto-select first available tab when proposal loads
+  // Auto-select first available social tab when proposal loads
   useEffect(() => {
     if (!proposal) return;
     const c = proposal.company;
-    const available: typeof activeTab[] = [
+    const available: typeof socialTab[] = [
       ...(c?.linkedinPosts?.length ? ['linkedin' as const] : []),
       ...(c?.facebookData ? ['facebook' as const] : []),
       ...(c?.instagramData ? ['instagram' as const] : []),
       ...(c?.tiktokData ? ['tiktok' as const] : []),
       ...(c?.twitterData ? ['twitter' as const] : []),
     ];
-    if (available.length && !available.includes(activeTab)) {
-      setActiveTab(available[0]);
+    if (available.length && !available.includes(socialTab)) {
+      setSocialTab(available[0]);
     }
   }, [proposal]);
 
@@ -86,8 +94,9 @@ export default function ProposalDetailPage() {
     pollingRef.current = setInterval(async () => {
       if (!id) return;
       try {
-        const { status } = await proposalsAPI.getStatus(id);
-        if (status === 'done' || status === 'failed') {
+        const res = await proposalsAPI.getStatus(id);
+        setProgress(res.progress ?? 0);
+        if (res.status === 'done' || res.status === 'failed') {
           stopPolling();
           load();
         }
@@ -135,16 +144,47 @@ export default function ProposalDetailPage() {
   const hasTwitter = !!company?.twitterData;
   const hasTabs = hasLinkedin || hasFacebook || hasInstagram || hasTiktok || hasTwitter;
 
-  const tabs = [
+  const socialTabs = [
     hasLinkedin && { key: 'linkedin' as const, label: 'LinkedIn' },
     hasFacebook && { key: 'facebook' as const, label: 'Facebook' },
     hasInstagram && { key: 'instagram' as const, label: 'Instagram' },
     hasTiktok && { key: 'tiktok' as const, label: 'TikTok' },
     hasTwitter && { key: 'twitter' as const, label: 'Twitter / X' },
-  ].filter(Boolean) as { key: 'linkedin' | 'facebook' | 'instagram' | 'tiktok' | 'twitter'; label: string }[];
+  ].filter(Boolean) as { key: typeof socialTab; label: string }[];
+
+  const hasProjections = proposal.projections?.length > 0;
+  const hasCompetitors = !!(proposal.competitors && proposal.competitors.length > 0 && company);
+  const isDone = proposal.status === 'done';
+
+  /* Main tab definitions */
+  const mainTabs: { key: MainTab; label: string; icon: ReactNode; badge?: string }[] = [
+    ...(hasProjections ? [{
+      key: 'projections' as const,
+      label: tp.detail.sectionProjections,
+      icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>,
+      badge: `${proposal.projections!.length}`,
+    }] : []),
+    ...(isDone && hasCompetitors ? [{
+      key: 'competitors' as const,
+      label: tp.detail.sectionCompetitors,
+      icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
+      badge: `${proposal.competitors!.length}`,
+    }] : []),
+    ...(isDone && hasProjections ? [{
+      key: 'ai' as const,
+      label: tp.detail.sectionAI,
+      icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>,
+    }] : []),
+    ...(hasTabs ? [{
+      key: 'social' as const,
+      label: tp.detail.sectionSocial,
+      icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.66667} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>,
+      badge: `${socialTabs.length}`,
+    }] : []),
+  ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Back + title */}
       <div className="flex items-center gap-3">
         <button
@@ -166,7 +206,7 @@ export default function ProposalDetailPage() {
             )}
           </p>
         </div>
-        {proposal.status === 'done' && proposal.projections?.length > 0 && (
+        {isDone && hasProjections && (
           <button
             onClick={handleExport}
             disabled={exporting}
@@ -190,16 +230,24 @@ export default function ProposalDetailPage() {
 
       {/* Processing banner */}
       {isProcessing && (
-        <div className="bg-primary-50 border border-primary-100 rounded-lg p-4 flex items-center gap-3">
-          <svg className="w-5 h-5 text-primary-600 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          <div>
-            <p className="text-sm font-medium text-primary-600">{tp.detail.processingTitle}</p>
-            <p className="text-xs text-primary-500">{tp.detail.processingHint}</p>
+        <div className="bg-primary-50 border border-primary-100 rounded-lg p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <svg className="w-5 h-5 text-primary-600 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-primary-600">{tp.detail.processingTitle}</p>
+              <p className="text-xs text-primary-500">{tp.detail.processingHint}</p>
+            </div>
+            <span className="shrink-0 text-lg font-bold text-primary-600">{progress}%</span>
           </div>
-          <span className="ml-auto text-xs text-primary-400">{tp.pollingHint}</span>
+          <div className="h-2 bg-primary-100 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-primary-600 rounded-full transition-all duration-700 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
       )}
 
@@ -213,11 +261,12 @@ export default function ProposalDetailPage() {
         </div>
       )}
 
-      {/* Company card */}
+      {/* Main card: Company info + tabbed content */}
       {company && (
-        <div className="bg-white rounded-lg border border-grey-50 p-6">
-          <h2 className="text-sm font-semibold text-grey-300 uppercase tracking-wide mb-4">{tp.detail.company}</h2>
-          <div className="flex items-start gap-4 mb-5">
+        <div className="bg-white rounded-lg border border-grey-50 overflow-hidden">
+          {/* Company header */}
+          <div className="p-5 pb-4">
+          <div className="flex items-start gap-4 mb-4">
             {company.logo && (
               <img src={company.logo} alt={company.name} className="w-16 h-16 rounded-xl object-contain border border-grey-50" />
             )}
@@ -416,89 +465,151 @@ export default function ProposalDetailPage() {
 
             </div>
           )}
-        </div>
-      )}
-
-      {/* Projections */}
-      {proposal.projections?.length > 0 && (
-        <div>
-          <h2 className="text-sm font-semibold text-grey-300 uppercase tracking-wide mb-4">
-            {tp.detail.projections}
-          </h2>
-          <div className={`grid gap-4 ${
-            proposal.projections.length === 1 ? 'grid-cols-1' :
-            proposal.projections.length === 2 ? 'grid-cols-2' :
-            proposal.projections.length === 3 ? 'grid-cols-3' :
-            'grid-cols-4'
-          }`}>
-            {proposal.projections.map((proj) => (
-              <ProjectionCard key={proj.id} projection={proj} employeeCount={proposal.company?.employeeCount} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {!isProcessing && proposal.projections?.length === 0 && !isFailed && (
-        <div className="text-center py-12 text-grey-300 text-sm">{tp.detail.noProjections}</div>
-      )}
-
-      {/* AI Analysis */}
-      {proposal.status === 'done' && proposal.projections?.length > 0 && (
-        <ProposalAIAnalysis proposalId={proposal.id} />
-      )}
-
-      {/* Social analysis tabs */}
-      {hasTabs && (
-        <div className="bg-white rounded-lg border border-grey-50 overflow-hidden">
-          {/* Tab bar */}
-          <div className="flex border-b border-grey-50">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
-                  activeTab === tab.key
-                    ? 'border-primary-600 text-primary-600'
-                    : 'border-transparent text-grey-300 hover:text-grey-500'
-                }`}
-              >
-                {tab.key === 'linkedin' && (
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                )}
-                {tab.key === 'facebook' && (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.532-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
-                  </svg>
-                )}
-                {tab.key === 'instagram' && (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <rect x="2" y="2" width="20" height="20" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                  </svg>
-                )}
-                {tab.key === 'tiktok' && (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
-                  </svg>
-                )}
-                {tab.key === 'twitter' && (
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                )}
-                {tab.label}
-              </button>
-            ))}
           </div>
 
-          {/* Tab content */}
-          <div className="p-6">
+          {/* Main tab bar */}
+          {mainTabs.length > 0 && (
+            <>
+              <div className="flex border-t border-grey-50 overflow-x-auto">
+                {mainTabs.map((tab) => (
+                  <button
+                    key={tab.key}
+                    onClick={() => setMainTab(tab.key)}
+                    className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap ${
+                      mainTab === tab.key
+                        ? 'border-primary-600 text-primary-600'
+                        : 'border-transparent text-grey-300 hover:text-grey-500'
+                    }`}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                    {tab.badge && (
+                      <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${
+                        mainTab === tab.key ? 'bg-primary-50 text-primary-600' : 'bg-grey-50 text-grey-300'
+                      }`}>{tab.badge}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* ═══ TAB CONTENT ═══ */}
+              <div className="p-5">
+
+                {/* ── Projections tab ── */}
+                {mainTab === 'projections' && hasProjections && (
+                  <div className="space-y-5">
+                    <div className={`grid gap-4 ${
+                      proposal.projections!.length === 1 ? 'grid-cols-1' :
+                      proposal.projections!.length === 2 ? 'grid-cols-2' :
+                      proposal.projections!.length === 3 ? 'grid-cols-3' :
+                      'grid-cols-4'
+                    }`}>
+                      {proposal.projections!.map((proj) => (
+                        <ProjectionCard key={proj.id} projection={proj} employeeCount={proposal.company?.employeeCount} />
+                      ))}
+                    </div>
+                    {isDone && (
+                      <TotalROICard
+                        projections={proposal.projections!}
+                        advocacyScore={proposal.advocacyScore}
+                        employeeCount={proposal.company?.employeeCount}
+                      />
+                    )}
+                  </div>
+                )}
+
+                {/* ── Competitors tab ── */}
+                {mainTab === 'competitors' && hasCompetitors && (() => {
+                  const posts = company?.linkedinPosts ?? [];
+                  const totalL = posts.reduce((s, p) => s + (p.likes ?? 0), 0);
+                  const totalC = posts.reduce((s, p) => s + (p.comments ?? 0), 0);
+                  const totalR = posts.reduce((s, p) => s + (p.reposts ?? 0), 0);
+                  const compFollowers = company?.followers ?? 0;
+                  const companyEngagement = posts.length > 0 ? {
+                    avgLikes: Math.round(totalL / posts.length),
+                    avgComments: Math.round(totalC / posts.length),
+                    engagementRate: compFollowers > 0 ? parseFloat((((totalL + totalC + totalR) / posts.length / compFollowers) * 100).toFixed(2)) : 0,
+                    postsPerMonth: posts.length,
+                  } : undefined;
+
+                  return (
+                    <div className="space-y-5">
+                      <CompetitorCard
+                        company={{
+                          name: company!.name ?? '',
+                          logo: company!.logo ?? '',
+                          followers: company!.followers ?? 0,
+                          employeeCount: company!.employeeCount ?? 0,
+                          engagement: companyEngagement,
+                        }}
+                        competitors={proposal.competitors!}
+                      />
+                      {proposal.competitorAnalysis && (() => {
+                        try {
+                          const brandData: CompetitorBrandAnalysis = JSON.parse(proposal.competitorAnalysis!);
+                          return <BrandAnalysisCard analysis={brandData} />;
+                        } catch {
+                          return null;
+                        }
+                      })()}
+                    </div>
+                  );
+                })()}
+
+                {/* ── AI Analysis tab ── */}
+                {mainTab === 'ai' && isDone && hasProjections && (
+                  <ProposalAIAnalysis proposalId={proposal.id} />
+                )}
+
+                {/* ── Social Content tab ── */}
+                {mainTab === 'social' && hasTabs && (
+                  <div>
+                    {/* Social platform sub-tabs */}
+                    <div className="flex gap-1 mb-5 bg-white-700 rounded-lg p-1">
+                      {socialTabs.map((tab) => (
+                        <button
+                          key={tab.key}
+                          onClick={() => setSocialTab(tab.key)}
+                          className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-md transition-colors ${
+                            socialTab === tab.key
+                              ? 'bg-white text-primary-600 shadow-sm'
+                              : 'text-grey-300 hover:text-grey-500'
+                          }`}
+                        >
+                          {tab.key === 'linkedin' && (
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                          )}
+                          {tab.key === 'facebook' && (
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.532-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                            </svg>
+                          )}
+                          {tab.key === 'instagram' && (
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                              <rect x="2" y="2" width="20" height="20" rx="5" />
+                              <circle cx="12" cy="12" r="4" />
+                              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                            </svg>
+                          )}
+                          {tab.key === 'tiktok' && (
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                            </svg>
+                          )}
+                          {tab.key === 'twitter' && (
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                          )}
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
 
             {/* LinkedIn tab */}
-            {activeTab === 'linkedin' && hasLinkedin && (
+            {socialTab === 'linkedin' && hasLinkedin && (
               <div>
                 <p className="text-xs text-grey-100 mb-4">
                   Últimos {Math.min(company!.linkedinPosts!.length, 9)} posts · {company!.linkedinPosts!.length} totales
@@ -637,7 +748,7 @@ export default function ProposalDetailPage() {
             )}
 
             {/* Facebook tab */}
-            {activeTab === 'facebook' && hasFacebook && (() => {
+            {socialTab === 'facebook' && hasFacebook && (() => {
               const fb = company!.facebookData!;
               const posts = Array.isArray(fb.posts) ? fb.posts : [];
               const avgLikes = posts.length ? Math.round(posts.reduce((s: number, p: any) => s + (p.likes ?? 0), 0) / posts.length) : 0;
@@ -738,7 +849,7 @@ export default function ProposalDetailPage() {
             })()}
 
             {/* Instagram tab */}
-            {activeTab === 'instagram' && hasInstagram && (() => {
+            {socialTab === 'instagram' && hasInstagram && (() => {
               const ig = company!.instagramData!;
               const posts = Array.isArray(ig.posts) ? ig.posts : [];
               const avgLikes = posts.length ? Math.round(posts.reduce((s: number, p: any) => s + (p.likes ?? 0), 0) / posts.length) : 0;
@@ -870,7 +981,7 @@ export default function ProposalDetailPage() {
             })()}
 
             {/* TikTok tab */}
-            {activeTab === 'tiktok' && hasTiktok && (() => {
+            {socialTab === 'tiktok' && hasTiktok && (() => {
               const tt = company!.tiktokData!;
               const posts = Array.isArray(tt.posts) ? tt.posts : [];
               const followers = Array.isArray(tt.ttFollowers) ? tt.ttFollowers : [];
@@ -958,7 +1069,7 @@ export default function ProposalDetailPage() {
             })()}
 
             {/* Twitter tab */}
-            {activeTab === 'twitter' && hasTwitter && (() => {
+            {socialTab === 'twitter' && hasTwitter && (() => {
               const tw = company!.twitterData!;
               const posts = Array.isArray(tw.posts) ? tw.posts : [];
               const followers = Array.isArray(tw.twFollowers) ? tw.twFollowers : [];
@@ -1059,10 +1170,17 @@ export default function ProposalDetailPage() {
               );
             })()}
 
-          </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       )}
 
+      {!isProcessing && !hasProjections && !isFailed && (
+        <div className="text-center py-12 text-grey-300 text-sm">{tp.detail.noProjections}</div>
+      )}
 
     </div>
   );

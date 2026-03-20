@@ -602,6 +602,27 @@ export interface Translations {
     resetSubtitle: string;
   };
 
+  // Demo (public proposal test drive)
+  demo: {
+    title: string;
+    subtitle: string;
+    inputPlaceholder: string;
+    analyzeButton: string;
+    analyzing: string;
+    processingTitle: string;
+    processingHint: string;
+    resultTitle: string;
+    unlockTitle: string;
+    unlockText: string;
+    unlockCta: string;
+    unlockPlatforms: string;
+    rateLimitError: string;
+    errorGeneric: string;
+    linkedinRequired: string;
+    loginLink: string;
+    backToHome: string;
+  };
+
   // Error Codes (backend → frontend mapping)
   errorCodes: {
     INVALID_CREDENTIALS: string;
@@ -1183,6 +1204,25 @@ export const translations: Record<Language, Translations> = {
       sentSubtitle: 'Te hemos enviado un enlace para restablecer tu contraseña. Revisa tu bandeja de entrada.',
       resetTitle: '¡Casi allí!',
       resetSubtitle: 'Crea tu nueva contraseña segura',
+    },
+    demo: {
+      title: 'Descubre el potencial de tu marca',
+      subtitle: 'Ingresa el LinkedIn de tu empresa y obtén un análisis gratuito de advocacy en segundos',
+      inputPlaceholder: 'https://www.linkedin.com/company/tu-empresa',
+      analyzeButton: 'Analizar',
+      analyzing: 'Analizando...',
+      processingTitle: 'Analizando tu empresa...',
+      processingHint: 'Esto puede tomar 1-2 minutos',
+      resultTitle: 'Tu reporte preview',
+      unlockTitle: 'Desbloquea el reporte completo',
+      unlockText: 'Regístrate para acceder a proyecciones detalladas, análisis de competidores y más',
+      unlockCta: 'Registrarse gratis',
+      unlockPlatforms: '+ Agrega Instagram, Facebook, TikTok y Twitter',
+      rateLimitError: 'Has alcanzado el límite diario de demos. Regístrate para acceso ilimitado.',
+      errorGeneric: 'Algo salió mal. Intenta de nuevo.',
+      linkedinRequired: 'Ingresa la URL de LinkedIn de la empresa',
+      loginLink: 'Iniciar sesión',
+      backToHome: 'Volver al inicio',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Credenciales invalidas. Verifica tu correo y contrasena.',
@@ -1770,6 +1810,25 @@ export const translations: Record<Language, Translations> = {
       resetTitle: 'Almost there!',
       resetSubtitle: 'Create your new secure password',
     },
+    demo: {
+      title: 'Discover your brand potential',
+      subtitle: 'Enter your company LinkedIn and get a free advocacy analysis in seconds',
+      inputPlaceholder: 'https://www.linkedin.com/company/your-company',
+      analyzeButton: 'Analyze',
+      analyzing: 'Analyzing...',
+      processingTitle: 'Analyzing your company...',
+      processingHint: 'This may take 1-2 minutes',
+      resultTitle: 'Your preview report',
+      unlockTitle: 'Unlock the full report',
+      unlockText: 'Register to access detailed projections, competitor analysis and more',
+      unlockCta: 'Register free',
+      unlockPlatforms: '+ Add Instagram, Facebook, TikTok and Twitter',
+      rateLimitError: 'You have reached the daily demo limit. Register for unlimited access.',
+      errorGeneric: 'Something went wrong. Please try again.',
+      linkedinRequired: 'Enter the company LinkedIn URL',
+      loginLink: 'Log in',
+      backToHome: 'Back to home',
+    },
     errorCodes: {
       INVALID_CREDENTIALS: 'Invalid credentials. Check your email and password.',
       INACTIVE_USER: 'Your account is inactive. Contact your administrator.',
@@ -2355,6 +2414,25 @@ export const translations: Record<Language, Translations> = {
       sentSubtitle: 'Enviamos um link para redefinir sua senha. Verifique sua caixa de entrada.',
       resetTitle: 'Quase lá!',
       resetSubtitle: 'Crie sua nova senha segura',
+    },
+    demo: {
+      title: 'Descubra o potencial da sua marca',
+      subtitle: 'Insira o LinkedIn da sua empresa e obtenha uma análise gratuita de advocacy em segundos',
+      inputPlaceholder: 'https://www.linkedin.com/company/sua-empresa',
+      analyzeButton: 'Analisar',
+      analyzing: 'Analisando...',
+      processingTitle: 'Analisando sua empresa...',
+      processingHint: 'Isso pode levar 1-2 minutos',
+      resultTitle: 'Seu relatório preview',
+      unlockTitle: 'Desbloqueie o relatório completo',
+      unlockText: 'Cadastre-se para acessar projeções detalhadas, análise de concorrentes e mais',
+      unlockCta: 'Cadastrar grátis',
+      unlockPlatforms: '+ Adicione Instagram, Facebook, TikTok e Twitter',
+      rateLimitError: 'Você atingiu o limite diário de demos. Cadastre-se para acesso ilimitado.',
+      errorGeneric: 'Algo deu errado. Tente novamente.',
+      linkedinRequired: 'Insira a URL do LinkedIn da empresa',
+      loginLink: 'Entrar',
+      backToHome: 'Voltar ao início',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Credenciais invalidas. Verifique seu email e senha.',

@@ -131,15 +131,29 @@ Dark theme con animaciones. Ver [../docs/landing-page.md](../docs/landing-page.m
 ## E2E Testing (Playwright)
 ```bash
 # Requiere: backend en :3000 + seeds + frontend en :5173
-npm run test:e2e          # 45+ tests headless
+npm run test:e2e          # 58+ tests headless
 npm run test:e2e:headed   # Con navegador
+npm run test:e2e:ui       # UI interactiva Playwright
 ```
+
+| Suite | Archivo | Tests | Cobertura |
+|-------|---------|-------|-----------|
+| Auth | `e2e/auth.spec.ts` | 8 | Login, register, forgot password |
+| Dashboard | `e2e/dashboard.spec.ts` | 7 | Products, TopBanner, AI, FAQ |
+| ConnectProduct | `e2e/connect-product.spec.ts` | 5 | Connection modal, metrics |
+| Admin | `e2e/admin.spec.ts` | 8 | Admin panel, CRUD, access control |
+| Profile | `e2e/profile.spec.ts` | 8 | Profile, change password |
+| ForgotPassword | `e2e/forgot-password.spec.ts` | 9 | Password recovery, registration |
+| Landing | `e2e/landing.spec.ts` | 8 | Navbar, hero, products, language, CTA, stats, footer |
+| Proposals | `e2e/proposals.spec.ts` | 5 | Lista, crear modal, navegacion admin, detalle, acceso no-admin |
 
 Gotchas:
 - `getByLabel()` no funciona (proyecto usa `<div>` labels, no `<label>`)
 - Usar `getByPlaceholder()` o `getByRole('textbox')`
 - `input[type="password"]` → usar `locator('input[type="password"]')`
 - Regex i18n: `/correo|email/i` para funcionar en cualquier idioma
+- Desktop viewport: usar `page.setViewportSize({ width: 1280, height: 720 })` para tests de navbar
+- Browser context: evitar mas de 4-5 logins secuenciales en un mismo describe (limpiar con `clearAuth`)
 
 Ver [../docs/testing-e2e.md](../docs/testing-e2e.md) para detalles completos.
 

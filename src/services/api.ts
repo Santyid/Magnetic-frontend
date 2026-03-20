@@ -298,6 +298,24 @@ export const proposalsAPI = {
   },
 };
 
+// Demo Proposals endpoints (Public, no auth)
+export const demoProposalsAPI = {
+  create: async (linkedinCompanyUrl: string): Promise<{ id: string; status: string }> => {
+    const { data } = await api.post<{ id: string; status: string }>('/demo/proposals', { linkedinCompanyUrl });
+    return data;
+  },
+
+  getOne: async (id: string): Promise<ProposalDetail> => {
+    const { data } = await api.get<ProposalDetail>(`/demo/proposals/${id}`);
+    return data;
+  },
+
+  getStatus: async (id: string): Promise<{ status: string; progress: number; completedAt?: string }> => {
+    const { data } = await api.get<{ status: string; progress: number; completedAt?: string }>(`/demo/proposals/${id}/status`);
+    return data;
+  },
+};
+
 // Health endpoint
 export const healthAPI = {
   check: async (): Promise<{ status: string; timestamp: string; service: string; uptime: number }> => {

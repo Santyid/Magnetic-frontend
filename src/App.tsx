@@ -29,6 +29,7 @@ import Proposals from './pages/admin/proposals/Proposals';
 import ProposalDetail from './pages/admin/proposals/ProposalDetail';
 import Health from './pages/Health';
 import DesignSystem from './pages/DesignSystem';
+import DemoProposals from './pages/DemoProposals';
 
 function App() {
   const { checkAuth } = useAuthStore();
@@ -87,6 +88,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/2fa/email" element={<TwoFactorEmail />} />
           <Route path="/2fa/app" element={<TwoFactorApp />} />
+          <Route path="/demo/proposals" element={<DemoProposals />} />
           <Route
             path="/dashboard"
             element={

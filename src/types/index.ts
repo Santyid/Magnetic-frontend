@@ -177,6 +177,11 @@ export interface ProposalEmployee {
   avgArticleLikes: number;
 }
 
+export interface AdvocacyScoreResult {
+  score: number;
+  breakdown: { category: string; score: number; maxScore: number; description: string }[];
+}
+
 export interface ProposalProjection {
   id: string;
   platform: ProposalPlatform;
@@ -193,11 +198,23 @@ export interface ProposalProjection {
   ambassadorAvgLikes: number;
   classification: ProposalClassification;
   recommendations: string[];
+  // ROI
+  earnedMediaValue?: number;
+  costPerImpression?: number;
+  estimatedImpressions?: number;
+  // Industry benchmarks
+  industryBenchmarkER?: number;
+  erVsBenchmark?: number;
+  industryLabel?: string;
 }
 
 export interface ProposalDetail extends ProposalListItem {
   adminUserId: string;
   errorMessage?: string;
+  advocacyScore?: AdvocacyScoreResult;
+  totalEarnedMedia?: number;
+  competitors?: CompetitorData[];
+  competitorAnalysis?: string;
   company?: {
     id: string;
     name?: string;
@@ -216,6 +233,36 @@ export interface ProposalDetail extends ProposalListItem {
   };
   employees: ProposalEmployee[];
   projections: ProposalProjection[];
+}
+
+export interface CompetitorEngagement {
+  avgLikes: number;
+  avgComments: number;
+  avgReposts: number;
+  postCount: number;
+  engagementRate: number;
+  postsPerMonth: number;
+}
+
+export interface CompetitorData {
+  name: string;
+  slug: string;
+  logo: string;
+  followers: number;
+  employeeCount: number;
+  industry: string;
+  website: string;
+  headquarters: string;
+  engagement: CompetitorEngagement;
+}
+
+export interface CompetitorBrandAnalysis {
+  brandPosition: string;
+  strengths: string[];
+  weaknesses: string[];
+  opportunities: string[];
+  competitorInsights: { name: string; verdict: string }[];
+  recommendation: string;
 }
 
 export interface ProposalAIAnalysisResult {

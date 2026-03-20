@@ -283,8 +283,8 @@ export const proposalsAPI = {
     return data;
   },
 
-  getStatus: async (id: string): Promise<{ status: string; completedAt?: string }> => {
-    const { data } = await api.get<{ status: string; completedAt?: string }>(`/proposals/${id}/status`);
+  getStatus: async (id: string): Promise<{ status: string; progress: number; completedAt?: string }> => {
+    const { data } = await api.get<{ status: string; progress: number; completedAt?: string }>(`/proposals/${id}/status`);
     return data;
   },
 
@@ -294,6 +294,24 @@ export const proposalsAPI = {
 
   getAiAnalysis: async (id: string): Promise<ProposalAIAnalysisResult> => {
     const { data } = await api.post<ProposalAIAnalysisResult>(`/proposals/${id}/ai-analysis`);
+    return data;
+  },
+};
+
+// Demo Proposals endpoints (Public, no auth)
+export const demoProposalsAPI = {
+  create: async (linkedinCompanyUrl: string): Promise<{ id: string; status: string }> => {
+    const { data } = await api.post<{ id: string; status: string }>('/demo/proposals', { linkedinCompanyUrl });
+    return data;
+  },
+
+  getOne: async (id: string): Promise<ProposalDetail> => {
+    const { data } = await api.get<ProposalDetail>(`/demo/proposals/${id}`);
+    return data;
+  },
+
+  getStatus: async (id: string): Promise<{ status: string; progress: number; completedAt?: string }> => {
+    const { data } = await api.get<{ status: string; progress: number; completedAt?: string }>(`/demo/proposals/${id}/status`);
     return data;
   },
 };

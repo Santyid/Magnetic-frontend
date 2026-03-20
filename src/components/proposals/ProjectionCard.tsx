@@ -96,6 +96,29 @@ export default function ProjectionCard({ projection, employeeCount }: Props) {
         </div>
       </div>
 
+      {/* ROI & Benchmark row */}
+      {(projection.earnedMediaValue != null && projection.earnedMediaValue > 0) && (
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          <div className="bg-primary-600/5 rounded-lg p-3">
+            <p className="text-xs text-grey-300 mb-0.5">{tp.projection.earnedMediaValue}</p>
+            <p className="text-sm font-bold text-primary-600">${formatNumber(projection.earnedMediaValue)}</p>
+            <p className="text-[10px] text-grey-100">{tp.projection.monthlyValue}</p>
+          </div>
+          <div className="bg-white-700 rounded-lg p-3">
+            <p className="text-xs text-grey-300 mb-0.5">{tp.projection.industryBenchmark}</p>
+            <p className="text-sm font-bold text-grey-500">{projection.industryBenchmarkER?.toFixed(2)}%</p>
+            {projection.erVsBenchmark != null && (
+              <p className={`text-[10px] font-semibold ${projection.erVsBenchmark >= 0 ? 'text-success-500' : 'text-error'}`}>
+                {projection.erVsBenchmark >= 0 ? '+' : ''}{projection.erVsBenchmark}% {projection.erVsBenchmark >= 0 ? tp.projection.aboveBenchmark : tp.projection.belowBenchmark}
+              </p>
+            )}
+            {projection.industryLabel && (
+              <p className="text-[10px] text-grey-100">{projection.industryLabel}</p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Employees row */}
       <div className="flex items-center justify-between py-2 px-3 bg-white-700 rounded-lg mb-4">
         <p className="text-xs text-grey-300">{tp.projection.employees}</p>

@@ -426,6 +426,12 @@ export interface Translations {
       noEmployees: string;
       articles: string;
       noProjections: string;
+      sectionCompany: string;
+      sectionProjections: string;
+      sectionReach: string;
+      sectionCompetitors: string;
+      sectionAI: string;
+      sectionSocial: string;
     };
     aiAnalysis: {
       title: string;
@@ -449,6 +455,65 @@ export interface Translations {
       classification: string;
       recommendations: string;
       followers: string;
+      // ROI
+      earnedMediaValue: string;
+      estimatedImpressions: string;
+      costPerImpression: string;
+      monthlyValue: string;
+      // Industry benchmarks
+      industryBenchmark: string;
+      erVsBenchmark: string;
+      aboveBenchmark: string;
+      belowBenchmark: string;
+    };
+    // Advocacy Score
+    advocacyScore: {
+      title: string;
+      subtitle: string;
+      outOf: string;
+      teamSize: string;
+      employeeReach: string;
+      multiPlatform: string;
+      growthOpportunity: string;
+      contentActivity: string;
+      excellent: string;
+      good: string;
+      moderate: string;
+      low: string;
+    };
+    // Potential Reach
+    totalROI: {
+      title: string;
+      subtitle: string;
+      currentReach: string;
+      withAdpro: string;
+      impressions: string;
+      followers: string;
+      perMonth: string;
+      ambassadors: string;
+    };
+    // Competitors
+    competitors: {
+      title: string;
+      subtitle: string;
+      followers: string;
+      employees: string;
+      engagementRate: string;
+      avgLikes: string;
+      frequency: string;
+      vsCompany: string;
+      moreFollowers: string;
+      fewerFollowers: string;
+    };
+    // Brand Analysis
+    brandAnalysis: {
+      title: string;
+      subtitle: string;
+      strengths: string;
+      weaknesses: string;
+      opportunities: string;
+      competitorInsights: string;
+      recommendation: string;
     };
     classification: {
       HIGH: string;
@@ -535,6 +600,27 @@ export interface Translations {
     sentSubtitle: string;
     resetTitle: string;
     resetSubtitle: string;
+  };
+
+  // Demo (public proposal test drive)
+  demo: {
+    title: string;
+    subtitle: string;
+    inputPlaceholder: string;
+    analyzeButton: string;
+    analyzing: string;
+    processingTitle: string;
+    processingHint: string;
+    resultTitle: string;
+    unlockTitle: string;
+    unlockText: string;
+    unlockCta: string;
+    unlockPlatforms: string;
+    rateLimitError: string;
+    errorGeneric: string;
+    linkedinRequired: string;
+    loginLink: string;
+    backToHome: string;
   };
 
   // Error Codes (backend → frontend mapping)
@@ -962,6 +1048,12 @@ export const translations: Record<Language, Translations> = {
         noEmployees: 'Sin datos de empleados',
         articles: 'artículos',
         noProjections: 'Sin proyecciones disponibles',
+        sectionCompany: 'Información de la Empresa',
+        sectionProjections: 'Proyecciones Adpro',
+        sectionReach: 'Alcance y Advocacy Score',
+        sectionCompetitors: 'Análisis de Competidores',
+        sectionAI: 'Análisis IA',
+        sectionSocial: 'Contenido Social',
       },
       aiAnalysis: {
         title: 'Análisis IA',
@@ -985,6 +1077,59 @@ export const translations: Record<Language, Translations> = {
         classification: 'Clasificación',
         recommendations: 'Recomendaciones',
         followers: 'Seguidores actuales',
+        earnedMediaValue: 'Valor en Earned Media',
+        estimatedImpressions: 'Impresiones Estimadas',
+        costPerImpression: 'CPM (Costo por mil)',
+        monthlyValue: 'Valor mensual estimado',
+        industryBenchmark: 'Benchmark del Sector',
+        erVsBenchmark: 'vs. Promedio del sector',
+        aboveBenchmark: 'por encima',
+        belowBenchmark: 'por debajo',
+      },
+      advocacyScore: {
+        title: 'Advocacy Readiness Score',
+        subtitle: 'Nivel de preparación para un programa de Employee Advocacy',
+        outOf: 'de 100',
+        teamSize: 'Tamaño del equipo',
+        employeeReach: 'Alcance de empleados',
+        multiPlatform: 'Presencia multiplataforma',
+        growthOpportunity: 'Oportunidad de crecimiento',
+        contentActivity: 'Actividad de contenido',
+        excellent: 'Excelente',
+        good: 'Bueno',
+        moderate: 'Moderado',
+        low: 'Bajo',
+      },
+      totalROI: {
+        title: 'Alcance Potencial con Adpro',
+        subtitle: 'Proyección de alcance activando empleados como embajadores de marca',
+        currentReach: 'Alcance actual',
+        withAdpro: 'Con Adpro',
+        impressions: 'Impresiones est.',
+        followers: 'seguidores',
+        perMonth: '/mes',
+        ambassadors: 'Embajadores',
+      },
+      competitors: {
+        title: 'Análisis Competitivo',
+        subtitle: 'Comparación con competidores directos en LinkedIn',
+        followers: 'Seguidores',
+        employees: 'Empleados',
+        engagementRate: 'Engagement',
+        avgLikes: 'Likes/post',
+        frequency: 'Frecuencia',
+        vsCompany: 'vs tu empresa',
+        moreFollowers: 'más seguidores',
+        fewerFollowers: 'menos seguidores',
+      },
+      brandAnalysis: {
+        title: 'Evaluación Competitiva de Marca',
+        subtitle: 'Análisis estratégico basado en datos reales de engagement',
+        strengths: 'Fortalezas',
+        weaknesses: 'Debilidades',
+        opportunities: 'Oportunidades',
+        competitorInsights: 'Análisis por competidor',
+        recommendation: 'Recomendación estratégica',
       },
       classification: {
         HIGH: 'Alto Potencial',
@@ -1059,6 +1204,25 @@ export const translations: Record<Language, Translations> = {
       sentSubtitle: 'Te hemos enviado un enlace para restablecer tu contraseña. Revisa tu bandeja de entrada.',
       resetTitle: '¡Casi allí!',
       resetSubtitle: 'Crea tu nueva contraseña segura',
+    },
+    demo: {
+      title: 'Descubre el potencial de tu marca',
+      subtitle: 'Ingresa el LinkedIn de tu empresa y obtén un análisis gratuito de advocacy en segundos',
+      inputPlaceholder: 'https://www.linkedin.com/company/tu-empresa',
+      analyzeButton: 'Analizar',
+      analyzing: 'Analizando...',
+      processingTitle: 'Analizando tu empresa...',
+      processingHint: 'Esto puede tomar 1-2 minutos',
+      resultTitle: 'Tu reporte preview',
+      unlockTitle: 'Desbloquea el reporte completo',
+      unlockText: 'Regístrate para acceder a proyecciones detalladas, análisis de competidores y más',
+      unlockCta: 'Registrarse gratis',
+      unlockPlatforms: '+ Agrega Instagram, Facebook, TikTok y Twitter',
+      rateLimitError: 'Has alcanzado el límite diario de demos. Regístrate para acceso ilimitado.',
+      errorGeneric: 'Algo salió mal. Intenta de nuevo.',
+      linkedinRequired: 'Ingresa la URL de LinkedIn de la empresa',
+      loginLink: 'Iniciar sesión',
+      backToHome: 'Volver al inicio',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Credenciales invalidas. Verifica tu correo y contrasena.',
@@ -1489,6 +1653,12 @@ export const translations: Record<Language, Translations> = {
         noEmployees: 'No employee data',
         articles: 'articles',
         noProjections: 'No projections available',
+        sectionCompany: 'Company Information',
+        sectionProjections: 'Adpro Projections',
+        sectionReach: 'Reach & Advocacy Score',
+        sectionCompetitors: 'Competitor Analysis',
+        sectionAI: 'AI Analysis',
+        sectionSocial: 'Social Content',
       },
       aiAnalysis: {
         title: 'AI Analysis',
@@ -1512,6 +1682,59 @@ export const translations: Record<Language, Translations> = {
         classification: 'Classification',
         recommendations: 'Recommendations',
         followers: 'Current followers',
+        earnedMediaValue: 'Earned Media Value',
+        estimatedImpressions: 'Estimated Impressions',
+        costPerImpression: 'CPM (Cost per thousand)',
+        monthlyValue: 'Estimated monthly value',
+        industryBenchmark: 'Industry Benchmark',
+        erVsBenchmark: 'vs. Industry Average',
+        aboveBenchmark: 'above',
+        belowBenchmark: 'below',
+      },
+      advocacyScore: {
+        title: 'Advocacy Readiness Score',
+        subtitle: 'Readiness level for an Employee Advocacy program',
+        outOf: 'out of 100',
+        teamSize: 'Team size',
+        employeeReach: 'Employee reach',
+        multiPlatform: 'Multi-platform presence',
+        growthOpportunity: 'Growth opportunity',
+        contentActivity: 'Content activity',
+        excellent: 'Excellent',
+        good: 'Good',
+        moderate: 'Moderate',
+        low: 'Low',
+      },
+      totalROI: {
+        title: 'Potential Reach with Adpro',
+        subtitle: 'Reach projection by activating employees as brand ambassadors',
+        currentReach: 'Current reach',
+        withAdpro: 'With Adpro',
+        impressions: 'Est. impressions',
+        followers: 'followers',
+        perMonth: '/mo',
+        ambassadors: 'Ambassadors',
+      },
+      competitors: {
+        title: 'Competitive Analysis',
+        subtitle: 'Comparison with direct competitors on LinkedIn',
+        followers: 'Followers',
+        employees: 'Employees',
+        engagementRate: 'Engagement',
+        avgLikes: 'Likes/post',
+        frequency: 'Frequency',
+        vsCompany: 'vs your company',
+        moreFollowers: 'more followers',
+        fewerFollowers: 'fewer followers',
+      },
+      brandAnalysis: {
+        title: 'Competitive Brand Evaluation',
+        subtitle: 'Strategic analysis based on real engagement data',
+        strengths: 'Strengths',
+        weaknesses: 'Weaknesses',
+        opportunities: 'Opportunities',
+        competitorInsights: 'Competitor insights',
+        recommendation: 'Strategic recommendation',
       },
       classification: {
         HIGH: 'High Potential',
@@ -1586,6 +1809,25 @@ export const translations: Record<Language, Translations> = {
       sentSubtitle: 'We sent you a link to reset your password. Check your inbox.',
       resetTitle: 'Almost there!',
       resetSubtitle: 'Create your new secure password',
+    },
+    demo: {
+      title: 'Discover your brand potential',
+      subtitle: 'Enter your company LinkedIn and get a free advocacy analysis in seconds',
+      inputPlaceholder: 'https://www.linkedin.com/company/your-company',
+      analyzeButton: 'Analyze',
+      analyzing: 'Analyzing...',
+      processingTitle: 'Analyzing your company...',
+      processingHint: 'This may take 1-2 minutes',
+      resultTitle: 'Your preview report',
+      unlockTitle: 'Unlock the full report',
+      unlockText: 'Register to access detailed projections, competitor analysis and more',
+      unlockCta: 'Register free',
+      unlockPlatforms: '+ Add Instagram, Facebook, TikTok and Twitter',
+      rateLimitError: 'You have reached the daily demo limit. Register for unlimited access.',
+      errorGeneric: 'Something went wrong. Please try again.',
+      linkedinRequired: 'Enter the company LinkedIn URL',
+      loginLink: 'Log in',
+      backToHome: 'Back to home',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Invalid credentials. Check your email and password.',
@@ -2016,6 +2258,12 @@ export const translations: Record<Language, Translations> = {
         noEmployees: 'Sem dados de funcionários',
         articles: 'artigos',
         noProjections: 'Sem projeções disponíveis',
+        sectionCompany: 'Informações da Empresa',
+        sectionProjections: 'Projeções Adpro',
+        sectionReach: 'Alcance e Advocacy Score',
+        sectionCompetitors: 'Análise de Concorrentes',
+        sectionAI: 'Análise IA',
+        sectionSocial: 'Conteúdo Social',
       },
       aiAnalysis: {
         title: 'Análise IA',
@@ -2039,6 +2287,59 @@ export const translations: Record<Language, Translations> = {
         classification: 'Classificação',
         recommendations: 'Recomendações',
         followers: 'Seguidores atuais',
+        earnedMediaValue: 'Valor em Earned Media',
+        estimatedImpressions: 'Impressões Estimadas',
+        costPerImpression: 'CPM (Custo por mil)',
+        monthlyValue: 'Valor mensal estimado',
+        industryBenchmark: 'Benchmark do Setor',
+        erVsBenchmark: 'vs. Média do setor',
+        aboveBenchmark: 'acima',
+        belowBenchmark: 'abaixo',
+      },
+      advocacyScore: {
+        title: 'Advocacy Readiness Score',
+        subtitle: 'Nível de preparação para um programa de Employee Advocacy',
+        outOf: 'de 100',
+        teamSize: 'Tamanho da equipe',
+        employeeReach: 'Alcance dos funcionários',
+        multiPlatform: 'Presença multiplataforma',
+        growthOpportunity: 'Oportunidade de crescimento',
+        contentActivity: 'Atividade de conteúdo',
+        excellent: 'Excelente',
+        good: 'Bom',
+        moderate: 'Moderado',
+        low: 'Baixo',
+      },
+      totalROI: {
+        title: 'Alcance Potencial com Adpro',
+        subtitle: 'Projeção de alcance ativando funcionários como embaixadores da marca',
+        currentReach: 'Alcance atual',
+        withAdpro: 'Com Adpro',
+        impressions: 'Impressões est.',
+        followers: 'seguidores',
+        perMonth: '/mês',
+        ambassadors: 'Embaixadores',
+      },
+      competitors: {
+        title: 'Análise Competitiva',
+        subtitle: 'Comparação com concorrentes diretos no LinkedIn',
+        followers: 'Seguidores',
+        employees: 'Funcionários',
+        engagementRate: 'Engagement',
+        avgLikes: 'Likes/post',
+        frequency: 'Frequência',
+        vsCompany: 'vs sua empresa',
+        moreFollowers: 'mais seguidores',
+        fewerFollowers: 'menos seguidores',
+      },
+      brandAnalysis: {
+        title: 'Avaliação Competitiva de Marca',
+        subtitle: 'Análise estratégica baseada em dados reais de engagement',
+        strengths: 'Forças',
+        weaknesses: 'Fraquezas',
+        opportunities: 'Oportunidades',
+        competitorInsights: 'Análise por concorrente',
+        recommendation: 'Recomendação estratégica',
       },
       classification: {
         HIGH: 'Alto Potencial',
@@ -2113,6 +2414,25 @@ export const translations: Record<Language, Translations> = {
       sentSubtitle: 'Enviamos um link para redefinir sua senha. Verifique sua caixa de entrada.',
       resetTitle: 'Quase lá!',
       resetSubtitle: 'Crie sua nova senha segura',
+    },
+    demo: {
+      title: 'Descubra o potencial da sua marca',
+      subtitle: 'Insira o LinkedIn da sua empresa e obtenha uma análise gratuita de advocacy em segundos',
+      inputPlaceholder: 'https://www.linkedin.com/company/sua-empresa',
+      analyzeButton: 'Analisar',
+      analyzing: 'Analisando...',
+      processingTitle: 'Analisando sua empresa...',
+      processingHint: 'Isso pode levar 1-2 minutos',
+      resultTitle: 'Seu relatório preview',
+      unlockTitle: 'Desbloqueie o relatório completo',
+      unlockText: 'Cadastre-se para acessar projeções detalhadas, análise de concorrentes e mais',
+      unlockCta: 'Cadastrar grátis',
+      unlockPlatforms: '+ Adicione Instagram, Facebook, TikTok e Twitter',
+      rateLimitError: 'Você atingiu o limite diário de demos. Cadastre-se para acesso ilimitado.',
+      errorGeneric: 'Algo deu errado. Tente novamente.',
+      linkedinRequired: 'Insira a URL do LinkedIn da empresa',
+      loginLink: 'Entrar',
+      backToHome: 'Voltar ao início',
     },
     errorCodes: {
       INVALID_CREDENTIALS: 'Credenciais invalidas. Verifique seu email e senha.',
